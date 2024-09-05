@@ -7,5 +7,6 @@ namespace api.Models;
     public Chat Receiver { get; set; }
     public string Content { get; set; }
     public Message? Reply { get; set; }
-    public DateTime Date { get; set; }
+    public DateTime SendDate { get; set; }
+    public DateTime? ReadDate { get; set; }
 }
