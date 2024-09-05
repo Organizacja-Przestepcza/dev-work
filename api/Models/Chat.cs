@@ -2,8 +2,8 @@ namespace api.Models;
 
 public class Chat
 {
-    private string ID { get; set; }
-    private string Name { get; set; }
-    private string[] UserList { get; set; }
-    private string[] AdminList { get; set; }
+    public string ID { get; set; }
+    public string Name { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public List<ChatMember> Members { get; set; }
 }
