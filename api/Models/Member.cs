@@ -5,7 +5,7 @@ public enum Role
     Admin,
     Member
 }
-public class ChatMember
+public class Member
 {
     public string ID { get; set; }
     public Role Role { get; set; }
