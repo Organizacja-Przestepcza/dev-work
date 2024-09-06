@@ -5,7 +5,7 @@ namespace api.Models;
 
 public class Bookmark
 {
-   public string Id { get; set; }
+   public Guid Id { get; set; }
    public Post Post { get; set; }
    public User User { get; set; }
    public DateTime CreatedAt { get; set; }

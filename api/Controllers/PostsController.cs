@@ -8,9 +8,16 @@ namespace api.Controllers;
 public class PostsController(AppDbContext context) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Post>>> GetPosts()
+    public  ActionResult<IEnumerable<Post>> GetPosts()
     {
-        var posts = await context.Posts.ToListAsync();
-        return Ok(posts);
+      
+        return Ok();
+    }
+
+    [HttpPost]
+    public ActionResult<IEnumerable<Post>> AddPost([FromBody] Post postDto)
+    {
+       
+        return Ok();
     }
 }

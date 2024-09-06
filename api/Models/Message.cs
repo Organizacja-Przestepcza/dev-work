@@ -2,7 +2,7 @@ namespace api.Models;
 
  public class Message
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     public User Sender { get; set; }
     public Chat Receiver { get; set; }
     public string Content { get; set; }
