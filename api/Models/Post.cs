@@ -2,7 +2,7 @@ namespace api.Models;
 
 public class Post
 {
-    public string ID { get; set; }
+    public string Id { get; set; }
     public Post? PreviousPost { get; set; }
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
