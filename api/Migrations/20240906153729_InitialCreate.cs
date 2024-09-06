@@ -15,216 +15,225 @@ namespace api.Migrations
                 name: "Chats",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Chats", x => x.ID);
+                    table.PrimaryKey("PK_Chats", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     Username = table.Column<string>(type: "TEXT", nullable: false),
-                    Bio = table.Column<string>(type: "TEXT", nullable: true),
-                    UserID = table.Column<string>(type: "TEXT", nullable: true)
+                    Bio = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.ID);
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Follows",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Follower = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Following = table.Column<Guid>(type: "TEXT", nullable: false),
+                    FollowedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Follows", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Users_UserID",
-                        column: x => x.UserID,
+                        name: "FK_Follows_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "ID");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Members",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Role = table.Column<int>(type: "INTEGER", nullable: false),
                     AddedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChatID = table.Column<string>(type: "TEXT", nullable: false),
-                    UserID = table.Column<string>(type: "TEXT", nullable: true)
+                    ChatId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Members", x => x.ID);
+                    table.PrimaryKey("PK_Members", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Members_Chats_ChatID",
-                        column: x => x.ChatID,
+                        name: "FK_Members_Chats_ChatId",
+                        column: x => x.ChatId,
                         principalTable: "Chats",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Members_Users_UserID",
-                        column: x => x.UserID,
+                        name: "FK_Members_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "ID");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "TEXT", nullable: false),
-                    SenderID = table.Column<string>(type: "TEXT", nullable: true),
-                    ReceiverID = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    SenderId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ReceiverId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
-                    ReplyID = table.Column<string>(type: "TEXT", nullable: true),
+                    ReplyId = table.Column<Guid>(type: "TEXT", nullable: true),
                     SendDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ReadDate = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Messages", x => x.ID);
+                    table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messages_Chats_ReceiverID",
-                        column: x => x.ReceiverID,
+                        name: "FK_Messages_Chats_ReceiverId",
+                        column: x => x.ReceiverId,
                         principalTable: "Chats",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Messages_Messages_ReplyID",
-                        column: x => x.ReplyID,
+                        name: "FK_Messages_Messages_ReplyId",
+                        column: x => x.ReplyId,
                         principalTable: "Messages",
-                        principalColumn: "ID");
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Messages_Users_SenderID",
-                        column: x => x.SenderID,
+                        name: "FK_Messages_Users_SenderId",
+                        column: x => x.SenderId,
                         principalTable: "Users",
-                        principalColumn: "ID");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "TEXT", nullable: false),
-                    PreviousPostID = table.Column<string>(type: "TEXT", nullable: true),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserID = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    PreviousPostId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Posts", x => x.ID);
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Posts_Posts_PreviousPostID",
-                        column: x => x.PreviousPostID,
-                        principalTable: "Posts",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Posts_Users_UserID",
-                        column: x => x.UserID,
+                        name: "FK_Posts_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "ID");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Bookmarks",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "TEXT", nullable: false),
-                    PostID = table.Column<string>(type: "TEXT", nullable: true),
-                    UserID = table.Column<string>(type: "TEXT", nullable: true),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PostId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bookmarks", x => x.ID);
+                    table.PrimaryKey("PK_Bookmarks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Bookmarks_Posts_PostID",
-                        column: x => x.PostID,
+                        name: "FK_Bookmarks_Posts_PostId",
+                        column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "ID");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bookmarks_Users_UserID",
-                        column: x => x.UserID,
+                        name: "FK_Bookmarks_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "ID");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Images",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     FilePath = table.Column<string>(type: "TEXT", nullable: false),
-                    PostID = table.Column<string>(type: "TEXT", nullable: true)
+                    PostId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Images", x => x.ID);
+                    table.PrimaryKey("PK_Images", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Images_Posts_PostID",
-                        column: x => x.PostID,
+                        name: "FK_Images_Posts_PostId",
+                        column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "ID");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookmarks_PostID",
+                name: "IX_Bookmarks_PostId",
                 table: "Bookmarks",
-                column: "PostID");
+                column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookmarks_UserID",
+                name: "IX_Bookmarks_UserId",
                 table: "Bookmarks",
-                column: "UserID");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_PostID",
+                name: "IX_Follows_UserId",
+                table: "Follows",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Images_PostId",
                 table: "Images",
-                column: "PostID");
+                column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Members_ChatID",
+                name: "IX_Members_ChatId",
                 table: "Members",
-                column: "ChatID");
+                column: "ChatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Members_UserID",
+                name: "IX_Members_UserId",
                 table: "Members",
-                column: "UserID");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_ReceiverID",
+                name: "IX_Messages_ReceiverId",
                 table: "Messages",
-                column: "ReceiverID");
+                column: "ReceiverId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_ReplyID",
+                name: "IX_Messages_ReplyId",
                 table: "Messages",
-                column: "ReplyID");
+                column: "ReplyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_SenderID",
+                name: "IX_Messages_SenderId",
                 table: "Messages",
-                column: "SenderID");
+                column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_PreviousPostID",
+                name: "IX_Posts_UserId",
                 table: "Posts",
-                column: "PreviousPostID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_UserID",
-                table: "Posts",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_UserID",
-                table: "Users",
-                column: "UserID");
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -232,6 +241,9 @@ namespace api.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Bookmarks");
+
+            migrationBuilder.DropTable(
+                name: "Follows");
 
             migrationBuilder.DropTable(
                 name: "Images");

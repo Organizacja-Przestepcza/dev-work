@@ -7,7 +7,7 @@ public enum Role
 }
 public class Member
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     public Role Role { get; set; }
     public DateTime AddedAt { get; set; }
     
