@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
-
+[Route("api/posts")]
 public class PostsController(AppDbContext context) : ControllerBase
 {
     [HttpGet]
