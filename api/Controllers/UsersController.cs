@@ -15,14 +15,14 @@ public class UsersController(AppDbContext context) : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<IEnumerable<User>> AddUser([FromBody] User user)
+    public ActionResult<User> AddUser([FromBody] User user)
     {
        
         return Ok();
     }
     
     [HttpPut]
-    public ActionResult<IEnumerable<User>> UpdateUser([FromBody] User user)
+    public ActionResult<User> UpdateUser([FromBody] User user)
     {
        
         return Ok();
