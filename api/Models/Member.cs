@@ -14,4 +14,3 @@ public class Member
     public Chat Chat { get; set; }
     public User User { get; set; }
 }
-
