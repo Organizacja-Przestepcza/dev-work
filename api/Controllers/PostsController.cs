@@ -15,9 +15,15 @@ public class PostsController(AppDbContext context) : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<IEnumerable<Post>> AddPost([FromBody] Post postDto)
+    public ActionResult<Post> AddPost([FromBody] Post post)
     {
        
+        return Ok();
+    }
+
+    [HttpPut]
+    public ActionResult<Post> UpdatePost([FromBody] Post post)
+    {
         return Ok();
     }
 }
