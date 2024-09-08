@@ -4,26 +4,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
-[Route("api/posts")]
-public class PostsController(AppDbContext context) : ControllerBase
+[Route("api/users")]
+public class UsersController(AppDbContext context) : ControllerBase
 {
     [HttpGet]
-    public  ActionResult<IEnumerable<Post>> GetPosts()
+    public  ActionResult<IEnumerable<User>> GetUsers()
     {
       
         return Ok();
     }
 
     [HttpPost]
-    public ActionResult<Post> AddPost([FromBody] Post post)
+    public ActionResult<User> AddUser([FromBody] User user)
     {
        
         return Ok();
     }
-
+    
     [HttpPut]
-    public ActionResult<Post> UpdatePost([FromBody] Post post)
+    public ActionResult<User> UpdateUser([FromBody] User user)
     {
+       
         return Ok();
     }
 }
