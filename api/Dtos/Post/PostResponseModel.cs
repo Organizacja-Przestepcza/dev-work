@@ -10,7 +10,7 @@ public class PostResponseModel
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
 
-    public UserResponseModel? User { get; set; }
+    public UserResponseModel User { get; set; } = null!;
     public List<ImageResponseModel>? Images { get; set; }
     
     public Guid? PreviousPostId { get; set; }
