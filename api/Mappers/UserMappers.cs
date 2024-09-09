@@ -5,7 +5,7 @@ namespace api.Mappers;
 
 public static class UserMappers
 {
-    public static UserResponseModel ToUserResponseModel(User user)
+    public static UserResponseModel ToUserResponseModel(this User user)
     {
         return new UserResponseModel
         {
@@ -15,7 +15,7 @@ public static class UserMappers
         };
     }
 
-    public static User ToUser(UserRequestModel userRequestModel)
+    public static User ToUser(this UserRequestModel userRequestModel)
     {
         return new User()
         {

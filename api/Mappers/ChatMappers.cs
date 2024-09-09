@@ -3,9 +3,9 @@ using api.Models;
 
 namespace api.Mappers;
 
-public class ChatMappers
+public static class ChatMappers
 {
-    public static ChatResponseModel ToChatResponseModel(Chat memberChat)
+    public static ChatResponseModel ToChatResponseModel(this Chat memberChat)
     {
         return new ChatResponseModel
         {
@@ -15,7 +15,7 @@ public class ChatMappers
         };
     }
 
-    public static Chat ToChat(ChatRequestModel chatRequestModel)
+    public static Chat ToChat(this ChatRequestModel chatRequestModel)
     {
         return new Chat
         {

@@ -1,4 +1,3 @@
-using api.Dtos.Image;
 using api.Dtos.User;
 
 namespace api.Dtos.Post;

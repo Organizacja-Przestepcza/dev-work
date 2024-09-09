@@ -4,9 +4,9 @@ using api.Models;
 
 namespace api.Mappers;
 
-public class PostMappers
+public static class PostMappers
 {
-    public PostResponseModel ToPostResponseModel(Post post)
+    public static PostResponseModel ToPostResponseModel(this Post post)
     {
         var postResponseModel = new PostResponseModel()
         {
@@ -23,7 +23,7 @@ public class PostMappers
         return postResponseModel;
     }
 
-    public Post ToPost(PostRequestModel postRequestModel)
+    public static Post ToPost(this PostRequestModel postRequestModel)
     {
         var post = new Post()
         {
@@ -33,10 +33,16 @@ public class PostMappers
             UserId = postRequestModel.UserId,
             PreviousPostId = postRequestModel.PreviousPostId
         };
-        if (postRequestModel.Images is not null)
+        if (postRequestModel.ImageUrls is not null)
         {
-            //post.Images = postRequestModel.Images;
+            post.Images = postRequestModel.ImageUrls.Select(imageUrl => new Image
+            {
+                Id = Guid.NewGuid(),
+                FilePath = imageUrl,
+                Post = post 
+            }).ToList();
         }
+        
         return post;
     }
 }

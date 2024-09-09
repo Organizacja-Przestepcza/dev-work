@@ -3,9 +3,9 @@ using api.Models;
 
 namespace api.Mappers;
 
-public class BookmarkMappers
+public static class BookmarkMappers
 {
-    public static BookmarkResponseModel ToBookmarkResponseModel(Bookmark bookmark)
+    public static BookmarkResponseModel ToBookmarkResponseModel(this Bookmark bookmark)
     {
         return new BookmarkResponseModel
         {
@@ -16,7 +16,7 @@ public class BookmarkMappers
         };
     }
 
-    public static Bookmark ToBookmark(BookmarkRequestModel bookmarkRequestModel)
+    public static Bookmark ToBookmark(this BookmarkRequestModel bookmarkRequestModel)
     {
         return new Bookmark
         {

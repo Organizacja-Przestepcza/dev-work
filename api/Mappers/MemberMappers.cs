@@ -5,9 +5,9 @@ using api.Models;
 
 namespace api.Mappers;
 
-public class MemberMappers()
+public static class MemberMappers
 {
-    public static MemberResponseModel ToMemberResponse(Member member)
+    public static MemberResponseModel ToMemberResponse(this Member member)
     {
 
         return new MemberResponseModel
@@ -20,7 +20,7 @@ public class MemberMappers()
         };
     }
 
-    public static Member ToMember(MemberRequestModel memberRequestModel)
+    public static Member ToMember(this MemberRequestModel memberRequestModel)
     {
         return new Member
         {
