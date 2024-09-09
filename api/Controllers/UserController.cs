@@ -4,39 +4,40 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
-[Route("api/messages")]
+[Route("api/users")]
 [ApiController]
-public class MessagesController(AppDbContext context) : ControllerBase
+public class UserController(AppDbContext context) : ControllerBase
 {
     private readonly AppDbContext _context = context;
     [HttpGet]
     public IActionResult GetAll()
     {
-        var messages = _context.Messages.ToList();
+        var users = _context.Users.ToList()
+            /*.Select(s => s.ToUserDto())*/;
         
-        return Ok(messages);
+        return Ok(users);
     }
 
     [HttpGet("{id:guid}")]
     public IActionResult GetById([FromRoute] Guid id)
     {
-        var message = _context.Messages.Find(id);
-        if (message == null)
+        var user = _context.Users.Find(id);
+        if (user == null)
         {
             return NotFound();
         }
-        return Ok(message);
+        return Ok(user);
     }
-
+    
     [HttpPost]
-    public IActionResult Add([FromBody] Message message)
+    public IActionResult Add([FromBody] User user)
     {
-       
+        
         return Ok();
     }
     
     [HttpPut]
-    public IActionResult Update([FromBody] Message message)
+    public IActionResult Update([FromBody] User user)
     {
        
         return Ok();

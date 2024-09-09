@@ -4,41 +4,41 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
-[Route("api/posts")]
+[Route("api/chats")]
 [ApiController]
-public class PostsController(AppDbContext context) : ControllerBase
+public class ChatController(AppDbContext context) : ControllerBase
 {
     private readonly AppDbContext _context = context;
-    
     [HttpGet]
     public IActionResult GetAll()
     {
-        var posts = _context.Posts.ToList();
+        var chats = _context.Chats.ToList();
         
-        return Ok(posts);
+        return Ok(chats);
     }
-
+    
     [HttpGet("{id:guid}")]
     public IActionResult GetById([FromRoute] Guid id)
     {
-        var post = _context.Posts.Find(id);
-        if (post == null)
+        var chat = _context.Chats.Find(id);
+        if (chat == null)
         {
             return NotFound();
         }
-        return Ok(post);
+        return Ok(chat);
     }
 
     [HttpPost]
-    public IActionResult Add([FromBody] Post post)
+    public IActionResult Add([FromBody] Chat chat)
     {
        
         return Ok();
     }
-
+    
     [HttpPut]
-    public IActionResult Update([FromBody] Post post)
+    public IActionResult Update([FromBody] Chat chat)
     {
+       
         return Ok();
     }
 }

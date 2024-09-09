@@ -4,41 +4,41 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
-[Route("api/users")]
+[Route("api/posts")]
 [ApiController]
-public class UsersController(AppDbContext context) : ControllerBase
+public class PostController(AppDbContext context) : ControllerBase
 {
     private readonly AppDbContext _context = context;
+    
     [HttpGet]
     public IActionResult GetAll()
     {
-        var users = _context.Users.ToList();
+        var posts = _context.Posts.ToList();
         
-        return Ok(users);
+        return Ok(posts);
     }
 
     [HttpGet("{id:guid}")]
     public IActionResult GetById([FromRoute] Guid id)
     {
-        var user = _context.Users.Find(id);
-        if (user == null)
+        var post = _context.Posts.Find(id);
+        if (post == null)
         {
             return NotFound();
         }
-        return Ok(user);
+        return Ok(post);
     }
-    
+
     [HttpPost]
-    public IActionResult Add([FromBody] User user)
+    public IActionResult Add([FromBody] Post post)
     {
        
         return Ok();
     }
-    
+
     [HttpPut]
-    public IActionResult Update([FromBody] User user)
+    public IActionResult Update([FromBody] Post post)
     {
-       
         return Ok();
     }
 }
