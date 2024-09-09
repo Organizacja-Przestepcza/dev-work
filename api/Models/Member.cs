@@ -1,10 +1,8 @@
+using api.Enums;
+
 namespace api.Models;
 
-public enum Role
-{
-    Admin,
-    Member
-}
+
 public class Member
 {
     public Guid Id { get; set; }

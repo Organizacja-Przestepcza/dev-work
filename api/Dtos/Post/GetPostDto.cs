@@ -11,7 +11,7 @@ public class GetPostDto
     public DateTime CreatedAt { get; set; }
 
     public GetUserDto? User { get; set; }
-    public List<ImageDto>? Images { get; set; }
+    public List<GetImageDto>? Images { get; set; }
     
     public Guid? PreviousPostId { get; set; }
 
