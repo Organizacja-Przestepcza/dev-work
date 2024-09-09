@@ -1,17 +1,32 @@
-using api.Context;
+using api.Data;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
 [Route("api/posts")]
+[ApiController]
 public class PostsController(AppDbContext context) : ControllerBase
 {
+    private readonly AppDbContext _context = context;
+    
     [HttpGet]
     public IActionResult GetAll()
     {
-      
-        return Ok();
+        var posts = _context.Posts.ToList();
+        
+        return Ok(posts);
+    }
+
+    [HttpGet("{id:guid}")]
+    public IActionResult GetById([FromRoute] Guid id)
+    {
+        var post = _context.Posts.Find(id);
+        if (post == null)
+        {
+            return NotFound();
+        }
+        return Ok(post);
     }
 
     [HttpPost]

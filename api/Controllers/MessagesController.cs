@@ -1,17 +1,31 @@
-using api.Context;
+using api.Data;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
 [Route("api/messages")]
+[ApiController]
 public class MessagesController(AppDbContext context) : ControllerBase
 {
+    private readonly AppDbContext _context = context;
     [HttpGet]
     public IActionResult GetAll()
     {
-      
-        return Ok();
+        var messages = _context.Messages.ToList();
+        
+        return Ok(messages);
+    }
+
+    [HttpGet("{id:guid}")]
+    public IActionResult GetById([FromRoute] Guid id)
+    {
+        var message = _context.Messages.Find(id);
+        if (message == null)
+        {
+            return NotFound();
+        }
+        return Ok(message);
     }
 
     [HttpPost]
