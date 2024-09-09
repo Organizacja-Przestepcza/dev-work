@@ -8,12 +8,12 @@ public static class PostMappers
 {
     public static PostResponseModel ToPostResponseModel(this Post post)
     {
-        var postResponseModel = new PostResponseModel()
+        var postResponseModel = new PostResponseModel
         {
             Id = post.Id,
             Content = post.Content,
             CreatedAt = post.CreatedAt,
-            User = UserMappers.ToUserResponseModel(post.User),
+            User = post.User.ToUserResponseModel(),
             PreviousPostId = post.PreviousPostId,
         };
         if (post.Images is not null)
