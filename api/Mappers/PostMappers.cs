@@ -8,14 +8,35 @@ public class PostMappers
 {
     public PostResponseModel ToPostResponseModel(Post post)
     {
-        return new PostResponseModel()
+        var postResponseModel = new PostResponseModel()
         {
             Id = post.Id,
             Content = post.Content,
             CreatedAt = post.CreatedAt,
             User = UserMappers.ToUserResponseModel(post.User),
-            //Images = post.Images,
             PreviousPostId = post.PreviousPostId,
         };
+        if (post.Images is not null)
+        {
+            postResponseModel.ImageUrls = post.Images.Select(i => i.FilePath).ToList();
+        }
+        return postResponseModel;
+    }
+
+    public Post ToPost(PostRequestModel postRequestModel)
+    {
+        var post = new Post()
+        {
+            Id = new Guid(),
+            Content = postRequestModel.Content,
+            CreatedAt = DateTime.Now,
+            UserId = postRequestModel.UserId,
+            PreviousPostId = postRequestModel.PreviousPostId
+        };
+        if (postRequestModel.Images is not null)
+        {
+            //post.Images = postRequestModel.Images;
+        }
+        return post;
     }
 }

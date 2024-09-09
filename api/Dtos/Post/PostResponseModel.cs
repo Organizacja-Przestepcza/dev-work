@@ -11,7 +11,7 @@ public class PostResponseModel
     public DateTime CreatedAt { get; set; }
 
     public UserResponseModel User { get; set; } = null!;
-    public List<ImageResponseModel>? Images { get; set; }
+    public List<string>? ImageUrls { get; set; }
     
     public Guid? PreviousPostId { get; set; }
 
