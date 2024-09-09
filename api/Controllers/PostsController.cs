@@ -8,21 +8,21 @@ namespace api.Controllers;
 public class PostsController(AppDbContext context) : ControllerBase
 {
     [HttpGet]
-    public  ActionResult<IEnumerable<Post>> GetPosts()
+    public IActionResult GetAll()
     {
       
         return Ok();
     }
 
     [HttpPost]
-    public ActionResult<Post> AddPost([FromBody] Post post)
+    public IActionResult Add([FromBody] Post post)
     {
        
         return Ok();
     }
 
     [HttpPut]
-    public ActionResult<Post> UpdatePost([FromBody] Post post)
+    public IActionResult Update([FromBody] Post post)
     {
         return Ok();
     }

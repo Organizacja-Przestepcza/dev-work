@@ -8,21 +8,21 @@ namespace api.Controllers;
 public class ChatsController(AppDbContext context) : ControllerBase
 {
     [HttpGet]
-    public  ActionResult<IEnumerable<Chat>> GetChats()
+    public IActionResult GetAll()
     {
       
         return Ok();
     }
 
     [HttpPost]
-    public ActionResult<Chat> AddChat([FromBody] Chat chat)
+    public IActionResult Add([FromBody] Chat chat)
     {
        
         return Ok();
     }
     
     [HttpPut]
-    public ActionResult<Chat> UpdateChat([FromBody] Chat chat)
+    public IActionResult Update([FromBody] Chat chat)
     {
        
         return Ok();

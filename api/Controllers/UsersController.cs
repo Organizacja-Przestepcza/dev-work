@@ -8,21 +8,21 @@ namespace api.Controllers;
 public class UsersController(AppDbContext context) : ControllerBase
 {
     [HttpGet]
-    public  ActionResult<IEnumerable<User>> GetUsers()
+    public IActionResult GetAll()
     {
       
         return Ok();
     }
 
     [HttpPost]
-    public ActionResult<User> AddUser([FromBody] User user)
+    public IActionResult Add([FromBody] User user)
     {
        
         return Ok();
     }
     
     [HttpPut]
-    public ActionResult<User> UpdateUser([FromBody] User user)
+    public IActionResult Update([FromBody] User user)
     {
        
         return Ok();

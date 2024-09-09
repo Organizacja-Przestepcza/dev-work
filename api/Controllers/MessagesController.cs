@@ -8,21 +8,21 @@ namespace api.Controllers;
 public class MessagesController(AppDbContext context) : ControllerBase
 {
     [HttpGet]
-    public  ActionResult<IEnumerable<Message>> GetMessages()
+    public IActionResult GetAll()
     {
       
         return Ok();
     }
 
     [HttpPost]
-    public ActionResult<Message> AddMessage([FromBody] Message message)
+    public IActionResult Add([FromBody] Message message)
     {
        
         return Ok();
     }
     
     [HttpPut]
-    public ActionResult<Message> UpdateMessage([FromBody] Message message)
+    public IActionResult Update([FromBody] Message message)
     {
        
         return Ok();
