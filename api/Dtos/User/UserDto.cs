@@ -7,7 +7,7 @@ namespace api.Dtos.User;
 public class UserDto
 {
     public Guid Id { get; set; }
-    public string Email { get; set; } = String.Empty;
-    public string Username { get; set; } = String.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
  
 }
