@@ -10,11 +10,11 @@ public class Post
   
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
-
-    public User? User { get; set; }
+    public Guid UserId { get; set; }
+    public User User { get; set; }
     public List<Image>? Images { get; set; }
     
-    public string? PreviousPostId { get; set; }
+    public Guid? PreviousPostId { get; set; }
     
     [NotMapped]
     public Post? PreviousPost { get; set; }
