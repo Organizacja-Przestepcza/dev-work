@@ -14,7 +14,7 @@ public class Post
     public User? User { get; set; }
     public List<Image>? Images { get; set; }
     
-    public string? PreviousPostId { get; set; }
+    public Guid? PreviousPostId { get; set; }
     
     [NotMapped]
     public Post? PreviousPost { get; set; }
