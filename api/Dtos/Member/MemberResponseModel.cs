@@ -4,12 +4,12 @@ using api.Enums;
 
 namespace api.Dtos.Member;
 
-public class GetMemberDto
+public class MemberResponseModel
 {
     public Guid Id { get; set; }
     public Role Role { get; set; }
     public DateTime AddedAt { get; set; }
     
-    public GetChatDto GetChat { get; set; }
-    public GetUserDto User { get; set; }
+    public ChatResponseModel Chat { get; set; }
+    public UserResponseModel User { get; set; }
 }

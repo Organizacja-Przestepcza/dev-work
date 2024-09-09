@@ -4,7 +4,7 @@ using api.Models;
 
 namespace api.Dtos.User;
 
-public class GetUserDto
+public class UserResponseModel
 {
     public Guid Id { get; set; }
     public string Email { get; set; } = string.Empty;

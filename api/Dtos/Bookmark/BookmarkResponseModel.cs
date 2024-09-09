@@ -3,10 +3,10 @@ using api.Dtos.User;
 
 namespace api.Dtos.Bookmark;
 
-public class BookmarkDto
+public class BookmarkResponseModel
 {
     public Guid Id { get; set; }
-    public GetPostDto Post { get; set; }
-    public GetUserDto User { get; set; }
+    public PostResponseModel Post { get; set; }
+    public UserResponseModel User { get; set; }
     public DateTime CreatedAt { get; set; }
 }
