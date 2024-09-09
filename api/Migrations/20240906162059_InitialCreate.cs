@@ -40,23 +40,28 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Follows",
+                name: "Connections",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Follower = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Following = table.Column<Guid>(type: "TEXT", nullable: false),
-                    FollowedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    FollowerId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    FollowingId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Follows", x => x.Id);
+                    table.PrimaryKey("PK_Connections", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Follows_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Connections_Users_FollowerId",
+                        column: x => x.FollowerId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Connections_Users_FollowingId",
+                        column: x => x.FollowingId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,9 +201,14 @@ namespace api.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Follows_UserId",
-                table: "Follows",
-                column: "UserId");
+                name: "IX_Connections_FollowerId",
+                table: "Connections",
+                column: "FollowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Connections_FollowingId",
+                table: "Connections",
+                column: "FollowingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_PostId",
@@ -243,7 +253,7 @@ namespace api.Migrations
                 name: "Bookmarks");
 
             migrationBuilder.DropTable(
-                name: "Follows");
+                name: "Connections");
 
             migrationBuilder.DropTable(
                 name: "Images");
