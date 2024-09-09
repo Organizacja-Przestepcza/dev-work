@@ -59,29 +59,25 @@ namespace api.Migrations
                     b.ToTable("Chats");
                 });
 
-            modelBuilder.Entity("api.Models.Follow", b =>
+            modelBuilder.Entity("api.Models.Connection", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("FollowedAt")
+                    b.Property<Guid>("FollowerId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("Follower")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("Following")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("FollowingId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("FollowerId");
 
-                    b.ToTable("Follows");
+                    b.HasIndex("FollowingId");
+
+                    b.ToTable("Connections");
                 });
 
             modelBuilder.Entity("api.Models.Image", b =>
@@ -238,11 +234,23 @@ namespace api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("api.Models.Follow", b =>
+            modelBuilder.Entity("api.Models.Connection", b =>
                 {
-                    b.HasOne("api.Models.User", null)
-                        .WithMany("Follows")
-                        .HasForeignKey("UserId");
+                    b.HasOne("api.Models.User", "Follower")
+                        .WithMany("FollowingConnections")
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.User", "Following")
+                        .WithMany("FollowedConnections")
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("Following");
                 });
 
             modelBuilder.Entity("api.Models.Image", b =>
@@ -323,7 +331,9 @@ namespace api.Migrations
                 {
                     b.Navigation("Bookmarks");
 
-                    b.Navigation("Follows");
+                    b.Navigation("FollowedConnections");
+
+                    b.Navigation("FollowingConnections");
 
                     b.Navigation("Posts");
                 });
