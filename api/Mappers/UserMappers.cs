@@ -3,9 +3,9 @@ using api.Models;
 
 namespace api.Mappers;
 
-public class UserMappers
+public static class UserMappers
 {
-    public UserResponseModel ToUserResponseModel(User user)
+    public static UserResponseModel ToUserResponseModel(User user)
     {
         return new UserResponseModel
         {
@@ -15,7 +15,7 @@ public class UserMappers
         };
     }
 
-    public User ToUser(UserRequestModel userRequestModel)
+    public static User ToUser(UserRequestModel userRequestModel)
     {
         return new User()
         {
