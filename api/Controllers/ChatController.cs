@@ -1,4 +1,5 @@
 using api.Data;
+using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,8 @@ public class ChatController(AppDbContext context) : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        var chats = _context.Chats.ToList();
+        var chats = _context.Chats.ToList()
+            .Select(s => s.ToChatResponseModel());
         
         return Ok(chats);
     }
@@ -25,7 +27,7 @@ public class ChatController(AppDbContext context) : ControllerBase
         {
             return NotFound();
         }
-        return Ok(chat);
+        return Ok(chat.ToChatResponseModel());
     }
 
     [HttpPost]

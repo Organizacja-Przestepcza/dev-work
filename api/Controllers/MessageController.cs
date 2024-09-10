@@ -1,4 +1,5 @@
 using api.Data;
+using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,8 @@ public class MessageController(AppDbContext context) : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        var messages = _context.Messages.ToList();
+        var messages = _context.Messages.ToList()
+            .Select(s => s.ToMessageResponseModel());
         
         return Ok(messages);
     }
@@ -25,7 +27,7 @@ public class MessageController(AppDbContext context) : ControllerBase
         {
             return NotFound();
         }
-        return Ok(message);
+        return Ok(message.ToMessageResponseModel());
     }
 
     [HttpPost]

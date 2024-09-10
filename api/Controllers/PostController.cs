@@ -1,4 +1,5 @@
 using api.Data;
+using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,8 @@ public class PostController(AppDbContext context) : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        var posts = _context.Posts.ToList();
+        var posts = _context.Posts.ToList()
+            .Select(s => s.ToPostResponseModel());
         
         return Ok(posts);
     }
@@ -26,7 +28,7 @@ public class PostController(AppDbContext context) : ControllerBase
         {
             return NotFound();
         }
-        return Ok(post);
+        return Ok(post.ToPostResponseModel());
     }
 
     [HttpPost]
