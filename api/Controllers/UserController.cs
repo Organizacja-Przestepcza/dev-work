@@ -1,4 +1,6 @@
 using api.Data;
+using api.Dtos.User;
+using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +15,9 @@ public class UserController(AppDbContext context) : ControllerBase
     public IActionResult GetAll()
     {
         var users = _context.Users.ToList()
-            /*.Select(s => s.ToUserDto())*/;
-        
+            .Select(s => s.ToUserResponseModel());
         return Ok(users);
+        
     }
 
     [HttpGet("{id:guid}")]
@@ -26,14 +28,18 @@ public class UserController(AppDbContext context) : ControllerBase
         {
             return NotFound();
         }
-        return Ok(user);
+        return Ok(user.ToUserResponseModel());
     }
     
     [HttpPost]
-    public IActionResult Add([FromBody] User user)
+    public IActionResult Add([FromBody] UserRequestModel userRequestModel)
     {
+        var user = userRequestModel.ToUser();
+        user.Id = Guid.NewGuid();
+        _context.Users.Add(user);
+        _context.SaveChanges();
         
-        return Ok();
+        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
     }
     
     [HttpPut]

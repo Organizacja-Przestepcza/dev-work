@@ -21,6 +21,7 @@ public static class UserMappers
         {
             Email = userRequestModel.Email,
             Username = userRequestModel.Username,
+            Password = userRequestModel.Password,
             Bio = userRequestModel.Bio
         };
     }
