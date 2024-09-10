@@ -24,7 +24,6 @@ public static class MessageMappers
     {
         return new Message
         {
-            Id = new Guid(),
             Content = messageRequestModel.Content,
             SenderId = messageRequestModel.SenderId,
             ReceiverId = messageRequestModel.ReceiverId,
