@@ -10,6 +10,8 @@ public static class ConnectionMappers
         return new ConnectionResponseModel
         {
             Id = connection.Id,
+            Follower = connection.Follower.ToUserResponseModel(),
+            Following = connection.Following.ToUserResponseModel()
 
         };
     }
@@ -18,7 +20,9 @@ public static class ConnectionMappers
     {
         return new Connection
         {
-            Id = new Guid(),
+            Id = connection.Id,
+            FollowerId = connection.Follower.Id,
+            FollowingId = connection.Following.Id,
         };
     }
 }
