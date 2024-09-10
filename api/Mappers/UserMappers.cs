@@ -19,7 +19,6 @@ public static class UserMappers
     {
         return new User()
         {
-            Id = new Guid(),
             Email = userRequestModel.Email,
             Username = userRequestModel.Username,
             Bio = userRequestModel.Bio

@@ -19,7 +19,6 @@ public static class ChatMappers
     {
         return new Chat
         {
-            Id = Guid.NewGuid(),
             CreatedAt = DateTime.Now,
             Name = chatRequestModel.Name,
         };

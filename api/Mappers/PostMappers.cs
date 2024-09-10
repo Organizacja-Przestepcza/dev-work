@@ -27,7 +27,6 @@ public static class PostMappers
     {
         var post = new Post()
         {
-            Id = new Guid(),
             Content = postRequestModel.Content,
             CreatedAt = DateTime.Now,
             UserId = postRequestModel.UserId,

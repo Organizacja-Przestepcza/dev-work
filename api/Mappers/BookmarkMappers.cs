@@ -20,7 +20,6 @@ public static class BookmarkMappers
     {
         return new Bookmark
         {
-            Id = new Guid(),
             CreatedAt = DateTime.Now,
         };
     }

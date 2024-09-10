@@ -24,7 +24,6 @@ public static class MemberMappers
     {
         return new Member
         {
-            Id = new Guid(),
             Role = memberRequestModel.Role,
             AddedAt = DateTime.Now,
             ChatId = memberRequestModel.ChatId,
