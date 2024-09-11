@@ -17,7 +17,7 @@
         <img
           class="w-[12rem] mx-auto"
           src="../assets/img/logov2.svg"
-          alt="Developer working on a laptop"
+          alt="Logo"
         />
       </div>
     </div>
