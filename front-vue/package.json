@@ -18,6 +18,11 @@
     "vue-router": "latest"
   },
   "devDependencies": {
-    "@primevue/nuxt-module": "^4.0.6"
+    "@eslint/js": "^9.10.0",
+    "@primevue/nuxt-module": "^4.0.6",
+    "eslint": "^9.10.0",
+    "eslint-plugin-vue": "^9.28.0",
+    "globals": "^15.9.0",
+    "typescript-eslint": "^8.5.0"
   }
 }
