@@ -12,7 +12,8 @@ definePageMeta({
       </div>
       <div class="flex justify-center pb-5 md:pb-10 gap-3 md:gap-5 w-full mx-auto">
         <Button label="Sign up" severity="success" />
-        <Button label="Sign in" severity="secondary" />
+        <NuxtLink to="/login"><Button label="Sign in" severity="secondary" /></NuxtLink>
+          
       </div>
     </div>
     <div class="w-full md:w-1/2 p-5">
