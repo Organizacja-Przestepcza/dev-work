@@ -1,11 +1,18 @@
+<script setup lang="ts">
+import Drawer from 'primevue/drawer';
+import 'primeicons/primeicons.css'
+const visible = ref(false);
+</script>
+
 <template>
     <div class="flex">
-        <!-- Left panel (for menu)-->
-        <div class="hidden md:flex w-1/5 p-4 h-screen justify-center">
-            <Button class="h-fit">
-                <Icon name="material-symbols:menu" />
-            </Button>
+        <div class="card flex justify-center m-5 absolute">
+            <Drawer v-model:visible="visible" header="Menu">
+                <p>Lorem ipsum.</p>
+            </Drawer>
+            <Button icon="pi pi-bars" @click="visible = true" />
         </div>
+
 
         <!-- Main area -->
         <div class="flex-grow p-4 text-center">
