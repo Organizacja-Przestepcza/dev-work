@@ -15,7 +15,7 @@ definePageMeta({
       <InputText id="password" type="password" />
     </div>
     <div class="flex flex-col gap-5 py-2">
-      <Button label="Login" class="w-full max-w-[17.35rem] mx-auto"></Button>
+      <Button label="Login" class="w-full mx-auto"/>
       <NuxtLink>
         <Button label="Don't have an account?" severity="secondary" class="w-full mx-auto"/>
       </NuxtLink>

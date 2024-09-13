@@ -24,7 +24,7 @@ definePageMeta({
 
       <!-- Divider -->
       <div class="hidden md:flex items-stretch">
-        <Divider layout="vertical" class="h-full"></Divider>
+        <Divider layout="vertical" class="h-full"/>
       </div>
 
       <!-- Right Form Section -->
@@ -42,7 +42,7 @@ definePageMeta({
 
     <!-- Register Button -->
     <div class="flex flex-col gap-5 w-full md:w-1/2 pt-2">
-      <Button label="Register" class="w-full mx-auto"></Button>
+      <Button label="Register" class="w-full mx-auto"/>
       <NuxtLink to="login">
         <Button label="Already have an account?" class="w-full mx-auto"/>
       </NuxtLink>
