@@ -2,7 +2,7 @@
 import Aura from "@primevue/themes/aura";
 
 export default defineNuxtConfig({
-  modules: ["@primevue/nuxt-module", "@nuxtjs/tailwindcss"],
+  modules: ["@primevue/nuxt-module", "@nuxtjs/tailwindcss", "@nuxt/icon"],
   primevue: {
     options: {
       theme: {
