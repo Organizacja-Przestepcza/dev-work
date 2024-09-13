@@ -1,6 +1,7 @@
 using api.Data;
 using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,9 +20,10 @@ public class PostController(AppDbContext context) : ControllerBase
         
         return Ok(posts);
     }
-
-    [HttpGet("{id:guid}")]
-    public IActionResult GetById([FromRoute] Guid id)
+    [Authorize]
+    [HttpGet("{id}")]
+ 
+    public IActionResult GetById([FromRoute] string id)
     {
         var post = _context.Posts.Find(id);
         if (post == null)
@@ -32,6 +34,7 @@ public class PostController(AppDbContext context) : ControllerBase
     }
 
     [HttpPost]
+  
     public IActionResult Add([FromBody] Post post)
     {
        
