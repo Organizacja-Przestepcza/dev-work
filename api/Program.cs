@@ -1,3 +1,4 @@
+using System.Text;
 using api.Data;
 using api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -27,34 +28,42 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
+
+var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
 var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
 var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
-var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
-if (string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience) || string.IsNullOrEmpty(jwtKey))
+
+if (string.IsNullOrEmpty(jwtIssuer))
 {
-    throw new Exception("JWT_ISSUER or JWT_AUDIENCE must be set.");
+    throw new Exception("JWT Issuer configuration value is missing.");
 }
+
+if (string.IsNullOrEmpty(jwtAudience))
+{
+    throw new Exception("JWT Audience configuration value is missing.");
+}
+
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new Exception("JWT key cannot be null or empty");
+}
+
 builder.Services.AddAuthentication(options =>
-    options.DefaultAuthenticateScheme = 
-        options.DefaultScheme =
-            options.DefaultChallengeScheme =
-                options.DefaultForbidScheme =
-                    options.DefaultSignInScheme =
-                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme
-).AddJwtBearer(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters()
     {
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration[jwtIssuer], 
+        ValidIssuer = jwtIssuer,
         ValidateAudience = true,
-        ValidAudience = builder.Configuration[jwtAudience], 
+        ValidAudience = jwtAudience,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes(builder.Configuration[jwtKey])
-            ),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
     };
-} );
+});
 
 var app = builder.Build();
 
