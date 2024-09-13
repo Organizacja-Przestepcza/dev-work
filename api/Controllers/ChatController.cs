@@ -1,6 +1,7 @@
 using api.Data;
 using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,18 +12,20 @@ public class ChatController(AppDbContext context) : ControllerBase
 {
     private readonly AppDbContext _context = context;
     [HttpGet]
-    public IActionResult GetAll()
+    [Authorize]
+    public async Task<IActionResult> GetAll() // debug endpoint
     {
-        var chats = _context.Chats.ToList()
-            .Select(s => s.ToChatResponseModel());
+        var chats = await _context.Chats.ToListAsync();
+        var chatResponseModels = chats.Select(s => s.ToChatResponseModel());
         
-        return Ok(chats);
+        return Ok(chatResponseModels);
     }
     
-    [HttpGet("{id:guid}")]
-    public IActionResult GetById([FromRoute] Guid id)
+    [HttpGet("{id}")]
+    [Authorize]
+    public async Task<IActionResult> GetById([FromRoute] string id)
     {
-        var chat = _context.Chats.Find(id);
+        var chat = await _context.Chats.FindAsync(id);
         if (chat == null)
         {
             return NotFound();
@@ -31,14 +34,16 @@ public class ChatController(AppDbContext context) : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Add([FromBody] Chat chat)
+    [Authorize]
+    public async Task<IActionResult> Add([FromBody] Chat chat)
     {
        
         return Ok();
     }
     
     [HttpPut]
-    public IActionResult Update([FromBody] Chat chat)
+    [Authorize]
+    public async Task<IActionResult> Update([FromBody] Chat chat)
     {
        
         return Ok();
