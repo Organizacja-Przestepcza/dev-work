@@ -1,18 +1,4 @@
 <script setup lang="ts">
-const items = ref([
-  {
-    label: "Home",
-    icon: "pi pi-home",
-  },
-  {
-    label: "Chat",
-    icon: "pi pi-comment",
-  },
-  {
-    label: "Settings",
-    icon: "pi pi-gear",
-  },
-]);
 
 const activeButton = ref("Home");
 const setActiveButton = (label: string) => {
@@ -48,5 +34,5 @@ const setActiveButton = (label: string) => {
       />
     </div>
   </div>
-  
+
 </template>
