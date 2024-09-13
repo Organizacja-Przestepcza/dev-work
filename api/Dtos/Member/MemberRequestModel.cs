@@ -6,7 +6,7 @@ public class MemberRequestModel
 {
 
     public Role Role { get; set; } = Role.Member;
-    public Guid ChatId { get; set; }
-    public Guid UserId { get; set; }
+    public string ChatId { get; set; }
+    public string UserId { get; set; }
 
 }

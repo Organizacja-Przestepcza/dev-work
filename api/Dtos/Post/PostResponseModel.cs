@@ -4,7 +4,7 @@ namespace api.Dtos.Post;
 
 public class PostResponseModel
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; }
   
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
@@ -12,6 +12,6 @@ public class PostResponseModel
     public UserResponseModel User { get; set; } = null!;
     public List<string>? ImageUrls { get; set; }
     
-    public Guid? PreviousPostId { get; set; }
+    public string? PreviousPostId { get; set; }
 
 }

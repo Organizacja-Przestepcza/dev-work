@@ -6,15 +6,15 @@ namespace api.Models;
 
 public class Post
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; }
   
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
-    public Guid UserId { get; set; }
-    public User User { get; set; }
+    public string UserId { get; set; }
+    public AppUser AppUser { get; set; }
     public List<Image>? Images { get; set; }
     
-    public Guid? PreviousPostId { get; set; }
+    public string? PreviousPostId { get; set; }
     
     [NotMapped]
     public Post? PreviousPost { get; set; }

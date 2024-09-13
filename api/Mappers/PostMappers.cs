@@ -13,7 +13,7 @@ public static class PostMappers
             Id = post.Id,
             Content = post.Content,
             CreatedAt = post.CreatedAt,
-            User = post.User.ToUserResponseModel(),
+            User = post.AppUser.ToUserResponseModel(),
             PreviousPostId = post.PreviousPostId,
         };
         if (post.Images is not null)
@@ -36,7 +36,7 @@ public static class PostMappers
         {
             post.Images = postRequestModel.ImageUrls.Select(imageUrl => new Image
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString(),
                 FilePath = imageUrl,
                 Post = post 
             }).ToList();

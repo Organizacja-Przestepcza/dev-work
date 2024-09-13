@@ -3,7 +3,7 @@ using api.Dtos.User;
 using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace api.Controllers;
 [Route("api/users")]
@@ -35,7 +35,7 @@ public class UserController(AppDbContext context) : ControllerBase
     public IActionResult Add([FromBody] UserRequestModel userRequestModel)
     {
         var user = userRequestModel.ToUser();
-        user.Id = Guid.NewGuid();
+       
         _context.Users.Add(user);
         _context.SaveChanges();
         
@@ -43,7 +43,7 @@ public class UserController(AppDbContext context) : ControllerBase
     }
     
     [HttpPut]
-    public IActionResult Update([FromBody] User user)
+    public IActionResult Update([FromBody] AppUser appUser)
     {
        
         return Ok();

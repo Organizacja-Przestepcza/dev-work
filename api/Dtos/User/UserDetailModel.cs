@@ -6,7 +6,7 @@ namespace api.Dtos.User;
 
 public class UserDetailModel
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; }
     public string Email { get; set; }
     public string Username { get; set; }
     public string Bio { get; set; } = string.Empty;
