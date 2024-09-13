@@ -41,8 +41,11 @@ definePageMeta({
     </div>
 
     <!-- Register Button -->
-    <div class="w-full md:w-1/2 pt-2">
+    <div class="flex flex-col gap-5 w-full md:w-1/2 pt-2">
       <Button label="Register" class="w-full mx-auto"></Button>
+      <NuxtLink to="login">
+        <Button label="Already have an account?" class="w-full mx-auto"/>
+      </NuxtLink>
     </div>
   </div>
 </template>
