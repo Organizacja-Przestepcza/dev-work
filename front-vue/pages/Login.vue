@@ -14,8 +14,9 @@ definePageMeta({
       <label for="password">Password</label>
       <InputText id="password" type="password" />
     </div>
-    <div class="flex py-2">
-      <Button label="Login" class="w-full max-w-[17.35rem] mx-auto"></Button>
+    <div class="flex flex-col gap-5 py-2">
+      <Button label="Login" class="w-full mx-auto"/>
+      <Button as="router-link" to="register" label="Don't have an account?" severity="secondary" class="w-full mx-auto"/>
     </div>
   </div>
 </template>
