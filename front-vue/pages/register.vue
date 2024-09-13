@@ -24,7 +24,7 @@ definePageMeta({
 
       <!-- Divider -->
       <div class="hidden md:flex items-stretch">
-        <Divider layout="vertical" class="h-full"></Divider>
+        <Divider layout="vertical" class="h-full"/>
       </div>
 
       <!-- Right Form Section -->
@@ -41,8 +41,9 @@ definePageMeta({
     </div>
 
     <!-- Register Button -->
-    <div class="w-full md:w-1/2 pt-2">
-      <Button label="Register" class="w-full mx-auto"></Button>
+    <div class="flex flex-col md:flex-row-reverse md:justify-evenly gap-5 w-full pt-2">
+      <Button label="Register" class="w-full mx-auto"/>
+      <Button as="router-link" to="login" severity="secondary" label="Already have an account?" class="w-full mx-auto"/>
     </div>
   </div>
 </template>
