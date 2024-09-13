@@ -1,6 +1,8 @@
 using System.Text;
 using api.Data;
+using api.Interfaces;
 using api.Models;
+using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,12 +10,14 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load();
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+
 if (string.IsNullOrEmpty(connectionString))
 {
     throw new Exception("Connection string not found. Ensure the .env file is correctly configured and placed in the root directory.");
@@ -64,6 +68,8 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
     };
 });
+
+
 
 var app = builder.Build();
 
