@@ -16,6 +16,6 @@ definePageMeta({
     </div>
   </div>
   <div class="w-full md:w-1/2 p-5">
-    <img class="w-28 md:w-48 mx-auto" src="../assets/img/logov3.svg" alt="Logo"/>
+    <img class="w-28 md:w-48 mx-auto" src="../assets/img/logov4.svg" alt="Logo"/>
   </div>
 </template>
