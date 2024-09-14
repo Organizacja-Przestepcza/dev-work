@@ -11,18 +11,18 @@ public class MessageController(AppDbContext context) : ControllerBase
 {
     private readonly AppDbContext _context = context;
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll() // debug endpoint
     {
-        var messages = _context.Messages.ToList()
-            .Select(s => s.ToMessageResponseModel());
+        var messages = await _context.Messages.ToListAsync();
+        var messageResponseModels = messages.Select(s => s.ToMessageResponseModel());
         
-        return Ok(messages);
+        return Ok(messageResponseModels);
     }
 
-    [HttpGet("{id:guid}")]
-    public IActionResult GetById([FromRoute] Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById([FromRoute] string id)
     {
-        var message = _context.Messages.Find(id);
+        var message = await _context.Messages.FindAsync(id);
         if (message == null)
         {
             return NotFound();
@@ -31,14 +31,14 @@ public class MessageController(AppDbContext context) : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Add([FromBody] Message message)
+    public async Task<IActionResult> Add([FromBody] Message message)
     {
        
         return Ok();
     }
     
     [HttpPut]
-    public IActionResult Update([FromBody] Message message)
+    public async Task<IActionResult> Update([FromBody] Message message)
     {
        
         return Ok();

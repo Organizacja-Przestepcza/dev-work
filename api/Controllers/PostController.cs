@@ -1,6 +1,7 @@
 using api.Data;
 using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,16 +13,17 @@ public class PostController(AppDbContext context) : ControllerBase
     private readonly AppDbContext _context = context;
     
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll() // debug endpoint
     {
         var posts = _context.Posts.ToList()
             .Select(s => s.ToPostResponseModel());
         
         return Ok(posts);
     }
-
-    [HttpGet("{id:guid}")]
-    public IActionResult GetById([FromRoute] Guid id)
+    
+    [HttpGet("{id}")]
+    [Authorize]
+    public async Task<IActionResult> GetById([FromRoute] string id)
     {
         var post = _context.Posts.Find(id);
         if (post == null)
@@ -32,14 +34,15 @@ public class PostController(AppDbContext context) : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Add([FromBody] Post post)
+  
+    public async Task<IActionResult> Add([FromBody] Post post)
     {
        
         return Ok();
     }
 
     [HttpPut]
-    public IActionResult Update([FromBody] Post post)
+    public async Task<IActionResult> Update([FromBody] Post post)
     {
         return Ok();
     }

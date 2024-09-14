@@ -1,11 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace api.Models;
 
-public class User
+public class AppUser:IdentityUser
 {
-    public Guid Id { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; } = null!;
-    public string Username { get; set; }
     public string Bio { get; set; } = string.Empty;
     public List<Connection>? FollowingConnections { get; set; }
     public List<Connection>? FollowedConnections { get; set; }

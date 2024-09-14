@@ -5,6 +5,6 @@ namespace api.Dtos.Bookmark;
 
 public class BookmarkRequestModel
 {
-    public Guid PostId { get; set; }
-    public Guid UserId { get; set; }
+    public string PostId { get; set; }
+    public string UserId { get; set; }
 }

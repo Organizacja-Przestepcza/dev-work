@@ -12,7 +12,7 @@ public static class BookmarkMappers
             Id = bookmark.Id,
             CreatedAt = bookmark.CreatedAt,
             Post = bookmark.Post.ToPostResponseModel(),
-            User = bookmark.User.ToUserResponseModel(),
+            User = bookmark.AppUser.ToUserResponseModel(),
         };
     }
 

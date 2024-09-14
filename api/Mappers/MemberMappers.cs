@@ -16,7 +16,7 @@ public static class MemberMappers
             Role = member.Role,
             AddedAt = member.AddedAt,
             Chat = member.Chat.ToChatResponseModel(),
-            User = member.User.ToUserResponseModel()
+            User = member.AppUser.ToUserResponseModel()
         };
     }
 
