@@ -10,8 +10,6 @@ public interface IUserRepository
 
     public Task<IActionResult> GetById(string id);
 
-    public Task<IActionResult> Add(UserRequestModel userRequest);
-
     public Task<IActionResult> Update(AppUser user);
     public Task<IActionResult> Delete(string id);
 }

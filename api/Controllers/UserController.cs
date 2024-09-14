@@ -32,17 +32,6 @@ public class UserController(AppDbContext context) : ControllerBase
         return Ok(user.ToUserResponseModel());
     }
     
-    [HttpPost]
-    public async Task<IActionResult> Add([FromBody] UserRequestModel userRequestModel)
-    {
-        var user = userRequestModel.ToUser();
-       
-        await _context.Users.AddAsync(user);
-        await _context.SaveChangesAsync();
-        
-        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
-    }
-    
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] AppUser appUser)
     {
