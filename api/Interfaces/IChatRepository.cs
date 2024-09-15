@@ -6,12 +6,12 @@ namespace api.Interfaces;
 
 public interface IChatRepository
 {
-    Task<List<Chat>> GetAll();
+    Task<List<Chat>> GetAllAsync();
 
-    Task<Chat?> GetById(string id);
+    Task<Chat?> GetByIdAsync(string id);
 
-    Task<Chat> Add(Chat chat);
+    Task<Chat> CreateAsync(Chat chat);
 
-    Task<Chat?> Update(Chat chat);
-    Task<Chat?> Delete(string id);
+    Task<Chat?> UpdateAsync(string id, ChatUpdateModel chatUpdateModel);
+    Task<Chat?> DeleteAsync(string id);
 }

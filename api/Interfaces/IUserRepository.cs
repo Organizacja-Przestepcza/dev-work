@@ -6,9 +6,9 @@ namespace api.Interfaces;
 
 public interface IUserRepository
 { 
-    Task<List<AppUser>> GetAll();
+    Task<List<AppUser>> GetAllAsync();
 
-    Task<AppUser?> GetById(string id);
+    Task<AppUser?> GetByIdAsync(string id);
 
-    Task<AppUser?> Update(string id, UserUpdateModel userUpdateModel);
+    Task<AppUser?> UpdateAsync(string id, UserUpdateModel userUpdateModel);
 }
