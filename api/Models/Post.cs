@@ -10,6 +10,7 @@ public class Post
   
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
+    public DateTime? EditedAt { get; set; }
     public string UserId { get; set; }
     public AppUser AppUser { get; set; }
     public List<Image>? Images { get; set; }
