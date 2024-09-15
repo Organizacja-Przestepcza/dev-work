@@ -10,7 +10,7 @@ public interface IChatRepository
 
     Task<Chat?> GetByIdAsync(string id);
 
-    Task<Chat> CreateAsync(Chat chat);
+    Task<Chat> CreateAsync(ChatRequestModel chat);
 
     Task<Chat?> UpdateAsync(string id, ChatUpdateModel chatUpdateModel);
     Task<Chat?> DeleteAsync(string id);
