@@ -2,7 +2,7 @@ using api.Dtos.Bookmark;
 using api.Dtos.Connection;
 using api.Dtos.Post;
 
-namespace api.Dtos.User;
+namespace api.Dtos.AppUser;
 
 public class UserDetailModel
 {

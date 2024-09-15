@@ -1,4 +1,4 @@
-using api.Dtos.User;
+using api.Dtos.AppUser;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
 

@@ -1,4 +1,4 @@
-namespace api.Dtos.User;
+namespace api.Dtos.AppUser;
 
 public class UserResponseModel
 {

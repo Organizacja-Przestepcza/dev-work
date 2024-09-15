@@ -1,4 +1,4 @@
-using api.Dtos.User;
+using api.Dtos.AppUser;
 
 namespace api.Dtos.Connection;
 
