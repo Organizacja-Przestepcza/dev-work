@@ -1,4 +1,4 @@
-using api.Dtos.User;
+using api.Dtos.AppUser;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,10 +6,9 @@ namespace api.Interfaces;
 
 public interface IUserRepository
 { 
-    public Task<IActionResult> GetAll();
+    Task<List<AppUser>> GetAll();
 
-    public Task<IActionResult> GetById(string id);
+    Task<AppUser?> GetById(string id);
 
-    public Task<IActionResult> Update(AppUser user);
-    public Task<IActionResult> Delete(string id);
+    Task<AppUser?> Update(string id, UserUpdateModel userUpdateModel);
 }

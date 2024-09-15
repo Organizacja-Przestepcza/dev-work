@@ -6,9 +6,9 @@ namespace api.Interfaces;
 
 public interface IPostRepository
 {
-    Task<IActionResult> GetAll();
-    Task<IActionResult> GetById(string id);
-    Task<IActionResult> Add(PostRequestModel postRequest);
-    Task<IActionResult> Update(Post post);
-    Task<IActionResult> Delete(string id);
+    Task<List<Post>> GetAll();
+    Task<Post?> GetById(string id);
+    Task<Post> Add(PostRequestModel postRequest);
+    Task<Post?> Update(Post post);
+    Task<Post?> Delete(string id);
 }

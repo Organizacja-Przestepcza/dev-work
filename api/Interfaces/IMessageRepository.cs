@@ -6,12 +6,12 @@ namespace api.Interfaces;
 
 public interface IMessageRepository
 {
-    public Task<IActionResult> GetAll();
+    Task<List<Message>> GetAll();
 
-    public Task<IActionResult> GetById(string id);
+    Task<Message?> GetById(string id);
 
-    public Task<IActionResult> Add(MessageRequestModel messageRequest);
+    Task<Message> Add(MessageRequestModel messageRequest);
 
-    public Task<IActionResult> Update(Message message);
-    public Task<IActionResult> Delete(string id);
+    Task<Message?> Update(Message message);
+    Task<Message?> Delete(string id);
 }
