@@ -22,20 +22,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(modelBuilder);
 
-        List<IdentityRole> roles = new List<IdentityRole>()
-        {
-            new IdentityRole()
-            {
-                Name = "Admin",
-                NormalizedName = "ADMIN"
-            },
-            new IdentityRole()
-            {
-                Name = "Member",
-                NormalizedName = "MEMBER"
-            },
-        };
-        modelBuilder.Entity<IdentityRole>().HasData(roles);
+        SeedRoles(modelBuilder);
+        SeedAdmin(modelBuilder);
         
         modelBuilder.Entity<Connection>()
             .HasOne(c => c.Follower)
@@ -48,5 +36,44 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .WithMany(u => u.FollowedConnections)
             .HasForeignKey(c => c.FollowingId)
             .OnDelete(DeleteBehavior.Restrict);
+    }
+
+    private void SeedRoles(ModelBuilder modelBuilder)
+    {
+        List<IdentityRole> roles =
+        [
+            new()
+            {
+                Name = "Administrator",
+                NormalizedName = "ADMINISTRATOR"
+            },
+            new()
+            {
+                Name = "Moderator",
+                NormalizedName = "MODERATOR"
+            },
+            new()
+            {
+                Name = "User",
+                NormalizedName = "USER"
+            }
+
+        ];
+        modelBuilder.Entity<IdentityRole>().HasData(roles);
+    }
+
+    private void SeedAdmin(ModelBuilder modelBuilder)
+    {
+        var user = new AppUser()  
+        {  
+            Id = new Guid().ToString(),  
+            UserName = "Admin",  
+            Email = "admin@gmail.com",  
+            LockoutEnabled = false,  
+        };
+        
+        new PasswordHasher<AppUser>().HashPassword(user, Environment.GetEnvironmentVariable("ADMIN_PASSWORD") ?? throw new InvalidOperationException());
+        
+        modelBuilder.Entity<AppUser>().HasData(user);  
     }
 }
