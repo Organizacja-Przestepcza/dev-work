@@ -62,15 +62,16 @@ public class AppDbContext : IdentityDbContext<AppUser>
         modelBuilder.Entity<IdentityRole>().HasData(roles);
         
         var user = new AppUser()  
-        {  
-            Id = new Guid().ToString(),  
+        { 
             UserName = "Admin",  
-            Email = "admin@gmail.com",  
-            LockoutEnabled = false,  
+            Email = "admin@admin.com",  
+            LockoutEnabled = false,
+            NormalizedEmail = "ADMIN@ADMIN.COM",
+            NormalizedUserName = "ADMIN",
         };
         
-        new PasswordHasher<AppUser>().HashPassword(user, Environment.GetEnvironmentVariable("ADMIN_PASSWORD") ?? throw new InvalidOperationException());
-        
+        var pass = new PasswordHasher<AppUser>().HashPassword(user, Environment.GetEnvironmentVariable("ADMIN_PASSWORD"));
+        user.PasswordHash = pass;
         modelBuilder.Entity<AppUser>().HasData(user);  
         var adminRole = roles.First(r => r.Name == "Administrator");
         modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>() { UserId = user.Id, RoleId = adminRole.Id });
