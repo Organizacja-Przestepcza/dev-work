@@ -51,4 +51,11 @@ public class MessageController : ControllerBase
          }
          return Ok(message.ToMessageResponseModel());
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] string id)
+    {
+        var message = await _repo.DeleteAsync(id);
+        return Ok($"Message {id} been deleted");
+    }
 }
