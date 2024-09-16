@@ -12,6 +12,6 @@ public interface IMessageRepository
 
     Task<Message> CreateAsync(MessageRequestModel messageRequest);
 
-    Task<Message?> UpdateAsync(Message message);
+    Task<Message?> UpdateAsync(string id, MessageUpdateModel messageUpdate);
     Task<Message?> DeleteAsync(string id);
 }

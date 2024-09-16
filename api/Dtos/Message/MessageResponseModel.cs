@@ -12,4 +12,5 @@ public class MessageResponseModel
     public string? ReplyId { get; set; }
     public DateTime SendDate { get; set; }
     public DateTime? ReadDate { get; set; }
+    public DateTime? EditDate { get; set; }
 }
