@@ -54,7 +54,7 @@ public class ChatController: ControllerBase
         {
             return NotFound();
         }
-        return Ok(chat);
+        return Ok(chat.ToChatResponseModel());
     }
 
     [HttpDelete("{id}")]

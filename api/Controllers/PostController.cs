@@ -40,7 +40,7 @@ public class PostController: ControllerBase
     public async Task<IActionResult> Add([FromBody] PostRequestModel postRequest)
     {
         var post = await _repo.CreateAsync(postRequest);
-        return Ok(post);
+        return Ok(post.ToPostResponseModel());
     }
 
     [HttpPut("{id}")]
@@ -51,7 +51,7 @@ public class PostController: ControllerBase
         {
             return NotFound();
         }
-        return Ok(post);
+        return Ok(post.ToPostResponseModel());
     }
 
     [HttpDelete("{id}")]
