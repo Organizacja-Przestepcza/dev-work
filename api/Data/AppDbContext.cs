@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -22,8 +23,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(modelBuilder);
 
-        SeedRoles(modelBuilder);
-        SeedAdmin(modelBuilder);
+        SeedInitial(modelBuilder);
         
         modelBuilder.Entity<Connection>()
             .HasOne(c => c.Follower)
@@ -38,7 +38,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .OnDelete(DeleteBehavior.Restrict);
     }
 
-    private void SeedRoles(ModelBuilder modelBuilder)
+    private void SeedInitial(ModelBuilder modelBuilder)
     {
         List<IdentityRole> roles =
         [
@@ -60,10 +60,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
         ];
         modelBuilder.Entity<IdentityRole>().HasData(roles);
-    }
-
-    private void SeedAdmin(ModelBuilder modelBuilder)
-    {
+        
         var user = new AppUser()  
         {  
             Id = new Guid().ToString(),  
@@ -75,5 +72,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
         new PasswordHasher<AppUser>().HashPassword(user, Environment.GetEnvironmentVariable("ADMIN_PASSWORD") ?? throw new InvalidOperationException());
         
         modelBuilder.Entity<AppUser>().HasData(user);  
+        var adminRole = roles.First(r => r.Name == "Administrator");
+        modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>() { UserId = user.Id, RoleId = adminRole.Id });
     }
 }
