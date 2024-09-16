@@ -1,7 +1,6 @@
 using api.Dtos.Post;
 using api.Interfaces;
 using api.Mappers;
-using api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

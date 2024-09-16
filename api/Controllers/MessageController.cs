@@ -1,8 +1,6 @@
-using api.Data;
 using api.Dtos.Message;
 using api.Interfaces;
 using api.Mappers;
-using api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
