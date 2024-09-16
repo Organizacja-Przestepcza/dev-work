@@ -1,27 +1,40 @@
-<script setup lang="ts">
-import Drawer from 'primevue/drawer';
-import 'primeicons/primeicons.css'
-const visible = ref(false);
+<script setup>
+const items = ref([
+  {
+    label: "Search",
+  },
+]);
+const notificationCount = ref(3);
 </script>
 
 <template>
-    <div class="flex">
-        <div class="card flex justify-center m-5 absolute">
-            <Drawer v-model:visible="visible" header="Menu">
-                <p>Lorem ipsum.</p>
-            </Drawer>
-            <Button icon="pi pi-bars" @click="visible = true" />
-        </div>
+  <div class="card">
+    <Menubar :model="items">
+      <template #start>
+        <img src="../assets/img/logov3.svg" alt="Logo" width="40" />
+      </template>
 
-
-        <!-- Main area -->
-        <div class="flex-grow p-4 text-center">
-            <slot />
+      <template #item="{ item, props, hasSubmenu, root }">
+        <div class="">
+            <InputText
+                v-if="item.label === 'Search'"
+                placeholder="Search"
+                class="w-64"/>
+        <div class="">
+            <i class="pi pi-bell text-2xl cursor-pointer"></i>
+            <Badge v-if="notificationCount > 0" :value="notificationCount" />
         </div>
-
-        <!-- Right panel (for friends)-->
-        <div class="hidden w-1/5 p-4 h-screen justify-center">
-            <p>This is the right panel.</p>
+        
         </div>
-    </div>
+        
+      </template>
+
+      <template #end>
+        <div class="flex items-center gap-2">
+          Name
+          <Avatar icon="pi pi-user" shape="circle" />
+        </div>
+      </template>
+    </Menubar>
+  </div>
 </template>
