@@ -1,6 +1,7 @@
 using api.Dtos.Account;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,7 @@ public class AccountController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequestModel registerRequest)
     {
+        // Needs a refactor when middleware error handling is implemented
         try
         {
             if (!ModelState.IsValid)
@@ -91,4 +93,36 @@ public class AccountController : ControllerBase
             throw;
         }
     }
+
+    [HttpDelete("{userId}")]
+    [Authorize(Roles = "Administrator")]
+    public async Task<IActionResult> Delete(string userId)
+    {
+        // Needs a refactor when middleware error handling is implemented
+        try
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest("Failed to delete user");
+            }
+
+            return Ok($"User {user.UserName} deleted");
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request");
+        }
+    }
+
 }
