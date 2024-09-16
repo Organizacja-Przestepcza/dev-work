@@ -27,6 +27,7 @@ public class ChatRepository : IChatRepository
     public async Task<Chat> CreateAsync(ChatRequestModel chatRequest)
     {
         var chat = chatRequest.ToChat();
+        chat.Id = Guid.NewGuid().ToString();
         await _context.Chats.AddAsync(chat);
         await _context.SaveChangesAsync();
         return chat;

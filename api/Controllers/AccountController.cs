@@ -58,6 +58,7 @@ public class AccountController : ControllerBase
 
             var appUser = new AppUser
             {
+                Id = new Guid().ToString(),
                 UserName = registerRequest.Username,
                 Email = registerRequest.Email
             };

@@ -27,6 +27,7 @@ public class MessageRepository : IMessageRepository
     public async Task<Message> CreateAsync(MessageRequestModel messageRequest)
     {
         var message = messageRequest.ToMessage();
+        message.Id = new Guid().ToString();
         await _context.Messages.AddAsync(message);
         await _context.SaveChangesAsync();
         return message;
