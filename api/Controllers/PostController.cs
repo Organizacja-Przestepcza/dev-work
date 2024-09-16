@@ -1,31 +1,33 @@
-using api.Data;
+using api.Dtos.Post;
+using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
 [Route("api/posts")]
 [ApiController]
-public class PostController(AppDbContext context) : ControllerBase
-{
-    private readonly AppDbContext _context = context;
-    
+public class PostController: ControllerBase
+{ 
+    private readonly IPostRepository _repo;
+    public PostController(IPostRepository repo)
+    {
+        _repo = repo;
+    }
     [HttpGet]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
-        var posts = _context.Posts.ToList()
-            .Select(s => s.ToPostResponseModel());
-        
-        return Ok(posts);
+        var posts = await _repo.GetAllAsync();
+        var postResponseModels = posts.Select(s => s.ToPostResponseModel());
+        return Ok(postResponseModels);
     }
     
     [HttpGet("{id}")]
     [Authorize]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
-        var post = _context.Posts.Find(id);
+        var post = await _repo.GetByIdAsync(id);
         if (post == null)
         {
             return NotFound();
@@ -35,15 +37,31 @@ public class PostController(AppDbContext context) : ControllerBase
 
     [HttpPost]
   
-    public async Task<IActionResult> Add([FromBody] Post post)
+    public async Task<IActionResult> Add([FromBody] PostRequestModel postRequest)
     {
-       
-        return Ok();
+        var post = await _repo.CreateAsync(postRequest);
+        return Ok(post);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Update([FromBody] Post post)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(string id, [FromBody] PostUpdateModel postUpdate)
     {
-        return Ok();
+        var post = await _repo.UpdateAsync(id, postUpdate);
+        if (post == null)
+        {
+            return NotFound();
+        }
+        return Ok(post);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        var post = await _repo.DeleteAsync(id);
+        if (post == null)
+        {
+            return NotFound();
+        }
+        return Ok($"Post {id} deleted");
     }
 }

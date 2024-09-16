@@ -9,6 +9,6 @@ public interface IPostRepository
     Task<List<Post>> GetAllAsync();
     Task<Post?> GetByIdAsync(string id);
     Task<Post> CreateAsync(PostRequestModel postRequest);
-    Task<Post?> UpdateAsync(Post post);
+    Task<Post?> UpdateAsync(string id, PostUpdateModel postUpdate);
     Task<Post?> DeleteAsync(string id);
 }
