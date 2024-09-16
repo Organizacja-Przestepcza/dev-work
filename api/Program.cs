@@ -2,6 +2,7 @@ using System.Text;
 using api.Data;
 using api.Interfaces;
 using api.Models;
+using api.Repositories;
 using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -99,7 +100,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
