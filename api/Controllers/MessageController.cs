@@ -1,6 +1,7 @@
 using api.Dtos.Message;
 using api.Interfaces;
 using api.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
@@ -15,6 +16,7 @@ public class MessageController : ControllerBase
         _repo = repo;
     }
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
         var messages = await _repo.GetAllAsync();
@@ -24,6 +26,7 @@ public class MessageController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
         var message = await _repo.GetByIdAsync(id);
@@ -35,6 +38,7 @@ public class MessageController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Add([FromBody] MessageRequestModel messageRequest)
     {
         var message = await _repo.CreateAsync(messageRequest);
@@ -42,6 +46,7 @@ public class MessageController : ControllerBase
     }
     
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> Update([FromBody] MessageUpdateModel messageUpdate, string id)
     {
          var message = await _repo.UpdateAsync(id, messageUpdate);
@@ -53,6 +58,7 @@ public class MessageController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> Delete([FromRoute] string id)
     {
         var message = await _repo.DeleteAsync(id);

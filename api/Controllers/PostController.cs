@@ -23,7 +23,6 @@ public class PostController: ControllerBase
     }
     
     [HttpGet("{id}")]
-    [Authorize]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
         var post = await _repo.GetByIdAsync(id);
@@ -35,7 +34,7 @@ public class PostController: ControllerBase
     }
 
     [HttpPost]
-  
+    [Authorize]
     public async Task<IActionResult> Add([FromBody] PostRequestModel postRequest)
     {
         var post = await _repo.CreateAsync(postRequest);
@@ -43,6 +42,7 @@ public class PostController: ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> Update(string id, [FromBody] PostUpdateModel postUpdate)
     {
         var post = await _repo.UpdateAsync(id, postUpdate);
@@ -54,6 +54,7 @@ public class PostController: ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> Delete(string id)
     {
         var post = await _repo.DeleteAsync(id);

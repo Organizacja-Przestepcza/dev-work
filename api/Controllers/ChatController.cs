@@ -58,6 +58,7 @@ public class ChatController: ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> Delete(string id)
     {
         var chat = await _repo.DeleteAsync(id);

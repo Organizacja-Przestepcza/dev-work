@@ -1,6 +1,7 @@
 using api.Dtos.AppUser;
 using api.Interfaces;
 using api.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -37,6 +38,7 @@ public class UserController : ControllerBase
     }
     
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> Update(string id, [FromBody] UserUpdateModel userUpdate)
     {
         var user = await _repo.UpdateAsync(id, userUpdate);
