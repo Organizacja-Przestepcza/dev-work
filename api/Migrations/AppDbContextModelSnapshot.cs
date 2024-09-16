@@ -45,13 +45,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5894367b-ba9b-4bab-a5c1-81fab03d775e",
+                            Id = "26bb7572-8aa0-4a1b-82fe-b3341acaea3c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "137442d4-e2a1-4987-8bdb-100fcff7c6f4",
+                            Id = "d45de4f2-a69e-46a4-abb0-2a5b503b05dc",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         });
@@ -166,6 +166,10 @@ namespace api.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Bio")
                         .IsRequired()
@@ -289,25 +293,6 @@ namespace api.Migrations
                     b.ToTable("Connections");
                 });
 
-            modelBuilder.Entity("api.Models.Image", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PostId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Images");
-                });
-
             modelBuilder.Entity("api.Models.Member", b =>
                 {
                     b.Property<string>("Id")
@@ -387,6 +372,12 @@ namespace api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("EditedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Images")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PreviousPostId")
@@ -488,15 +479,6 @@ namespace api.Migrations
                     b.Navigation("Following");
                 });
 
-            modelBuilder.Entity("api.Models.Image", b =>
-                {
-                    b.HasOne("api.Models.Post", "Post")
-                        .WithMany("Images")
-                        .HasForeignKey("PostId");
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("api.Models.Member", b =>
                 {
                     b.HasOne("api.Models.AppUser", "AppUser")
@@ -556,11 +538,6 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.Chat", b =>
                 {
                     b.Navigation("Members");
-                });
-
-            modelBuilder.Entity("api.Models.Post", b =>
-                {
-                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

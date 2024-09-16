@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Pain : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,7 @@ namespace api.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     Bio = table.Column<string>(type: "TEXT", nullable: false),
+                    Avatar = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -204,8 +205,10 @@ namespace api.Migrations
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EditedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
                     AppUserId = table.Column<string>(type: "TEXT", nullable: true),
+                    Images = table.Column<string>(type: "TEXT", nullable: true),
                     PreviousPostId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -298,31 +301,13 @@ namespace api.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Images",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    FilePath = table.Column<string>(type: "TEXT", nullable: false),
-                    PostId = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Images", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Images_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
-                        principalColumn: "Id");
-                });
-
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "137442d4-e2a1-4987-8bdb-100fcff7c6f4", null, "Member", "MEMBER" },
-                    { "5894367b-ba9b-4bab-a5c1-81fab03d775e", null, "Admin", "ADMIN" }
+                    { "26bb7572-8aa0-4a1b-82fe-b3341acaea3c", null, "Admin", "ADMIN" },
+                    { "d45de4f2-a69e-46a4-abb0-2a5b503b05dc", null, "Member", "MEMBER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -383,11 +368,6 @@ namespace api.Migrations
                 column: "FollowingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_PostId",
-                table: "Images",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Members_AppUserId",
                 table: "Members",
                 column: "AppUserId");
@@ -436,9 +416,6 @@ namespace api.Migrations
 
             migrationBuilder.DropTable(
                 name: "Connections");
-
-            migrationBuilder.DropTable(
-                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "Members");
