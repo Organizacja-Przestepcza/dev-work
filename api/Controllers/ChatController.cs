@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
-[Route("api/chats")]
+[Route("api/chat")]
 [ApiController]
 public class ChatController: ControllerBase
 {

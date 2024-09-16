@@ -4,7 +4,7 @@ using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
-[Route("api/messages")]
+[Route("api/message")]
 [ApiController]
 public class MessageController : ControllerBase
 {

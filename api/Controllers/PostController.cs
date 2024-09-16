@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
-[Route("api/posts")]
+[Route("api/post")]
 [ApiController]
 public class PostController: ControllerBase
 { 
