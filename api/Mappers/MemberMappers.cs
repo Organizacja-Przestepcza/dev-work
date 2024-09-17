@@ -1,5 +1,3 @@
-using api.Data;
-using api.Dtos.Chat;
 using api.Dtos.Member;
 using api.Models;
 
@@ -9,7 +7,6 @@ public static class MemberMappers
 {
     public static MemberResponseModel ToMemberResponse(this ChatMember chatMember)
     {
-
         return new MemberResponseModel
         {
             Id = chatMember.Id,
@@ -27,7 +24,7 @@ public static class MemberMappers
             Role = memberRequestModel.Role,
             AddedAt = DateTime.Now,
             ChatId = memberRequestModel.ChatId,
-            UserId = memberRequestModel.UserId,
+            UserId = memberRequestModel.UserId
         };
     }
 }

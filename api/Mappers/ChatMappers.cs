@@ -11,7 +11,7 @@ public static class ChatMappers
         {
             Id = memberChat.Id,
             Name = memberChat.Name,
-            CreatedAt = memberChat.CreatedAt,
+            CreatedAt = memberChat.CreatedAt
         };
     }
 

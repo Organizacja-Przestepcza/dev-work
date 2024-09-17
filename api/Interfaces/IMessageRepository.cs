@@ -1,6 +1,5 @@
 using api.Dtos.Message;
 using api.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace api.Interfaces;
 

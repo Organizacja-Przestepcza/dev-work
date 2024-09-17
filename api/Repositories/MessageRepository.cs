@@ -10,10 +10,12 @@ namespace api.Repositories;
 public class MessageRepository : IMessageRepository
 {
     private readonly AppDbContext _context;
+
     public MessageRepository(AppDbContext context)
     {
         _context = context;
     }
+
     public async Task<List<Message>> GetAllAsync()
     {
         return await _context.Messages.ToListAsync();
@@ -36,10 +38,7 @@ public class MessageRepository : IMessageRepository
     public async Task<Message?> UpdateAsync(string id, MessageUpdateModel messageUpdate)
     {
         var message = await _context.Messages.FindAsync(id);
-        if (message == null)
-        {
-            return null;
-        }
+        if (message == null) return null;
         message.Content = messageUpdate.Content;
         await _context.SaveChangesAsync();
         return message;
@@ -48,10 +47,7 @@ public class MessageRepository : IMessageRepository
     public async Task<Message?> DeleteAsync(string id)
     {
         var message = await _context.Messages.FindAsync(id);
-        if (message == null)
-        {
-            return null;
-        }
+        if (message == null) return null;
         _context.Messages.Remove(message);
         await _context.SaveChangesAsync();
         return message;

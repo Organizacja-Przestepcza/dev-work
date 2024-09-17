@@ -5,15 +5,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
+
 [Route("api/post")]
 [ApiController]
-public class PostController: ControllerBase
-{ 
+public class PostController : ControllerBase
+{
     private readonly IPostRepository _repo;
+
     public PostController(IPostRepository repo)
     {
         _repo = repo;
     }
+
     [HttpGet]
     [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> GetAll() // debug endpoint
@@ -22,15 +25,12 @@ public class PostController: ControllerBase
         var postResponseModels = posts.Select(s => s.ToPostResponseModel());
         return Ok(postResponseModels);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
         var post = await _repo.GetByIdAsync(id);
-        if (post == null)
-        {
-            return NotFound();
-        }
+        if (post == null) return NotFound();
         return Ok(post.ToPostResponseModel());
     }
 
@@ -47,10 +47,7 @@ public class PostController: ControllerBase
     public async Task<IActionResult> Update(string id, [FromBody] PostUpdateModel postUpdate)
     {
         var post = await _repo.UpdateAsync(id, postUpdate);
-        if (post == null)
-        {
-            return NotFound();
-        }
+        if (post == null) return NotFound();
         return Ok(post.ToPostResponseModel());
     }
 
@@ -59,10 +56,7 @@ public class PostController: ControllerBase
     public async Task<IActionResult> Delete(string id)
     {
         var post = await _repo.DeleteAsync(id);
-        if (post == null)
-        {
-            return NotFound();
-        }
+        if (post == null) return NotFound();
         return Ok($"Post {id} deleted");
     }
 }

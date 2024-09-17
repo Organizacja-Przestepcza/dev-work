@@ -1,5 +1,3 @@
-using api.Dtos.Post;
-
 namespace api.Dtos.Bookmark;
 
 public class BookmarkRequestModel

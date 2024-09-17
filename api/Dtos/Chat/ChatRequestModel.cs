@@ -1,5 +1,3 @@
-using api.Dtos.Member;
-
 namespace api.Dtos.Chat;
 
 public class ChatRequestModel

@@ -9,10 +9,12 @@ namespace api.Repositories;
 public class UserRepository : IUserRepository
 {
     private readonly AppDbContext _context;
+
     public UserRepository(AppDbContext context)
     {
         _context = context;
     }
+
     public async Task<List<AppUser>> GetAllAsync()
     {
         return await _context.Users.ToListAsync();
@@ -26,10 +28,7 @@ public class UserRepository : IUserRepository
     public async Task<AppUser?> UpdateAsync(string id, UserUpdateModel userUpdateModel)
     {
         var user = await _context.Users.FindAsync(id);
-        if (user == null)
-        {
-            return null;
-        }
+        if (user == null) return null;
         user.Avatar = userUpdateModel.Avatar;
         user.Bio = userUpdateModel.Bio;
         await _context.SaveChangesAsync();

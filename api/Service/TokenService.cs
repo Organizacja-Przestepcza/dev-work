@@ -8,13 +8,13 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace api.Service;
 
-public class TokenService :ITokenService
+public class TokenService : ITokenService
 {
     private readonly SymmetricSecurityKey _key;
-    
+
     public TokenService(IConfiguration config)
     {
-        var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY") 
+        var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY")
                      ?? throw new Exception("JWT key cannot be null or empty");
 
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
@@ -24,10 +24,10 @@ public class TokenService :ITokenService
     {
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new(JwtRegisteredClaimNames.GivenName, user.UserName)
         };
-        
+
         var encryption = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -36,13 +36,13 @@ public class TokenService :ITokenService
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = encryption,
             Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
-            Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
+            Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        
+
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        
+
         return tokenHandler.WriteToken(token);
     }
 }

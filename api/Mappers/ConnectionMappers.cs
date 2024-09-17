@@ -12,7 +12,6 @@ public static class ConnectionMappers
             Id = connection.Id,
             Follower = connection.Follower.ToUserResponseModel(),
             Following = connection.Following.ToUserResponseModel()
-
         };
     }
 
@@ -22,7 +21,7 @@ public static class ConnectionMappers
         {
             Id = connection.Id,
             FollowerId = connection.Follower.Id,
-            FollowingId = connection.Following.Id,
+            FollowingId = connection.Following.Id
         };
     }
 }
