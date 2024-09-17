@@ -13,7 +13,7 @@ public class Post
 
     [MaxLength(256)] public required string UserId { get; set; }
 
-    public AppUser? AppUser { get; set; }
+    public AppUser? User { get; set; }
     public List<string>? Images { get; set; }
 
     [MaxLength(256)] public string? PreviousPostId { get; set; }

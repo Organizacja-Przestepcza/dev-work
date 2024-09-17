@@ -12,7 +12,7 @@ public static class PostMappers
             Id = post.Id,
             Content = post.Content,
             CreatedAt = post.CreatedAt,
-            User = post.AppUser.ToUserResponseModel(),
+            User = post.User.ToUserResponseModel(),
             PreviousPostId = post.PreviousPostId,
             ImageUrls = post.Images
         };
