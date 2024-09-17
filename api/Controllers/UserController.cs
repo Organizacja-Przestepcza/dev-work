@@ -18,6 +18,7 @@ public class UserController : ControllerBase
     }
     
     [HttpGet]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> GetAll() // debug
     {
         var users = await _repo.GetAllAsync();

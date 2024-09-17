@@ -15,6 +15,7 @@ public class PostController: ControllerBase
         _repo = repo;
     }
     [HttpGet]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
         var posts = await _repo.GetAllAsync();

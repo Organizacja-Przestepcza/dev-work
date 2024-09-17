@@ -16,7 +16,7 @@ public class ChatController: ControllerBase
         _repo = repo;
     }
     [HttpGet]
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
         var chats = await _repo.GetAllAsync();
