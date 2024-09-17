@@ -11,7 +11,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
-    public DbSet<Member> Members { get; set; }
+    public DbSet<ChatMember> Members { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Bookmark> Bookmarks { get; set; }
     public DbSet<Chat> Chats { get; set; }
