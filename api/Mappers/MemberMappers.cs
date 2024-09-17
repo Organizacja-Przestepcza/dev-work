@@ -7,22 +7,22 @@ namespace api.Mappers;
 
 public static class MemberMappers
 {
-    public static MemberResponseModel ToMemberResponse(this Member member)
+    public static MemberResponseModel ToMemberResponse(this ChatMember chatMember)
     {
 
         return new MemberResponseModel
         {
-            Id = member.Id,
-            Role = member.Role,
-            AddedAt = member.AddedAt,
-            Chat = member.Chat.ToChatResponseModel(),
-            User = member.AppUser.ToUserResponseModel()
+            Id = chatMember.Id,
+            Role = chatMember.Role,
+            AddedAt = chatMember.AddedAt,
+            Chat = chatMember.Chat.ToChatResponseModel(),
+            User = chatMember.AppUser.ToUserResponseModel()
         };
     }
 
-    public static Member ToMember(this MemberRequestModel memberRequestModel)
+    public static ChatMember ToMember(this MemberRequestModel memberRequestModel)
     {
-        return new Member
+        return new ChatMember
         {
             Role = memberRequestModel.Role,
             AddedAt = DateTime.Now,

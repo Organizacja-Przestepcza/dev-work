@@ -3,7 +3,7 @@ using api.Enums;
 namespace api.Models;
 
 
-public class Member
+public class ChatMember
 {
     public string Id { get; set; }
     public Role Role { get; set; }
