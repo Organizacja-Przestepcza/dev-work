@@ -1,5 +1,4 @@
 using api.Dtos.Post;
-using api.Dtos.User;
 using api.Models;
 
 namespace api.Mappers;
@@ -15,11 +14,8 @@ public static class PostMappers
             CreatedAt = post.CreatedAt,
             User = post.AppUser.ToUserResponseModel(),
             PreviousPostId = post.PreviousPostId,
+            ImageUrls = post.Images
         };
-        if (post.Images is not null)
-        {
-            postResponseModel.ImageUrls = post.Images.Select(i => i.FilePath).ToList();
-        }
         return postResponseModel;
     }
 
@@ -30,17 +26,9 @@ public static class PostMappers
             Content = postRequestModel.Content,
             CreatedAt = DateTime.Now,
             UserId = postRequestModel.UserId,
-            PreviousPostId = postRequestModel.PreviousPostId
+            PreviousPostId = postRequestModel.PreviousPostId,
+            Images = postRequestModel.ImageUrls
         };
-        if (postRequestModel.ImageUrls is not null)
-        {
-            post.Images = postRequestModel.ImageUrls.Select(imageUrl => new Image
-            {
-                Id = Guid.NewGuid().ToString(),
-                FilePath = imageUrl,
-                Post = post 
-            }).ToList();
-        }
         
         return post;
     }

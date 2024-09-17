@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -10,9 +11,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240916140805_NullAvatar")]
+    partial class NullAvatar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -45,21 +48,15 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "97c68c5a-de4d-4dbd-b2f7-631e8ec9168f",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
+                            Id = "dc728780-373b-4a13-a0ec-b6949573327e",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d0e9037b-68e6-4a00-874c-c9c664492735",
-                            Name = "Moderator",
-                            NormalizedName = "MODERATOR"
-                        },
-                        new
-                        {
-                            Id = "3f17c140-4b02-4e69-8f28-85fa45d9f38a",
-                            Name = "User",
-                            NormalizedName = "USER"
+                            Id = "eeab3712-7c6c-4b58-9144-97b913ff4b42",
+                            Name = "Member",
+                            NormalizedName = "MEMBER"
                         });
                 });
 
@@ -144,13 +141,6 @@ namespace api.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "d5656d60-4c91-45bb-b2ea-08e0f97469e4",
-                            RoleId = "97c68c5a-de4d-4dbd-b2f7-631e8ec9168f"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -241,25 +231,6 @@ namespace api.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "d5656d60-4c91-45bb-b2ea-08e0f97469e4",
-                            AccessFailedCount = 0,
-                            Bio = "",
-                            ConcurrencyStamp = "30709467-3ba2-4490-a55d-e584cb728738",
-                            Email = "admin@admin.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@ADMIN.COM",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEOgtnPB9F79il6j+DXa2IhZ0AkKquHCWWYjXyB7VsYSlSSG/PaNGBk/ss/9MvidsA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "dcf42e9d-339b-474b-a7f1-9ab8b4b6511e",
-                            TwoFactorEnabled = false,
-                            UserName = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("api.Models.Bookmark", b =>

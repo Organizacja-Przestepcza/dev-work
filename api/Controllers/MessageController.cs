@@ -1,28 +1,35 @@
-using api.Data;
+using api.Dtos.Message;
+using api.Interfaces;
 using api.Mappers;
-using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
-[Route("api/messages")]
+[Route("api/message")]
 [ApiController]
-public class MessageController(AppDbContext context) : ControllerBase
+public class MessageController : ControllerBase
 {
-    private readonly AppDbContext _context = context;
+    private readonly IMessageRepository _repo;
+
+    public MessageController(IMessageRepository repo)
+    {
+        _repo = repo;
+    }
     [HttpGet]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
-        var messages = await _context.Messages.ToListAsync();
+        var messages = await _repo.GetAllAsync();
         var messageResponseModels = messages.Select(s => s.ToMessageResponseModel());
         
         return Ok(messageResponseModels);
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
-        var message = await _context.Messages.FindAsync(id);
+        var message = await _repo.GetByIdAsync(id);
         if (message == null)
         {
             return NotFound();
@@ -31,16 +38,30 @@ public class MessageController(AppDbContext context) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] Message message)
+    [Authorize]
+    public async Task<IActionResult> Add([FromBody] MessageRequestModel messageRequest)
     {
-       
-        return Ok();
+        var message = await _repo.CreateAsync(messageRequest);
+        return Ok(message.ToMessageResponseModel());
     }
     
-    [HttpPut]
-    public async Task<IActionResult> Update([FromBody] Message message)
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<IActionResult> Update([FromBody] MessageUpdateModel messageUpdate, string id)
     {
-       
-        return Ok();
+         var message = await _repo.UpdateAsync(id, messageUpdate);
+         if (message == null)
+         {
+             return NotFound();
+         }
+         return Ok(message.ToMessageResponseModel());
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<IActionResult> Delete([FromRoute] string id)
+    {
+        var message = await _repo.DeleteAsync(id);
+        return Ok($"Message {id} been deleted");
     }
 }
