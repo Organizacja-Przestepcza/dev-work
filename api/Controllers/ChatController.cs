@@ -1,7 +1,9 @@
 using api.Dtos.Chat;
 using api.Interfaces;
 using api.Mappers;
+using api.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
@@ -10,10 +12,12 @@ namespace api.Controllers;
 public class ChatController: ControllerBase
 {
     private readonly IChatRepository _repo;
+    private readonly UserManager<AppUser> _userManager;
 
-    public ChatController(IChatRepository repo)
+    public ChatController(IChatRepository repo, UserManager<AppUser> userManager)
     {
         _repo = repo;
+        _userManager = userManager;
     }
     [HttpGet]
     [Authorize(Roles = "Administrator")]

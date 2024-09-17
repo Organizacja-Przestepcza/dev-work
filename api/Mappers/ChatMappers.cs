@@ -21,6 +21,7 @@ public static class ChatMappers
         {
             CreatedAt = DateTime.Now,
             Name = chatRequestModel.Name,
+            Members = []
         };
     }
 }
