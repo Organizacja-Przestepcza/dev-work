@@ -2,7 +2,7 @@ using api.Enums;
 
 namespace api.Models;
 
-public class UserPostInteraction
+public class PostInteraction
 {
     public string Id { get; set; } = null!;
     public DateTime Date { get; set; } // idk if needed
