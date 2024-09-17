@@ -9,13 +9,13 @@ export function useAuth() {
   const token = useCookie<string>('token');
 
   // Register
-  const register = async (email: string, password: string) => {
+  const register = async (email: string, username:string, password: string) => {
     const response = await fetch(`${config.public.API_BASE_URL}/account/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, username, password }),
     });
 
     if (!response.ok) {
