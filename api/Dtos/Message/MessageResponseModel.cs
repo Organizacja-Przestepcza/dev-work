@@ -5,7 +5,7 @@ namespace api.Dtos.Message;
 
 public class MessageResponseModel
 {
-    public string Id { get; set; }
+    public string Id { get; set; } = null!;
     public UserResponseModel Sender { get; set; }
     public ChatResponseModel Receiver { get; set; }
     public string Content { get; set; }

@@ -5,7 +5,7 @@ namespace api.Dtos.Bookmark;
 
 public class BookmarkResponseModel
 {
-    public string Id { get; set; }
+    public string Id { get; set; } = null!;
     public PostResponseModel Post { get; set; }
     public UserResponseModel User { get; set; }
     public DateTime CreatedAt { get; set; }

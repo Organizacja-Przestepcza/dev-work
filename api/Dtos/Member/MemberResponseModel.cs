@@ -6,7 +6,7 @@ namespace api.Dtos.Member;
 
 public class MemberResponseModel
 {
-    public string Id { get; set; }
+    public string Id { get; set; } = null!;
     public Role Role { get; set; }
     public DateTime AddedAt { get; set; }
     
