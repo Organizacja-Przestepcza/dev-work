@@ -18,7 +18,7 @@ public class MessageController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Policy = "RequireAdminRole")]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
         var messages = await _repo.GetAllAsync();

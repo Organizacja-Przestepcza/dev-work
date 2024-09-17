@@ -18,7 +18,7 @@ public class PostController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Policy = "RequireAdminRole")]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
         var posts = await _repo.GetAllAsync();

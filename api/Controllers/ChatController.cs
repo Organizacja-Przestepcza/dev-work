@@ -22,7 +22,7 @@ public class ChatController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Policy = "RequireAdminRole")]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
         var chats = await _repo.GetAllAsync();

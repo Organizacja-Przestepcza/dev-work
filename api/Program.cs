@@ -91,6 +91,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("RequireAdminRole", policy => policy.RequireRole("Administrator"));
+
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
