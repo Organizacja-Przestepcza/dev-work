@@ -43,14 +43,10 @@ public class AccountController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequestModel registerRequest)
     {
-        // Needs a refactor when middleware error handling is implemented
-        try
-        {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var appUser = new AppUser
             {
-                Id = new Guid().ToString(),
                 UserName = registerRequest.Username,
                 Email = registerRequest.Email
             };
@@ -59,7 +55,7 @@ public class AccountController : ControllerBase
 
             if (!createdUser.Succeeded) return BadRequest(createdUser.Errors);
 
-            var roleResult = await _userManager.AddToRoleAsync(appUser, "Member");
+            var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
             if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 
             return Ok(
@@ -70,16 +66,11 @@ public class AccountController : ControllerBase
                     Token = _tokenService.CreateToken(appUser)
                 }
             );
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        
     }
 
     [HttpDelete("{userId}")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Policy = "RequireAdminRole")]
     public async Task<IActionResult> Delete(string userId)
     {
         // Needs a refactor when middleware error handling is implemented
