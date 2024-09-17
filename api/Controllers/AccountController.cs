@@ -81,7 +81,7 @@ public class AccountController : ControllerBase
             return Ok(
                 new RegisterResponseModel
                 {
-                    UserName = registerRequest.Username,
+                    Username = registerRequest.Username,
                     Email = registerRequest.Email,
                     Token = _tokenService.CreateToken(appUser),
                 }

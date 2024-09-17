@@ -5,8 +5,11 @@ namespace api.Models;
 
 public class Bookmark
 {
-   public string Id { get; set; }
-   public Post Post { get; set; }
-   public AppUser AppUser { get; set; }
+   [MaxLength(256)] public string Id { get; init; } = null!;
+
+   [MaxLength(256)] public required string PostId { get; set; }
+   public required Post Post { get; set; }
+   [MaxLength(256)] public required string UserId { get; set; }
+   public required AppUser AppUser { get; set; }
    public DateTime CreatedAt { get; set; }
 }

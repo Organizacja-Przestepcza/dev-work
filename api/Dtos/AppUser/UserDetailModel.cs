@@ -7,9 +7,9 @@ namespace api.Dtos.AppUser;
 public class UserDetailModel
 {
     public string Id { get; set; } = null!;
-    public string Email { get; set; }
-    public string Username { get; set; }
-    public string Bio { get; set; } = string.Empty;
+    public required string Email { get; set; }
+    public required string Username { get; set; }
+    public string? Bio { get; set; }
     public List<ConnectionResponseModel>? FollowingConnections { get; set; }
     public List<ConnectionResponseModel>? FollowedConnections { get; set; }
     public List<BookmarkResponseModel>? Bookmarks { get; set; }
