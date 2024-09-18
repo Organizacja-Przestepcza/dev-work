@@ -10,10 +10,12 @@ namespace api.Repositories;
 public class PostRepository : IPostRepository
 {
     private readonly AppDbContext _context;
+
     public PostRepository(AppDbContext context)
     {
         _context = context;
     }
+
     public async Task<List<Post>> GetAllAsync()
     {
         return await _context.Posts.ToListAsync();
@@ -21,7 +23,7 @@ public class PostRepository : IPostRepository
 
     public async Task<Post?> GetByIdAsync(string id)
     {
-        return await _context.Posts.FindAsync(id); 
+        return await _context.Posts.FindAsync(id);
     }
 
     public async Task<Post> CreateAsync(PostRequestModel postRequest)
@@ -36,10 +38,7 @@ public class PostRepository : IPostRepository
     public async Task<Post?> UpdateAsync(string id, PostUpdateModel postUpdate)
     {
         var post = await _context.Posts.FindAsync(id);
-        if (post == null)
-        {
-            return null;
-        }
+        if (post == null) return null;
         post.Content = postUpdate.Content;
         post.EditedAt = DateTime.Now;
         post.Images = postUpdate.ImageUrls;
@@ -50,10 +49,7 @@ public class PostRepository : IPostRepository
     public async Task<Post?> DeleteAsync(string id)
     {
         var post = await _context.Posts.FindAsync(id);
-        if (post == null)
-        {
-            return null;
-        }
+        if (post == null) return null;
         _context.Posts.Remove(post);
         await _context.SaveChangesAsync();
         return post;

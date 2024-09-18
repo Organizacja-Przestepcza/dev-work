@@ -1,6 +1,5 @@
 using api.Dtos.Chat;
 using api.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace api.Interfaces;
 

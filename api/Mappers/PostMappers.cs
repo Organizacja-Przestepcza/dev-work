@@ -12,7 +12,7 @@ public static class PostMappers
             Id = post.Id,
             Content = post.Content,
             CreatedAt = post.CreatedAt,
-            User = post.AppUser.ToUserResponseModel(),
+            User = post.User.ToUserResponseModel(),
             PreviousPostId = post.PreviousPostId,
             ImageUrls = post.Images
         };
@@ -21,7 +21,7 @@ public static class PostMappers
 
     public static Post ToPost(this PostRequestModel postRequestModel)
     {
-        var post = new Post()
+        var post = new Post
         {
             Content = postRequestModel.Content,
             CreatedAt = DateTime.Now,
@@ -29,7 +29,7 @@ public static class PostMappers
             PreviousPostId = postRequestModel.PreviousPostId,
             Images = postRequestModel.ImageUrls
         };
-        
+
         return post;
     }
 }

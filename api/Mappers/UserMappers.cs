@@ -10,22 +10,14 @@ public static class UserMappers
     {
         return new UserResponseModel
         {
-          //  Id = appUser.Id,
+            //  Id = appUser.Id,
             Email = appUser.Email,
-            Username = appUser.UserName 
+            Username = appUser.UserName
         };
     }
 
-    public static AppUser ToUser(this UserRequestModel userRequestModel)
-    {
-        return new AppUser()
-        {
-            Email = userRequestModel.Email,
-            UserName = userRequestModel.Username,
-            Bio = userRequestModel.Bio
-        };
-    }
-    public static async Task<IdentityResult> SetUserPasswordAsync(UserManager<AppUser> userManager, AppUser appUser, string password)
+    public static async Task<IdentityResult> SetUserPasswordAsync(UserManager<AppUser> userManager, AppUser appUser,
+        string password)
     {
         var result = await userManager.AddPasswordAsync(appUser, password);
         return result;

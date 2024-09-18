@@ -1,6 +1,7 @@
 namespace api.Enums;
+
 /// <summary>
-/// Like, dislike
+///     Like, dislike
 /// </summary>
 public enum InteractionType
 {

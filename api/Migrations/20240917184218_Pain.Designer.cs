@@ -11,7 +11,7 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240916140331_Pain")]
+    [Migration("20240917184218_Pain")]
     partial class Pain
     {
         /// <inheritdoc />
@@ -48,15 +48,21 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "26bb7572-8aa0-4a1b-82fe-b3341acaea3c",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            Id = "885f4d91-91ff-4f34-8327-1bff7179d1f6",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "d45de4f2-a69e-46a4-abb0-2a5b503b05dc",
-                            Name = "Member",
-                            NormalizedName = "MEMBER"
+                            Id = "b692ed07-e061-41fb-8a4d-a49471f1f098",
+                            Name = "Moderator",
+                            NormalizedName = "MODERATOR"
+                        },
+                        new
+                        {
+                            Id = "3fe997cd-7d0f-4003-b8ff-50118cc12571",
+                            Name = "User",
+                            NormalizedName = "USER"
                         });
                 });
 
@@ -141,6 +147,13 @@ namespace api.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "492bafdd-06a8-4ba9-99f6-82b4313ba0ef",
+                            RoleId = "885f4d91-91ff-4f34-8327-1bff7179d1f6"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -171,11 +184,11 @@ namespace api.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Avatar")
-                        .IsRequired()
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Bio")
-                        .IsRequired()
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -232,11 +245,30 @@ namespace api.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "492bafdd-06a8-4ba9-99f6-82b4313ba0ef",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "483ef0ec-486e-425e-8f23-bb49859c5842",
+                            Email = "admin@admin.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ADMIN.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJx9X7CJJPL8/DAUsybRqdZItWnTHgoZhj98o/elKu2zvo32AR4w78JiySst2lJdrQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "cb01cdfd-5056-468d-9fe8-a956c58a57b7",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("api.Models.Bookmark", b =>
                 {
                     b.Property<string>("Id")
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("AppUserId")
@@ -246,6 +278,13 @@ namespace api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -260,6 +299,7 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.Chat", b =>
                 {
                     b.Property<string>("Id")
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -267,6 +307,7 @@ namespace api.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -274,31 +315,10 @@ namespace api.Migrations
                     b.ToTable("Chats");
                 });
 
-            modelBuilder.Entity("api.Models.Connection", b =>
+            modelBuilder.Entity("api.Models.ChatMember", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FollowerId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FollowingId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FollowerId");
-
-                    b.HasIndex("FollowingId");
-
-                    b.ToTable("Connections");
-                });
-
-            modelBuilder.Entity("api.Models.Member", b =>
-                {
-                    b.Property<string>("Id")
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("AddedAt")
@@ -309,6 +329,7 @@ namespace api.Migrations
 
                     b.Property<string>("ChatId")
                         .IsRequired()
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Role")
@@ -316,6 +337,7 @@ namespace api.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -327,13 +349,40 @@ namespace api.Migrations
                     b.ToTable("Members");
                 });
 
+            modelBuilder.Entity("api.Models.Connection", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FollowerId")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FollowingId")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasIndex("FollowingId");
+
+                    b.ToTable("Connections");
+                });
+
             modelBuilder.Entity("api.Models.Message", b =>
                 {
                     b.Property<string>("Id")
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Content")
                         .IsRequired()
+                        .HasMaxLength(1024)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("ReadDate")
@@ -341,9 +390,11 @@ namespace api.Migrations
 
                     b.Property<string>("ReceiverId")
                         .IsRequired()
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ReplyId")
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("SendDate")
@@ -351,6 +402,7 @@ namespace api.Migrations
 
                     b.Property<string>("SenderId")
                         .IsRequired()
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -365,13 +417,12 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.Post", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AppUserId")
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Content")
                         .IsRequired()
+                        .HasMaxLength(1024)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -384,17 +435,52 @@ namespace api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PreviousPostId")
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
                         .IsRequired()
+                        .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("PreviousPostId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("api.Models.PostInteraction", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PostInteractions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -456,11 +542,30 @@ namespace api.Migrations
 
                     b.HasOne("api.Models.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AppUser");
 
                     b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("api.Models.ChatMember", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("api.Models.Chat", "Chat")
+                        .WithMany("Members")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Chat");
                 });
 
             modelBuilder.Entity("api.Models.Connection", b =>
@@ -480,23 +585,6 @@ namespace api.Migrations
                     b.Navigation("Follower");
 
                     b.Navigation("Following");
-                });
-
-            modelBuilder.Entity("api.Models.Member", b =>
-                {
-                    b.HasOne("api.Models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId");
-
-                    b.HasOne("api.Models.Chat", "Chat")
-                        .WithMany("Members")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("Chat");
                 });
 
             modelBuilder.Entity("api.Models.Message", b =>
@@ -520,11 +608,38 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.Post", b =>
                 {
-                    b.HasOne("api.Models.AppUser", "AppUser")
-                        .WithMany("Posts")
-                        .HasForeignKey("AppUserId");
+                    b.HasOne("api.Models.Post", "PreviousPost")
+                        .WithMany()
+                        .HasForeignKey("PreviousPostId");
 
-                    b.Navigation("AppUser");
+                    b.HasOne("api.Models.AppUser", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PreviousPost");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("api.Models.PostInteraction", b =>
+                {
+                    b.HasOne("api.Models.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("api.Models.AppUser", b =>
