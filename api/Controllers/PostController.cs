@@ -1,3 +1,4 @@
+using api.Data;
 using api.Dtos.Post;
 using api.Interfaces;
 using api.Mappers;
@@ -18,7 +19,7 @@ public class PostController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Policy = "RequireAdminRole")]
+    [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
         var posts = await _repo.GetAllAsync();

@@ -1,3 +1,4 @@
+using api.Data;
 using api.Dtos.Chat;
 using api.Interfaces;
 using api.Mappers;
@@ -22,7 +23,7 @@ public class ChatController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Policy = "RequireAdminRole")]
+    [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
         var chats = await _repo.GetAllAsync();

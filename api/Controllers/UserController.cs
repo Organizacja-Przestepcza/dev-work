@@ -1,3 +1,4 @@
+using api.Data;
 using api.Dtos.AppUser;
 using api.Interfaces;
 using api.Mappers;
@@ -18,7 +19,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Policy = "RequireAdminRole")]
+    [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
     public async Task<IActionResult> GetAll() // debug
     {
         var users = await _repo.GetAllAsync();

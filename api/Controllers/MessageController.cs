@@ -1,3 +1,4 @@
+using api.Data;
 using api.Dtos.Message;
 using api.Interfaces;
 using api.Mappers;
@@ -18,7 +19,7 @@ public class MessageController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Policy = "RequireAdminRole")]
+    [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
         var messages = await _repo.GetAllAsync();

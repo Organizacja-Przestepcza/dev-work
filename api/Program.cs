@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using static api.Data.StartupTasks;
 
 var builder = WebApplication.CreateBuilder(args);
 Env.Load();
@@ -91,13 +92,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("RequireAdminRole", policy => policy.RequireRole("Administrator"));
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(IdentityData.RequireAdminPolicyName,
+        policy => policy.RequireClaim(IdentityData.AdminClaimName));
+});
 
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 
 var app = builder.Build();
 
@@ -107,6 +112,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+await DatabaseUpdateAsync(app.Services);
+await AdminSeedAsync(app.Services);
 
 app.UseHttpsRedirection();
 

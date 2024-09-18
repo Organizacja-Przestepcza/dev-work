@@ -1,3 +1,4 @@
+using api.Data;
 using api.Dtos.Account;
 using api.Interfaces;
 using api.Models;
@@ -43,34 +44,33 @@ public class AccountController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequestModel registerRequest)
     {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var appUser = new AppUser
+        var appUser = new AppUser
+        {
+            UserName = registerRequest.Username,
+            Email = registerRequest.Email
+        };
+
+        var createdUser = await _userManager.CreateAsync(appUser, registerRequest.Password);
+
+        if (!createdUser.Succeeded) return BadRequest(createdUser.Errors);
+
+        var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
+        if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
+
+        return Ok(
+            new RegisterResponseModel
             {
-                UserName = registerRequest.Username,
-                Email = registerRequest.Email
-            };
-
-            var createdUser = await _userManager.CreateAsync(appUser, registerRequest.Password);
-
-            if (!createdUser.Succeeded) return BadRequest(createdUser.Errors);
-
-            var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
-            if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
-
-            return Ok(
-                new RegisterResponseModel
-                {
-                    Username = registerRequest.Username,
-                    Email = registerRequest.Email,
-                    Token = _tokenService.CreateToken(appUser)
-                }
-            );
-        
+                Username = registerRequest.Username,
+                Email = registerRequest.Email,
+                Token = _tokenService.CreateToken(appUser)
+            }
+        );
     }
 
     [HttpDelete("{userId}")]
-    [Authorize(Policy = "RequireAdminRole")]
+    [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
     public async Task<IActionResult> Delete(string userId)
     {
         // Needs a refactor when middleware error handling is implemented
