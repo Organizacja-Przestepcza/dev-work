@@ -1,5 +1,4 @@
 using api.Dtos.Message;
-using api.Dtos.User;
 using api.Models;
 
 namespace api.Mappers;

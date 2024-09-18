@@ -11,7 +11,7 @@ public static class ChatMappers
         {
             Id = memberChat.Id,
             Name = memberChat.Name,
-            CreatedAt = memberChat.CreatedAt,
+            CreatedAt = memberChat.CreatedAt
         };
     }
 
@@ -21,6 +21,7 @@ public static class ChatMappers
         {
             CreatedAt = DateTime.Now,
             Name = chatRequestModel.Name,
+            Members = []
         };
     }
 }
