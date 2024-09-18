@@ -19,6 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
@@ -103,12 +104,23 @@ builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("nuxtApp", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000");
+        builder.AllowAnyHeader();
+        builder.AllowAnyMethod();
+        builder.AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors("nuxtApp");
     app.UseSwagger();
     app.UseSwaggerUI();
 }
