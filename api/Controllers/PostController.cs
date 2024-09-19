@@ -22,6 +22,7 @@ public class PostController : ControllerBase
     [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var posts = await _repo.GetAllAsync();
         var postResponseModels = posts.Select(s => s.ToPostResponseModel());
         return Ok(postResponseModels);
@@ -30,6 +31,7 @@ public class PostController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var post = await _repo.GetByIdAsync(id);
         if (post == null) return NotFound();
         return Ok(post.ToPostResponseModel());
@@ -39,6 +41,7 @@ public class PostController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Add([FromBody] PostRequestModel postRequest)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var post = await _repo.CreateAsync(postRequest);
         return Ok(post.ToPostResponseModel());
     }
@@ -47,6 +50,7 @@ public class PostController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Update(string id, [FromBody] PostUpdateModel postUpdate)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var post = await _repo.UpdateAsync(id, postUpdate);
         if (post == null) return NotFound();
         return Ok(post.ToPostResponseModel());
@@ -56,6 +60,7 @@ public class PostController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Delete(string id)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var post = await _repo.DeleteAsync(id);
         if (post == null) return NotFound();
         return Ok($"Post {id} deleted");
