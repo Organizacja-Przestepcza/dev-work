@@ -19,7 +19,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
+    [Authorize /*(Policy = IdentityData.RequireAdminPolicyName)*/]
     public async Task<IActionResult> GetAll() // debug
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);

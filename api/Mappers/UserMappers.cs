@@ -10,9 +10,9 @@ public static class UserMappers
     {
         return new UserResponseModel
         {
-            //  Id = appUser.Id,
-            Email = appUser.Email,
-            Username = appUser.UserName
+            Id = appUser.Id,
+            Email = appUser.Email!,
+            Username = appUser.UserName!
         };
     }
 
