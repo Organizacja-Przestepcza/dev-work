@@ -45,7 +45,7 @@ public class MessageController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         var message = await _repo.CreateAsync(messageRequest);
-        return Ok(message.ToMessageResponseModel());
+        return Ok($"Message {message.Id} created");
     }
 
     [HttpPut("{id}")]
@@ -55,7 +55,7 @@ public class MessageController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         var message = await _repo.UpdateAsync(id, messageUpdate);
         if (message == null) return NotFound();
-        return Ok(message.ToMessageResponseModel());
+        return Ok($"Message {message.Id} updated");
     }
 
     [HttpDelete("{id}")]
