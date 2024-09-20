@@ -2,7 +2,7 @@ namespace api.Dtos.Chat;
 
 public class ChatResponseModel
 {
-    public string Id { get; set; } = null!;
+    public required string Id { get; set; }
     public required string Name { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public required DateTime CreatedAt { get; set; }
 }

@@ -1,6 +1,8 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace api.Dtos.Message;
 
 public class MessageUpdateModel
 {
-    public string Content { get; set; }
+    [Required] public required string Content { get; set; }
 }

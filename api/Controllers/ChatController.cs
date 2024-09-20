@@ -29,7 +29,6 @@ public class ChatController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         var chats = await _repo.GetAllAsync();
         var chatResponseModels = chats.Select(s => s.ToChatResponseModel());
-
         return Ok(chatResponseModels);
     }
 

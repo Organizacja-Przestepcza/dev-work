@@ -19,4 +19,5 @@ public class Post
     [MaxLength(256)] public string? PreviousPostId { get; set; }
 
     public Post? PreviousPost { get; set; }
+    public List<PostInteraction>? PostInteractions { get; set; }
 }
