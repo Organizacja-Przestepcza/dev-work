@@ -7,7 +7,7 @@ namespace api.Mappers;
 
 public static class PostInteractionMappers
 {
-    public static PostInteractionResponseModel ToPostInteractionResponseModel(PostInteraction postInteraction)
+    public static PostInteractionResponseModel ToPostInteractionResponseModel(this PostInteraction postInteraction)
     {
         return new PostInteractionResponseModel
         {
@@ -19,7 +19,7 @@ public static class PostInteractionMappers
         };
     }
 
-    public static PostInteraction ToPostInteraction(PostInteractionRequestModel postInteractionRequest)
+    public static PostInteraction ToPostInteraction(this PostInteractionRequestModel postInteractionRequest)
     {
         return new PostInteraction
         {
