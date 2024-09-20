@@ -15,13 +15,12 @@ public static class ConnectionMappers
         };
     }
 
-    public static Connection ToConnection(this ConnectionResponseModel connection)
+    public static Connection ToConnection(this ConnectionRequestModel connection)
     {
         return new Connection
         {
-            Id = connection.Id,
-            FollowerId = connection.Follower.Id,
-            FollowingId = connection.Following.Id
+            FollowerId = connection.FollowerId,
+            FollowingId = connection.FollowingId
         };
     }
 }
