@@ -1,52 +1,46 @@
 using api.Data;
-using api.Dtos.User;
+using api.Dtos.AppUser;
+using api.Interfaces;
 using api.Mappers;
-using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 
 namespace api.Controllers;
-[Route("api/users")]
+
+[Route("api/user")]
 [ApiController]
-public class UserController(AppDbContext context) : ControllerBase
+public class UserController : ControllerBase
 {
-    private readonly AppDbContext _context = context;
-    [HttpGet]
-    public async Task<IActionResult> GetAll() // debug
+    private readonly IUserRepository _repo;
+
+    public UserController(IUserRepository repo)
     {
-        var users = await _context.Users.ToListAsync();
-        var userResponseModels = users.Select(s => s.ToUserResponseModel());
-        return Ok(userResponseModels);
-        
+        _repo = repo;
     }
 
-    [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetById([FromRoute] Guid id)
+    [HttpGet]
+    [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
+    public async Task<IActionResult> GetAll() // debug
     {
-        var user = await _context.Users.FindAsync(id);
-        if (user == null)
-        {
-            return NotFound();
-        }
+        var users = await _repo.GetAllAsync();
+        var userResponseModels = users.Select(s => s.ToUserResponseModel());
+        return Ok(userResponseModels);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById([FromRoute] string id)
+    {
+        var user = await _repo.GetByIdAsync(id);
+        if (user == null) return NotFound();
         return Ok(user.ToUserResponseModel());
     }
-    
-    [HttpPost]
-    public async Task<IActionResult> Add([FromBody] UserRequestModel userRequestModel)
+
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<IActionResult> Update(string id, [FromBody] UserUpdateModel userUpdate)
     {
-        var user = userRequestModel.ToUser();
-       
-        await _context.Users.AddAsync(user);
-        await _context.SaveChangesAsync();
-        
-        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
-    }
-    
-    [HttpPut]
-    public async Task<IActionResult> Update([FromBody] AppUser appUser)
-    {
-       
-        return Ok();
+        var user = await _repo.UpdateAsync(id, userUpdate);
+        if (user == null) return NotFound();
+        return Ok(user.ToUserResponseModel());
     }
 }

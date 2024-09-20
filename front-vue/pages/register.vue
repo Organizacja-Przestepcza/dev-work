@@ -2,6 +2,26 @@
 definePageMeta({
   layout: "basic",
 });
+
+
+const email = ref('');
+const username = ref('');
+const password = ref('');
+const errorMessage = ref('');
+const { register } = useAuth();
+
+const handleRegister = async()=>{
+  try {
+    console.log(email.value, " ", password.value);
+    await register(email.value,username.value, password.value);
+    navigateTo("/home");
+  } catch (error) {
+    navigateTo("/");
+  }
+ 
+}
+
+
 </script>
 
 <template>
@@ -14,11 +34,11 @@ definePageMeta({
       <div class="flex flex-col w-full md:w-1/2 gap-4 flex-grow">
         <div class="flex flex-col gap-2">
           <label for="username">Username</label>
-          <InputText id="username" type="text" />
+          <InputText v-model="username" id="username" type="text" />
         </div>
         <div class="flex flex-col gap-2">
           <label for="email">Email</label>
-          <InputText id="email" type="text" />
+          <InputText v-model="email" id="email" type="text" />
         </div>
       </div>
 
@@ -31,7 +51,7 @@ definePageMeta({
       <div class="flex flex-col w-full md:w-1/2 gap-4 flex-grow">
         <div class="flex flex-col gap-2">
           <label for="password">Password</label>
-          <InputText id="password" type="password" />
+          <InputText v-model="password" id="password" type="password" />
         </div>
         <div class="flex flex-col gap-2">
           <label for="repassword">Re-enter password</label>
@@ -42,7 +62,7 @@ definePageMeta({
 
     <!-- Register Button -->
     <div class="flex flex-col md:flex-row-reverse md:justify-evenly gap-5 w-full pt-2">
-      <Button label="Register" class="w-full mx-auto"/>
+      <Button @click="handleRegister" label="Register" class="w-full mx-auto"/>
       <Button as="router-link" to="login" severity="secondary" label="Already have an account?" class="w-full mx-auto"/>
     </div>
   </div>

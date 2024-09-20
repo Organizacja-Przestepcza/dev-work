@@ -2,12 +2,12 @@
 import Aura from "@primevue/themes/aura";
 
 export default defineNuxtConfig({
-  modules: [
-    "@primevue/nuxt-module",
-    "@nuxtjs/tailwindcss",
-    "@nuxt/icon",
-    "nuxt-viewport",
-  ],
+  runtimeConfig: {
+    public: {
+      API_BASE_URL: process.env.API_BASE_URL || 'http://localhost:5151/api'
+    }
+  },
+  modules: ["@primevue/nuxt-module", "@nuxtjs/tailwindcss", "@nuxt/icon", "nuxt-viewport",],
   primevue: {
     options: {
       theme: {
@@ -17,4 +17,5 @@ export default defineNuxtConfig({
   },
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
+  
 });

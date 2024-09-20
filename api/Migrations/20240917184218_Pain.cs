@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Pain : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,7 +32,8 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Bio = table.Column<string>(type: "TEXT", nullable: false),
+                    Bio = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    Avatar = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -57,8 +58,8 @@ namespace api.Migrations
                 name: "Chats",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -176,9 +177,9 @@ namespace api.Migrations
                 name: "Connections",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    FollowerId = table.Column<string>(type: "TEXT", nullable: false),
-                    FollowingId = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    FollowerId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    FollowingId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -201,20 +202,27 @@ namespace api.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Content = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    AppUserId = table.Column<string>(type: "TEXT", nullable: true),
-                    PreviousPostId = table.Column<string>(type: "TEXT", nullable: true)
+                    EditedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Images = table.Column<string>(type: "TEXT", nullable: true),
+                    PreviousPostId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Posts_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
+                        name: "FK_Posts_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Posts_Posts_PreviousPostId",
+                        column: x => x.PreviousPostId,
+                        principalTable: "Posts",
                         principalColumn: "Id");
                 });
 
@@ -222,11 +230,11 @@ namespace api.Migrations
                 name: "Members",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     Role = table.Column<int>(type: "INTEGER", nullable: false),
                     AddedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChatId = table.Column<string>(type: "TEXT", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    ChatId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     AppUserId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -249,11 +257,11 @@ namespace api.Migrations
                 name: "Messages",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    SenderId = table.Column<string>(type: "TEXT", nullable: false),
-                    ReceiverId = table.Column<string>(type: "TEXT", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", nullable: false),
-                    ReplyId = table.Column<string>(type: "TEXT", nullable: true),
+                    Id = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    SenderId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    ReceiverId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Content = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: false),
+                    ReplyId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     SendDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ReadDate = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
@@ -278,8 +286,9 @@ namespace api.Migrations
                 name: "Bookmarks",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    PostId = table.Column<string>(type: "TEXT", nullable: true),
+                    Id = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    PostId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     AppUserId = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -295,25 +304,35 @@ namespace api.Migrations
                         name: "FK_Bookmarks_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Images",
+                name: "PostInteractions",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    FilePath = table.Column<string>(type: "TEXT", nullable: false),
-                    PostId = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Type = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    PostId = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.PrimaryKey("PK_PostInteractions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Images_Posts_PostId",
+                        name: "FK_PostInteractions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PostInteractions_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -321,9 +340,20 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "137442d4-e2a1-4987-8bdb-100fcff7c6f4", null, "Member", "MEMBER" },
-                    { "5894367b-ba9b-4bab-a5c1-81fab03d775e", null, "Admin", "ADMIN" }
+                    { "3fe997cd-7d0f-4003-b8ff-50118cc12571", null, "User", "USER" },
+                    { "885f4d91-91ff-4f34-8327-1bff7179d1f6", null, "Administrator", "ADMINISTRATOR" },
+                    { "b692ed07-e061-41fb-8a4d-a49471f1f098", null, "Moderator", "MODERATOR" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Avatar", "Bio", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "492bafdd-06a8-4ba9-99f6-82b4313ba0ef", 0, null, null, "483ef0ec-486e-425e-8f23-bb49859c5842", "admin@admin.com", false, false, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAEJx9X7CJJPL8/DAUsybRqdZItWnTHgoZhj98o/elKu2zvo32AR4w78JiySst2lJdrQ==", null, false, "cb01cdfd-5056-468d-9fe8-a956c58a57b7", false, "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "885f4d91-91ff-4f34-8327-1bff7179d1f6", "492bafdd-06a8-4ba9-99f6-82b4313ba0ef" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -383,11 +413,6 @@ namespace api.Migrations
                 column: "FollowingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_PostId",
-                table: "Images",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Members_AppUserId",
                 table: "Members",
                 column: "AppUserId");
@@ -408,9 +433,24 @@ namespace api.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_AppUserId",
+                name: "IX_PostInteractions_PostId",
+                table: "PostInteractions",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostInteractions_UserId",
+                table: "PostInteractions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_PreviousPostId",
                 table: "Posts",
-                column: "AppUserId");
+                column: "PreviousPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_UserId",
+                table: "Posts",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -438,22 +478,22 @@ namespace api.Migrations
                 name: "Connections");
 
             migrationBuilder.DropTable(
-                name: "Images");
-
-            migrationBuilder.DropTable(
                 name: "Members");
 
             migrationBuilder.DropTable(
                 name: "Messages");
 
             migrationBuilder.DropTable(
+                name: "PostInteractions");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "Chats");
 
             migrationBuilder.DropTable(
-                name: "Chats");
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

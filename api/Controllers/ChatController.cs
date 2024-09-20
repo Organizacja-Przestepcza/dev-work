@@ -1,51 +1,69 @@
 using api.Data;
+using api.Dtos.Chat;
+using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
-[Route("api/chats")]
+
+[Route("api/chat")]
 [ApiController]
-public class ChatController(AppDbContext context) : ControllerBase
+public class ChatController : ControllerBase
 {
-    private readonly AppDbContext _context = context;
+    private readonly IChatRepository _repo;
+    private readonly UserManager<AppUser> _userManager;
+
+    public ChatController(IChatRepository repo, UserManager<AppUser> userManager)
+    {
+        _repo = repo;
+        _userManager = userManager;
+    }
+
     [HttpGet]
-    [Authorize]
+    [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
-        var chats = await _context.Chats.ToListAsync();
+        var chats = await _repo.GetAllAsync();
         var chatResponseModels = chats.Select(s => s.ToChatResponseModel());
-        
+
         return Ok(chatResponseModels);
     }
-    
+
     [HttpGet("{id}")]
     [Authorize]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
-        var chat = await _context.Chats.FindAsync(id);
-        if (chat == null)
-        {
-            return NotFound();
-        }
+        var chat = await _repo.GetByIdAsync(id);
+        if (chat == null) return NotFound();
         return Ok(chat.ToChatResponseModel());
     }
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Add([FromBody] Chat chat)
+    public async Task<IActionResult> Add([FromBody] ChatRequestModel chatRequest)
     {
-       
-        return Ok();
+        var chat = await _repo.CreateAsync(chatRequest);
+        return Ok(chat.ToChatResponseModel());
     }
-    
-    [HttpPut]
+
+    [HttpPut("{id}")]
     [Authorize]
-    public async Task<IActionResult> Update([FromBody] Chat chat)
+    public async Task<IActionResult> Update(string id, [FromBody] ChatUpdateModel chatUpdate)
     {
-       
-        return Ok();
+        var chat = await _repo.UpdateAsync(id, chatUpdate);
+        if (chat == null) return NotFound();
+        return Ok(chat.ToChatResponseModel());
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<IActionResult> Delete(string id)
+    {
+        var chat = await _repo.DeleteAsync(id);
+        if (chat == null) return NotFound();
+        return Ok($"Chat \"{chat.Name}\" deleted");
     }
 }
