@@ -5,7 +5,7 @@ using Microsoft.VisualBasic;
 
 namespace api.Mappers;
 
-public static class InteractionMappers
+public static class PostInteractionMappers
 {
     public static PostInteractionResponseModel ToPostInteractionResponseModel(PostInteraction postInteraction)
     {
