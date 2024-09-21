@@ -1,5 +1,7 @@
 using api.Data;
 using api.Dtos.Chat;
+using api.Dtos.ChatMember;
+using api.Enums;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -14,12 +16,14 @@ namespace api.Controllers;
 public class ChatController : ControllerBase
 {
     private readonly IChatRepository _repo;
-    private readonly UserManager<AppUser> _userManager;
+    private readonly IMemberRepository _memberRepo;
+    private readonly IUserRepository _userRepo;
 
-    public ChatController(IChatRepository repo, UserManager<AppUser> userManager)
+    public ChatController(IChatRepository repo, IMemberRepository memberRepo, IUserRepository userRepo)
     {
         _repo = repo;
-        _userManager = userManager;
+        _memberRepo = memberRepo;
+        _userRepo = userRepo;
     }
 
     [HttpGet]
@@ -47,8 +51,16 @@ public class ChatController : ControllerBase
     public async Task<IActionResult> Add([FromBody] ChatRequestModel chatRequest)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
+        var user = await _userRepo.GetByIdAsync(chatRequest.UserId);
+        if (user == null) return BadRequest($"User {chatRequest.UserId} doesn't exist");
         var chat = await _repo.CreateAsync(chatRequest);
-        return Ok(chat.ToChatResponseModel());
+        var member = _memberRepo.AddAsync(new ChatMemberRequestModel
+        {
+            ChatId = chat.Id,
+            UserId = user.Id,
+            Role = Role.Owner
+        });
+        return Ok($"Chat {chat.Id} created successfully with user {user.Id} as its owner");
     }
 
     [HttpPut("{id}")]
