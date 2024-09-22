@@ -19,9 +19,10 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
+    [Authorize /*(Policy = IdentityData.RequireAdminPolicyName)*/]
     public async Task<IActionResult> GetAll() // debug
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var users = await _repo.GetAllAsync();
         var userResponseModels = users.Select(s => s.ToUserResponseModel());
         return Ok(userResponseModels);
@@ -30,6 +31,7 @@ public class UserController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var user = await _repo.GetByIdAsync(id);
         if (user == null) return NotFound();
         return Ok(user.ToUserResponseModel());
@@ -39,6 +41,7 @@ public class UserController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Update(string id, [FromBody] UserUpdateModel userUpdate)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var user = await _repo.UpdateAsync(id, userUpdate);
         if (user == null) return NotFound();
         return Ok(user.ToUserResponseModel());

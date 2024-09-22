@@ -4,7 +4,7 @@ namespace api.Dtos.Connection;
 
 public class ConnectionResponseModel
 {
-    public string Id { get; set; } = null!;
-    public UserResponseModel Follower { get; set; } = null!;
-    public UserResponseModel Following { get; set; } = null!;
+    public required string Id { get; set; }
+    public required UserResponseModel Follower { get; set; }
+    public required UserResponseModel Following { get; set; }
 }

@@ -1,6 +1,8 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace api.Dtos.Chat;
 
 public class ChatUpdateModel
 {
-    public string? Name { get; set; }
+    [Required] public required string Name { get; set; }
 }

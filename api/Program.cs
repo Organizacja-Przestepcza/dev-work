@@ -103,15 +103,19 @@ builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+builder.Services.AddScoped<IBookmarkRepository, BookmarkRepository>();
+builder.Services.AddScoped<IConnectionRepository, ConnectionRepository>();
+builder.Services.AddScoped<IPostInteractionRepository, PostInteractionRepository>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("nuxtApp", builder =>
+    options.AddPolicy("nuxtApp", corsPolicyBuilder =>
     {
-        builder.WithOrigins("http://localhost:3000");
-        builder.AllowAnyHeader();
-        builder.AllowAnyMethod();
-        builder.AllowCredentials();
+        corsPolicyBuilder.WithOrigins("http://localhost:3000");
+        corsPolicyBuilder.AllowAnyHeader();
+        corsPolicyBuilder.AllowAnyMethod();
+        corsPolicyBuilder.AllowCredentials();
     });
 });
 

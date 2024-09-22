@@ -4,7 +4,7 @@ namespace api.Models;
 
 public class Bookmark
 {
-    [MaxLength(256)] public string Id { get; init; } = null!;
+    [MaxLength(256)] public string Id { get; set; } = null!;
 
     [MaxLength(256)] public required string PostId { get; set; }
     public Post Post { get; set; }

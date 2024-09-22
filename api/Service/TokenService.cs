@@ -1,6 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
+using api.Dtos;
 using api.Interfaces;
 using api.Models;
 using Microsoft.IdentityModel.Tokens;
@@ -20,20 +22,21 @@ public class TokenService : ITokenService
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
     }
 
-    public string CreateToken(AppUser user)
+    public string CreateToken(TokenData data)
     {
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Email, user.Email),
-            new(JwtRegisteredClaimNames.GivenName, user.UserName)
+            new(ClaimTypes.Email, data.AppUser.Email),
+            new(ClaimTypes.Name, data.AppUser.UserName),
+            new(ClaimTypes.NameIdentifier, data.AppUser.Id),
+            new(ClaimTypes.Role, data.Roles.First()),
         };
-
         var encryption = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(7),
+            Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = encryption,
             Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
             Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")

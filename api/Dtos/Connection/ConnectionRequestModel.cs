@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace api.Dtos.Connection;
 
 public class ConnectionRequestModel
 {
-    public string FollowerId { get; set; }
-    public string FollowingId { get; set; }
+    [Required] public required string FollowerId { get; set; }
+    [Required] public required string FollowingId { get; set; }
 }

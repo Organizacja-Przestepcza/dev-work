@@ -18,9 +18,10 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
     public DbSet<Message> Messages { get; set; }
 
-    
+
     public DbSet<Connection> Connections { get; set; }
     public DbSet<PostInteraction> PostInteractions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -61,22 +62,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
             }
         ];
         modelBuilder.Entity<IdentityRole>().HasData(roles);
-
-        var user = new AppUser
-        {
-            UserName = "Admin",
-            Email = "admin@admin.com",
-            LockoutEnabled = false,
-            NormalizedEmail = "ADMIN@ADMIN.COM",
-            NormalizedUserName = "ADMIN"
-        };
-
-        var pass = new PasswordHasher<AppUser>().HashPassword(user,
-            Environment.GetEnvironmentVariable("ADMIN_PASSWORD"));
-        user.PasswordHash = pass;
-        modelBuilder.Entity<AppUser>().HasData(user);
-        var adminRole = roles.First(r => r.Name == "Administrator");
-        modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
-            { UserId = user.Id, RoleId = adminRole.Id });
     }
 }
