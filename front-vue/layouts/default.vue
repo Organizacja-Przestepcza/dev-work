@@ -70,8 +70,6 @@ const toggle = (event) => {
   <div class="overflow-y-auto">
     <slot />
   </div>
-  <div class="  overflow-y-auto">
-    <slot />
-  </div>
+
 
 </template>
