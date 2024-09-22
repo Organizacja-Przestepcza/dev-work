@@ -24,7 +24,7 @@ public static class PostMappers
         {
             Content = postRequestModel.Content,
             CreatedAt = DateTime.Now,
-            UserId = postRequestModel.UserId,
+            UserId = new Guid().ToString(),
             PreviousPostId = postRequestModel.PreviousPostId,
             Images = postRequestModel.ImageUrls
         };

@@ -26,10 +26,11 @@ public class PostRepository : IPostRepository
         return await _context.Posts.FindAsync(id);
     }
 
-    public async Task<Post> CreateAsync(PostRequestModel postRequest)
+    public async Task<Post> CreateAsync(PostRequestModel postRequest, string userId)
     {
         var post = postRequest.ToPost();
         post.Id = Guid.NewGuid().ToString();
+        post.UserId = userId;
         await _context.Posts.AddAsync(post);
         await _context.SaveChangesAsync();
         return post;

@@ -4,6 +4,7 @@ using api.Interfaces;
 using api.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static api.Helpers.CurrentUserHelper;
 
 namespace api.Controllers;
 
@@ -13,6 +14,7 @@ public class PostController : ControllerBase
 {
     private readonly IPostRepository _repo;
     private readonly IUserRepository _userRepo;
+    private string? _userId;
 
     public PostController(IPostRepository repo, IUserRepository userRepository)
     {
@@ -44,9 +46,8 @@ public class PostController : ControllerBase
     public async Task<IActionResult> Add([FromBody] PostRequestModel postRequest)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var user = await _userRepo.GetByIdAsync(postRequest.UserId);
-        if (user == null) return BadRequest($"User {postRequest.UserId} doesn't exist");
-        var post = await _repo.CreateAsync(postRequest);
+        _userId = GetCurrentUserId(HttpContext);
+        var post = await _repo.CreateAsync(postRequest, _userId!);
         return Ok($"Post {post.Id} created successfully");
     }
 
@@ -55,8 +56,9 @@ public class PostController : ControllerBase
     public async Task<IActionResult> Update(string id, [FromBody] PostUpdateModel postUpdate)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var post = await _repo.UpdateAsync(id, postUpdate);
-        if (post == null) return NotFound();
+        var post = await _repo.GetByIdAsync(id);
+        if (post?.UserId != _userId) return Unauthorized("You are not the author of this post");
+        await _repo.UpdateAsync(id, postUpdate);
         return Ok($"Post {id} updated successfully");
     }
 
@@ -65,8 +67,9 @@ public class PostController : ControllerBase
     public async Task<IActionResult> Delete(string id)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var post = await _repo.DeleteAsync(id);
-        if (post == null) return NotFound();
+        var post = await _repo.GetByIdAsync(id);
+        if (post?.UserId != _userId) return Unauthorized("You are not the author of this post");
+        await _repo.DeleteAsync(id);
         return Ok($"Post {id} deleted successfully");
     }
 }
