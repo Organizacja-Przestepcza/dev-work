@@ -30,6 +30,7 @@ export function useAuth() {
   };
 
   // Logowanie
+
   const login = async (username: string, password: string) => {
     try {
     console.log( JSON.stringify({ username, password }));
@@ -38,6 +39,7 @@ export function useAuth() {
         headers: {
           'Content-Type': 'application/json',
         },
+
         body: JSON.stringify({ username, password }),
       });
      
