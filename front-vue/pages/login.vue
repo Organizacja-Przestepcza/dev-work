@@ -4,15 +4,15 @@ definePageMeta({
   layout: 'basic'
 })
 
-const email = ref('');
+const username = ref('');
 const password = ref('');
 const errorMessage = ref('');
 const { login } = useAuth();
 
 const handleLogin = async()=>{
   try {
-    console.log(email.value, " ", password.value);
-    await login(email.value, password.value);
+    console.log(username.value, " ", password.value);
+    await login(username.value, password.value);
     navigateTo("/home");
   } catch (error) {
     navigateTo("/");
@@ -25,8 +25,8 @@ const handleLogin = async()=>{
 <template>
   <div class="flex flex-col gap-2">
     <div class="flex flex-col gap-2">
-      <label for="email">email</label>
-      <InputText v-model="email"  id="email" type="email" />
+      <label for="username">Username</label>
+      <InputText v-model="username"  id="username" type="text" />
     </div>
     <div class="flex flex-col gap-2">
       <label for="password">Password</label>
