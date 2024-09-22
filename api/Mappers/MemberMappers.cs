@@ -1,30 +1,29 @@
-using api.Dtos.Member;
+using api.Dtos.ChatMember;
 using api.Models;
 
 namespace api.Mappers;
 
 public static class MemberMappers
 {
-    public static MemberResponseModel ToMemberResponse(this ChatMember chatMember)
+    public static ChatMemberResponseModel ToMemberResponse(this ChatMember chatMember)
     {
-        return new MemberResponseModel
+        return new ChatMemberResponseModel
         {
             Id = chatMember.Id,
             Role = chatMember.Role,
             AddedAt = chatMember.AddedAt,
-            Chat = chatMember.Chat.ToChatResponseModel(),
             User = chatMember.AppUser.ToUserResponseModel()
         };
     }
 
-    public static ChatMember ToMember(this MemberRequestModel memberRequestModel)
+    public static ChatMember ToMember(this ChatMemberRequestModel chatMemberRequestModel)
     {
         return new ChatMember
         {
-            Role = memberRequestModel.Role,
+            Role = chatMemberRequestModel.Role,
             AddedAt = DateTime.Now,
-            ChatId = memberRequestModel.ChatId,
-            UserId = memberRequestModel.UserId
+            ChatId = chatMemberRequestModel.ChatId,
+            UserId = chatMemberRequestModel.UserId
         };
     }
 }

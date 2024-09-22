@@ -23,7 +23,8 @@ public class ChatRepository : IChatRepository
 
     public async Task<Chat?> GetByIdAsync(string id)
     {
-        return await _context.Chats.FindAsync(id);
+        return await _context.Chats.Include(c => c.Messages).Include(c => c.Members)
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<Chat> CreateAsync(ChatRequestModel chatRequest)
@@ -39,7 +40,7 @@ public class ChatRepository : IChatRepository
     {
         var chat = await _context.Chats.FindAsync(id);
         if (chat == null) return null;
-        chat.Name = chatUpdateModel.Name;
+        if (chatUpdateModel.Name != null) chat.Name = chatUpdateModel.Name;
         await _context.SaveChangesAsync();
         return chat;
     }

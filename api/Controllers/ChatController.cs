@@ -26,9 +26,9 @@ public class ChatController : ControllerBase
     [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var chats = await _repo.GetAllAsync();
         var chatResponseModels = chats.Select(s => s.ToChatResponseModel());
-
         return Ok(chatResponseModels);
     }
 
@@ -36,6 +36,7 @@ public class ChatController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var chat = await _repo.GetByIdAsync(id);
         if (chat == null) return NotFound();
         return Ok(chat.ToChatResponseModel());
@@ -45,6 +46,7 @@ public class ChatController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Add([FromBody] ChatRequestModel chatRequest)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var chat = await _repo.CreateAsync(chatRequest);
         return Ok(chat.ToChatResponseModel());
     }
@@ -53,6 +55,7 @@ public class ChatController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Update(string id, [FromBody] ChatUpdateModel chatUpdate)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var chat = await _repo.UpdateAsync(id, chatUpdate);
         if (chat == null) return NotFound();
         return Ok(chat.ToChatResponseModel());
@@ -62,6 +65,7 @@ public class ChatController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Delete(string id)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var chat = await _repo.DeleteAsync(id);
         if (chat == null) return NotFound();
         return Ok($"Chat \"{chat.Name}\" deleted");
