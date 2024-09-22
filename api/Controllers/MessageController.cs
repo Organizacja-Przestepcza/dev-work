@@ -15,7 +15,9 @@ public class MessageController : ControllerBase
     private readonly IMessageRepository _repo;
     private readonly IMemberRepository _memberRepo;
     private string? _userId;
-    public MessageController(IMessageRepository repo, IChatRepository chatRepo, IUserRepository userRepo, IMemberRepository memberRepo)
+
+    public MessageController(IMessageRepository repo, IChatRepository chatRepo, IUserRepository userRepo,
+        IMemberRepository memberRepo)
     {
         _repo = repo;
         _memberRepo = memberRepo;
@@ -25,7 +27,7 @@ public class MessageController : ControllerBase
     [Authorize /*(Policy = IdentityData.RequireAdminPolicyName)*/]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
-        _userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        _userId = GetCurrentUserId(HttpContext);
         if (!ModelState.IsValid) return BadRequest(ModelState);
         var messages = await _repo.GetAllAsync();
         var messageResponseModels = messages.Select(s => s.ToMessageResponseModel());
@@ -53,7 +55,7 @@ public class MessageController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
         var isMember = await _memberRepo.IsMemberAsync(messageRequest.ChatId, _userId!);
-        if (!isMember) return Unauthorized($"You are not a member in this chat");   
+        if (!isMember) return Unauthorized($"You are not a member in this chat");
         var message = await _repo.CreateAsync(messageRequest, _userId!);
         return Ok($"Message {message.Id} created successfully");
     }
