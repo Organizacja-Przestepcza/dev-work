@@ -12,14 +12,16 @@ namespace api.Controllers;
 public class PostController : ControllerBase
 {
     private readonly IPostRepository _repo;
+    private readonly IUserRepository _userRepo;
 
-    public PostController(IPostRepository repo)
+    public PostController(IPostRepository repo, IUserRepository userRepository)
     {
         _repo = repo;
+        _userRepo = userRepository;
     }
 
     [HttpGet]
-    [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
+    [Authorize /*(Policy = IdentityData.RequireAdminPolicyName)*/]
     public async Task<IActionResult> GetAll() // debug endpoint
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -42,8 +44,10 @@ public class PostController : ControllerBase
     public async Task<IActionResult> Add([FromBody] PostRequestModel postRequest)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
+        var user = await _userRepo.GetByIdAsync(postRequest.UserId);
+        if (user == null) return BadRequest($"User {postRequest.UserId} doesn't exist");
         var post = await _repo.CreateAsync(postRequest);
-        return Ok(post.ToPostResponseModel());
+        return Ok($"Post {post.Id} created successfully");
     }
 
     [HttpPut("{id}")]
@@ -53,7 +57,7 @@ public class PostController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         var post = await _repo.UpdateAsync(id, postUpdate);
         if (post == null) return NotFound();
-        return Ok(post.ToPostResponseModel());
+        return Ok($"Post {id} updated successfully");
     }
 
     [HttpDelete("{id}")]
@@ -63,6 +67,6 @@ public class PostController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         var post = await _repo.DeleteAsync(id);
         if (post == null) return NotFound();
-        return Ok($"Post {id} deleted");
+        return Ok($"Post {id} deleted successfully");
     }
 }

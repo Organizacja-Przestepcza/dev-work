@@ -29,7 +29,7 @@ public class PostRepository : IPostRepository
     public async Task<Post> CreateAsync(PostRequestModel postRequest)
     {
         var post = postRequest.ToPost();
-        post.Id = new Guid().ToString();
+        post.Id = Guid.NewGuid().ToString();
         await _context.Posts.AddAsync(post);
         await _context.SaveChangesAsync();
         return post;

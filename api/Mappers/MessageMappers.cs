@@ -12,7 +12,6 @@ public static class MessageMappers
             Id = message.Id,
             Content = message.Content,
             ReadDate = message.ReadDate,
-            Receiver = message.Receiver.ToChatResponseModel(),
             ReplyId = message.ReplyId,
             SendDate = message.SendDate,
             Sender = message.Sender.ToUserResponseModel()

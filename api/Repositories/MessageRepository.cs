@@ -18,18 +18,18 @@ public class MessageRepository : IMessageRepository
 
     public async Task<List<Message>> GetAllAsync()
     {
-        return await _context.Messages.ToListAsync();
+        return await _context.Messages.Include(m => m.Sender).ToListAsync();
     }
 
     public async Task<Message?> GetByIdAsync(string id)
     {
-        return await _context.Messages.FindAsync(id);
+        return await _context.Messages.Include(m => m.Sender).FirstOrDefaultAsync(m => m.Id == id);
     }
 
     public async Task<Message> CreateAsync(MessageRequestModel messageRequest)
     {
         var message = messageRequest.ToMessage();
-        message.Id = new Guid().ToString();
+        message.Id = Guid.NewGuid().ToString();
         await _context.Messages.AddAsync(message);
         await _context.SaveChangesAsync();
         return message;

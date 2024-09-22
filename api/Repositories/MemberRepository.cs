@@ -20,12 +20,19 @@ public class MemberRepository : IMemberRepository
     {
         return await _context.Members.ToListAsync();
     }
-
     public async Task<ChatMember?> GetByIdAsync(string id)
     {
         return await _context.Members.FindAsync(id);
     }
+    public async Task<List<ChatMember>?> GetByUserAsync(string userId)
+    {
+        return await _context.Members.Where(m => m.UserId == userId).ToListAsync();
+    }
 
+    public async Task<bool> IsMemberOfChatAsync(string chatId, string userId)
+    {
+        return await _context.Members.AnyAsync(m => m.UserId == userId && m.ChatId == chatId);
+    }
     public async Task<ChatMember> AddAsync(ChatMemberRequestModel chatMemberRequest)
     {
         var member = chatMemberRequest.ToMember();

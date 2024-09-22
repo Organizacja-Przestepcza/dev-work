@@ -40,7 +40,7 @@ public class ChatRepository : IChatRepository
     {
         var chat = await _context.Chats.FindAsync(id);
         if (chat == null) return null;
-        if (chatUpdateModel.Name != null) chat.Name = chatUpdateModel.Name;
+        chat.Name = chatUpdateModel.Name;
         await _context.SaveChangesAsync();
         return chat;
     }
