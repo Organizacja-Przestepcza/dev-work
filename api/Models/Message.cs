@@ -6,11 +6,11 @@ public class Message
 {
     [MaxLength(256)] public string Id { get; set; } = null!;
 
-    [MaxLength(256)] public required string SenderId { get; set; }
+    [MaxLength(256)] public required string UserId { get; set; }
 
     public AppUser Sender { get; set; }
 
-    [MaxLength(256)] public required string ReceiverId { get; set; }
+    [MaxLength(256)] public required string ChatId { get; set; }
 
     public Chat Receiver { get; set; }
 

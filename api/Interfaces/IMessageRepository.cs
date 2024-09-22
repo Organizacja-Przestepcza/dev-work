@@ -9,7 +9,7 @@ public interface IMessageRepository
 
     Task<Message?> GetByIdAsync(string id);
 
-    Task<Message> CreateAsync(MessageRequestModel messageRequest);
+    Task<Message> CreateAsync(MessageRequestModel messageRequest, string userId);
 
     Task<Message?> UpdateAsync(string id, MessageUpdateModel messageUpdate);
     Task<Message?> DeleteAsync(string id);

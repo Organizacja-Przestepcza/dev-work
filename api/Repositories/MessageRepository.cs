@@ -26,10 +26,11 @@ public class MessageRepository : IMessageRepository
         return await _context.Messages.Include(m => m.Sender).FirstOrDefaultAsync(m => m.Id == id);
     }
 
-    public async Task<Message> CreateAsync(MessageRequestModel messageRequest)
+    public async Task<Message> CreateAsync(MessageRequestModel messageRequest, string userId)
     {
         var message = messageRequest.ToMessage();
         message.Id = Guid.NewGuid().ToString();
+        message.UserId = userId;
         await _context.Messages.AddAsync(message);
         await _context.SaveChangesAsync();
         return message;
