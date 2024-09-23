@@ -5,10 +5,10 @@ export interface Contact {
 }
 
 export interface Post {
-    Id :string,
-    Content :string,
-    CreatedAt :string,
-    EditedAt? :string,
-    ImageUrls? :string[]
-    PreviousPostId? :string
+    id :string,
+    content :string,
+    createdAt :Date,
+    editedAt? :string,
+    imageUrls? :string[]
+    previousPostId? :string
 }
