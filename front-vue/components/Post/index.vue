@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import type { Post } from '~/common/models';
-
-const post = ref<Post>(
-    {
-        Id: '1234567890',
-        Content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!',
-        CreatedAt: '12:38 AM 23/09/2024',
-        ImageUrls: ['https://primefaces.org/cdn/primevue/images/galleria/galleria1.jpg','https://primefaces.org/cdn/primevue/images/galleria/galleria2.jpg','https://primefaces.org/cdn/primevue/images/galleria/galleria3.jpg','https://primefaces.org/cdn/primevue/images/galleria/galleria4.jpg']
-    }
-)
+const props = defineProps({
+  post: {
+    type: Object as PropType<Post>,
+    required: true
+  }
+});
 
 const activeIndex = ref(0);
 const responsiveOptions = ref([

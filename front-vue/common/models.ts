@@ -9,6 +9,6 @@ export interface Post {
     Content :string,
     CreatedAt :string,
     EditedAt? :string,
-    ImageUrls :string[]
+    ImageUrls? :string[]
     PreviousPostId? :string
 }
