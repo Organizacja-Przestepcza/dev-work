@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Post } from '~/common/models';
 import { useToast } from "primevue/usetoast";
+import dayjs from 'dayjs';
 
 const props = defineProps({
     post: {
@@ -8,7 +9,9 @@ const props = defineProps({
         required: true
     }
 });
-
+watchEffect(() => {
+    console.log(props.post);
+})
 const activeIndex = ref(0);
 const responsiveOptions = ref([
     {
@@ -85,15 +88,15 @@ const toggleBookmark = () => {
                         <span class="text-gray-500">@admin</span>
                     </span>
                 </button>
-                <span>{{ post.CreatedAt }}</span>
+                <span class="text-gray-500">{{ dayjs(post.createdAt).format('HH:mm DD-MM-YYYY') }}</span>
             </div>
 
             <p class="my-5 mx-2 text-justify">
-                {{ post.Content }}
+                {{ post.content }}
             </p>
-            <div class="flex items-center justify-center">
-                <div class="flex justify-center mx-1">
-                    <Galleria v-model:activeIndex="activeIndex" v-model:visible="displayCustom" :value="post.ImageUrls"
+            <div class="flex items-center ">
+                <div class="flex  mx-1">
+                    <Galleria v-model:activeIndex="activeIndex" v-model:visible="displayCustom" :value="post.imageUrls"
                         :responsiveOptions="responsiveOptions" :numVisible="7" :circular="true" :fullScreen="true"
                         :showItemNavigators="true" :showThumbnails="false">
                         <template #item="slotProps">
@@ -104,10 +107,14 @@ const toggleBookmark = () => {
                         </template>
                     </Galleria>
 
-                    <div v-if="post.ImageUrls" class="flex gap-5 flex-wrap md:flex-nowrap">
-                        <div v-for="(image, index) of post.ImageUrls" :key="index"
-                            class="cursor-pointer w-full md:w-1/4" @click="imageClick(index)">
-                            <img :src="image" :alt="image" class="w-full rounded-md" />
+                    <div v-if="post.imageUrls" class="flex gap-5 flex-wrap md:flex-nowrap ">
+                        <div v-for="(image, index) of post.imageUrls" :key="index" :class="{
+                            'w-full': post.imageUrls.length === 1,
+                            'w-1/2': post.imageUrls.length === 2,
+                            'w-1/3': post.imageUrls.length === 3,
+                            'w-1/4': post.imageUrls.length === 4
+                        }" class="cursor-pointer" @click="imageClick(index)" >
+                            <img :src="image" :alt="image" class="w-full h-48 object-cover rounded-md" />
                         </div>
                     </div>
                 </div>
@@ -139,15 +146,15 @@ const toggleBookmark = () => {
 
                 </div>
                 <div class="flex gap-3 mx-1 mt-3">
-                <Button severity="secondary" @click="toggleBookmark">
-                    <span :class="isBookmarked ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'"
-                        style="font-size: 1rem"></span>
-                </Button>
+                    <Button severity="secondary" @click="toggleBookmark">
+                        <span :class="isBookmarked ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'"
+                            style="font-size: 1rem"></span>
+                    </Button>
                 </div>
             </div>
 
 
         </template>
     </Card>
-<Toast />
+    <Toast />
 </template>

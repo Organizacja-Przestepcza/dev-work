@@ -2,18 +2,11 @@
 import type { Contact, Post } from '~/common/models';
 
 definePageMeta({
-  middleware: 'auth'
+    middleware: 'auth'
 });
 
 const viewport = useViewport();
 
-watch(viewport.breakpoint, (newBreakpoint, oldBreakpoint) => {
-    if (viewport.isLessThan('tablet')) {
-        setPageLayout('mobile');
-    } else {
-        setPageLayout('default');
-    }
-});
 
 const contacts = ref<Contact[]>([
     {
@@ -29,14 +22,15 @@ const contacts = ref<Contact[]>([
         username: 'Kitto Katto'
     }
 ]);
-const post = ref<Post>(
-    {
-        Id: '1234567890',
-        Content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!',
-        CreatedAt: '12:38 AM 23/09/2024',
-        ImageUrls: ['https://primefaces.org/cdn/primevue/images/galleria/galleria1.jpg','https://primefaces.org/cdn/primevue/images/galleria/galleria2.jpg','https://primefaces.org/cdn/primevue/images/galleria/galleria3.jpg','https://primefaces.org/cdn/primevue/images/galleria/galleria4.jpg']
-    }
-);
+
+const token = useCookie('auth_token').value;
+const { status, data: posts } = useFetch('http://localhost:5151/api/post', {
+    headers: {
+        Authorization: `Bearer ${token}` // Dodaj token JWT do nagłówka
+    },
+    lazy: true
+});
+
 
 </script>
 
@@ -46,7 +40,14 @@ const post = ref<Post>(
             <PostFilterPanel />
         </div>
         <div class="w-3/5">
-           <Post :post="post" />
+            <div v-if="status === 'pending'">
+                Loading ...
+            </div>
+
+            <div class="flex flex-col gap-5" v-else >
+                <Post v-for="post in posts" :post="post" />
+            </div>
+
         </div>
         <div class="w-1/5 flex flex-wrap gap-5">
             <Card>
@@ -59,7 +60,7 @@ const post = ref<Post>(
                     </p>
                 </template>
             </Card>
-            
+
             <Card class="w-full">
                 <template #title>Contacts</template>
                 <template #content>
