@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Post } from '~/common/models';
 const props = defineProps({
-  post: {
-    type: Object as PropType<Post>,
-    required: true
-  }
+    post: {
+        type: Object as PropType<Post>,
+        required: true
+    }
 });
 
 const activeIndex = ref(0);
@@ -93,18 +93,16 @@ const toggleBookmark = () => {
                         :responsiveOptions="responsiveOptions" :numVisible="7" :circular="true" :fullScreen="true"
                         :showItemNavigators="true" :showThumbnails="false">
                         <template #item="slotProps">
-                            <img :src="slotProps.item" :alt="slotProps.item.alt"
-                                style="width: 100%; display: block" />
+                            <img :src="slotProps.item" :alt="slotProps.item.alt" style="width: 100%; display: block" />
                         </template>
                         <template #thumbnail="slotProps">
-                            <img :src="slotProps.item" :alt="slotProps.item.alt"
-                                style="display: block" />
+                            <img :src="slotProps.item" :alt="slotProps.item.alt" style="display: block" />
                         </template>
                     </Galleria>
 
                     <div v-if="post.ImageUrls" class="flex gap-5 flex-wrap md:flex-nowrap">
-                        <div v-for="(image, index) of post.ImageUrls" :key="index" class="cursor-pointer w-full md:w-1/4"
-                            @click="imageClick(index)">
+                        <div v-for="(image, index) of post.ImageUrls" :key="index"
+                            class="cursor-pointer w-full md:w-1/4" @click="imageClick(index)">
                             <img :src="image" :alt="image" class="w-full rounded-md" />
                         </div>
                     </div>
@@ -113,32 +111,38 @@ const toggleBookmark = () => {
 
         </template>
         <template #footer>
-            <div class="flex gap-3 mx-1 mt-3">
+            <div class="flex justify-between">
+                <div class="flex gap-3 mx-1 mt-3">
 
-                <Button severity="secondary" @click="toggleLike">
-                    <span :class="isLiked ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'" style="font-size: 1rem"></span>
-                    <Badge :value="likeCount" />
-                </Button>
+                    <Button severity="secondary" @click="toggleLike">
+                        <span :class="isLiked ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'"
+                            style="font-size: 1rem"></span>
+                        <Badge :value="likeCount" />
+                    </Button>
 
 
-                <Button severity="secondary" @click="toggleDislike">
-                    <span :class="isDisliked ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-down'"
-                        style="font-size: 1rem"></span>
-                    <Badge :value="dislikeCount" />
-                </Button>
+                    <Button severity="secondary" @click="toggleDislike">
+                        <span :class="isDisliked ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-down'"
+                            style="font-size: 1rem"></span>
+                        <Badge :value="dislikeCount" />
+                    </Button>
 
-                <Button severity="secondary">
-                    <span :class="'pi pi-comment'"
-                        style="font-size: 1rem"></span>
+                    <Button severity="secondary">
+                        <span :class="'pi pi-comment'" style="font-size: 1rem"></span>
                         <Badge :value="commentsCount" />
-                </Button>
+                    </Button>
 
+
+                </div>
+                <div class="flex gap-3 mx-1 mt-3">
                 <Button severity="secondary" @click="toggleBookmark">
                     <span :class="isBookmarked ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'"
                         style="font-size: 1rem"></span>
                 </Button>
+                </div>
             </div>
-            
+
+
         </template>
     </Card>
 
