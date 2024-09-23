@@ -21,11 +21,18 @@ public class MemberRepository : IMemberRepository
     {
         return await _context.Members.ToListAsync();
     }
+
+    public async Task<List<ChatMember>> GetByChatIdAsync(string id)
+    {
+        return await _context.Members.Where(m => m.ChatId == id).ToListAsync();
+    }
+
     public async Task<ChatMember?> GetByIdAsync(string id)
     {
         return await _context.Members.FindAsync(id);
     }
-    public async Task<List<ChatMember>?> GetByUserAsync(string userId)
+
+    public async Task<List<ChatMember>> GetByUserAsync(string userId)
     {
         return await _context.Members.Where(m => m.UserId == userId).ToListAsync();
     }
@@ -39,6 +46,12 @@ public class MemberRepository : IMemberRepository
     {
         var member = await _context.Members.FirstOrDefaultAsync(m => m.UserId == userId && m.ChatId == chatId);
         return member?.Role is Role.Owner or Role.Admin;
+    }
+
+    public async Task<bool> IsOwnerAsync(string chatId, string userId)
+    {
+        var member = await _context.Members.FirstOrDefaultAsync(m => m.UserId == userId && m.ChatId == chatId);
+        return member?.Role is Role.Owner;
     }
 
     public async Task<ChatMember> AddAsync(ChatMemberRequestModel chatMemberRequest)
