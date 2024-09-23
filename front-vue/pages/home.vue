@@ -34,20 +34,7 @@ const contacts = ref<Contact[]>([
             <PostFilterPanel />
         </div>
         <div class="w-3/5">
-            <Card style="overflow: hidden">
-                <template #header>
-                    <img alt="user header" height="5rem" src="../assets/img/logo.svg" />
-                </template>
-                <template #title>Advanced Card</template>
-                <template #subtitle>Card subtitle</template>
-                <template #content>
-                    <p class="m-0">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error
-                        repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione
-                        quam perferendis esse, cupiditate neque quas!
-                    </p>
-                </template>
-            </Card>
+           <Post />
         </div>
         <div class="w-1/5 flex flex-wrap gap-5">
             <Card>
