@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { Contact, Post } from '~/common/models';
 
+definePageMeta({
+  middleware: 'auth'
+});
 
 const viewport = useViewport();
 
