@@ -6,7 +6,7 @@ interface LoginResponse {
 
 export function useAuth() {
   const config = useRuntimeConfig();
-  const token = useCookie<string>('token');
+  const token = useCookie<string>('auth_token');
 
   // Register
   const register = async (email: string, username:string, password: string) => {
@@ -53,7 +53,8 @@ export function useAuth() {
   };
 
   const logout = () => {
-    token.value = '';
+    token.value = "";
+    navigateTo('/');
   };
 
   const isAuthenticated = () => {
@@ -66,4 +67,7 @@ export function useAuth() {
     logout,
     isAuthenticated,
   };
+
+
+
 }

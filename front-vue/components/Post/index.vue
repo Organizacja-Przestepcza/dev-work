@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Post } from '~/common/models';
+import { useToast } from "primevue/usetoast";
+
 const props = defineProps({
     post: {
         type: Object as PropType<Post>,
@@ -61,8 +63,10 @@ const toggleDislike = () => {
     }
 };
 
+const toast = useToast();
 const toggleBookmark = () => {
     isBookmarked.value = !isBookmarked.value;
+    toast.add({ severity: 'info', summary: 'Info', detail: 'Message Content', life: 3000 });
 };
 
 
@@ -145,5 +149,5 @@ const toggleBookmark = () => {
 
         </template>
     </Card>
-
+<Toast />
 </template>
