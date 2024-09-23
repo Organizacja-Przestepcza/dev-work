@@ -57,7 +57,7 @@ public class PostController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         var post = await _repo.GetByIdAsync(id);
-        if (post?.UserId != _userId) return Unauthorized("You are not the author of this post");
+        if (post?.UserId != _userId) return NotFound("You are not the author of this post or it does not exist");
         await _repo.UpdateAsync(id, postUpdate);
         return Ok($"Post {id} updated successfully");
     }
@@ -68,7 +68,7 @@ public class PostController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         var post = await _repo.GetByIdAsync(id);
-        if (post?.UserId != _userId) return Unauthorized("You are not the author of this post");
+        if (post?.UserId != _userId) return Unauthorized("You are not the author of this post or it does not exist");
         await _repo.DeleteAsync(id);
         return Ok($"Post {id} deleted successfully");
     }

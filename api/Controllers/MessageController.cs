@@ -42,9 +42,9 @@ public class MessageController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
         var message = await _repo.GetByIdAsync(id);
-        if (message == null) return NotFound();
+        if (message == null) return NotFound("You do not have access to this message or it does not exist");
         var isMember = await _memberRepo.IsMemberAsync(message.ChatId, _userId!);
-        if (!isMember) return Unauthorized("You do not have access to this message");
+        if (!isMember) return NotFound("You do not have access to this message or it does not exist");
         return Ok(message.ToMessageResponseModel());
     }
 
@@ -55,7 +55,7 @@ public class MessageController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
         var isMember = await _memberRepo.IsMemberAsync(messageRequest.ChatId, _userId!);
-        if (!isMember) return Unauthorized($"You are not a member in this chat");
+        if (!isMember) return NotFound("You are not a member of this chat or chat does not exist");
         var message = await _repo.CreateAsync(messageRequest, _userId!);
         return Ok($"Message {message.Id} created successfully");
     }
@@ -67,8 +67,7 @@ public class MessageController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
         var message = await _repo.GetByIdAsync(id);
-        if (message == null) return NotFound();
-        if (message.UserId != _userId) return Unauthorized("You are not the owner of this message");
+        if (message?.UserId != _userId) return NotFound("You are not the owner of this message or it does not exist");
         await _repo.UpdateAsync(id, messageUpdate);
         return Ok($"Message {id} updated successfully");
     }
@@ -80,7 +79,7 @@ public class MessageController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
         var message = await _repo.GetByIdAsync(id);
-        if (_userId != message?.UserId) return Unauthorized("You are not the owner of this message");
+        if (message?.UserId != _userId) return NotFound("You are not the owner of this message or it does not exist");
         await _repo.DeleteAsync(id);
         return Ok($"Message {id} deleted successfully");
     }
