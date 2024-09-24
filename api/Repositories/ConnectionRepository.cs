@@ -16,9 +16,19 @@ public class ConnectionRepository : IConnectionRepository
         _context = context;
     }
 
-    public async Task<List<Connection?>> GetAllAsync()
+    public async Task<List<Connection>> GetAllAsync()
     {
         return await _context.Connections.ToListAsync();
+    }
+
+    public async Task<List<Connection>> GetFollowers(string userId)
+    {
+        return await _context.Connections.Where(c => c.FollowingId == userId).ToListAsync();
+    }
+
+    public async Task<List<Connection>> GetFollowings(string userId)
+    {
+        return await _context.Connections.Where(c => c.FollowerId == userId).ToListAsync();
     }
 
 

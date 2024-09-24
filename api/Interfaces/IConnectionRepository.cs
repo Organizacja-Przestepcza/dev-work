@@ -5,7 +5,10 @@ namespace api.Interfaces;
 
 public interface IConnectionRepository
 {
-    Task<List<Connection?>> GetAllAsync();
+    Task<List<Connection>> GetAllAsync();
+    Task<List<Connection>> GetFollowers(string userId);
+    Task<List<Connection>> GetFollowings(string userId);
+
 
     Task<Connection?> GetByIdAsync(string followerId, string followingId);
 

@@ -22,11 +22,31 @@ public class ConnectionController : ControllerBase
         _userRepo = userRepo;
     }
 
-    [HttpGet]
+    [HttpGet("followers")]
+    public async Task<IActionResult> GetFollowers(string id)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        var followers = await _repo.GetFollowers(id);
+        var followersResponseModels = followers.Select(f => f.ToConnectionResponseModel()).ToList();
+        return Ok(followersResponseModels);
+    }
+
+    [HttpGet("following")]
+    public async Task<IActionResult> GetFollowings(string id)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        var followers = await _repo.GetFollowings(id);
+        var followersResponseModels = followers.Select(f => f.ToConnectionResponseModel()).ToList();
+        return Ok(followersResponseModels);
+    }
+
+    [HttpGet("follow")]
     public async Task<IActionResult> GetStatus(string id)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
+        var user = await _userRepo.GetByIdAsync(id);
+        if (user == null) return BadRequest("This user does not exist");
         var connection = await _repo.GetByIdAsync(_userId!, id);
         if (connection == null) return NotFound("You are not following this user");
         return Ok($"You are following this user since {connection.CreatedAt.ToShortDateString()}");
@@ -49,6 +69,8 @@ public class ConnectionController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
+        var user = await _userRepo.GetByIdAsync(id);
+        if (user == null) return BadRequest("This user does not exist");
         var connection = await _repo.DeleteAsync(_userId!, id);
         if (connection == null) return NotFound("You are not following this user");
         return Ok("You are no longer following this user");
