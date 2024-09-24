@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import dayjs from 'dayjs';
-import type { Comment, Post } from '~/common/models';
+import type { Post } from '~/common/models';
 const props = defineProps({
     previousPostId: {
         type: String,
