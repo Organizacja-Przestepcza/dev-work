@@ -11,7 +11,7 @@ public static class BookmarkMappers
         {
             Id = bookmark.Id,
             CreatedAt = bookmark.CreatedAt,
-            Post = bookmark.Post.ToPostResponseModel()
+            Post = null
         };
     }
 
