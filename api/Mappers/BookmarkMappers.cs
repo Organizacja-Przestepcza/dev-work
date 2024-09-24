@@ -5,7 +5,7 @@ namespace api.Mappers;
 
 public static class BookmarkMappers
 {
-    public static BookmarkResponseModel ToBookmarkResponseModel(this Bookmark bookmark)
+    public static BookmarkResponseModel ToBookmarkResponseModel(this Bookmark? bookmark)
     {
         return new BookmarkResponseModel
         {

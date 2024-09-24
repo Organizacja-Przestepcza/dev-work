@@ -48,6 +48,7 @@ public class BookmarkController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
         var bookmark = await _repo.CreateAsync(_userId!, bookmarkRequestModel);
+        if (bookmark == null) return BadRequest("You have already bookmarked this post");
         return CreatedAtAction(nameof(GetById), new { id = bookmark.Id }, bookmark.ToBookmarkResponseModel());
     }
 

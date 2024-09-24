@@ -9,7 +9,7 @@ public interface IBookmarkRepository
 
     Task<Bookmark?> GetByIdAsync(string id);
 
-    Task<Bookmark> CreateAsync(string userId, BookmarkRequestModel chat);
+    Task<Bookmark?> CreateAsync(string userId, BookmarkRequestModel chat);
 
     Task<Bookmark?> DeleteAsync(string id);
 }
