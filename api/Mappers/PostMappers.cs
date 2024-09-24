@@ -14,7 +14,7 @@ public static class PostMappers
             CreatedAt = post.CreatedAt,
             PreviousPostId = post.PreviousPostId,
             ImageUrls = post.Images,
-            CommentCount = post.Comments.Count
+            CommentCount = post.CommentIds.Count
         };
         return postResponseModel;
     }
