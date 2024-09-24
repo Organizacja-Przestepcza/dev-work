@@ -10,7 +10,7 @@ public class PostResponseModel
 
     public DateTime? EditedAt { get; set; }
     public int CommentCount { get; set; }
-    public required UserResponseModel User { get; set; }
+    public UserResponseModel User { get; set; }
     public List<string>? ImageUrls { get; set; }
 
     public string? PreviousPostId { get; set; }
