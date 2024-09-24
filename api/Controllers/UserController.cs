@@ -1,9 +1,9 @@
-using api.Data;
 using api.Dtos.AppUser;
 using api.Interfaces;
 using api.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static api.Helpers.CurrentUserHelper;
 
 namespace api.Controllers;
 
@@ -12,6 +12,7 @@ namespace api.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserRepository _repo;
+    private string? _userId;
 
     public UserController(IUserRepository repo)
     {
@@ -37,12 +38,13 @@ public class UserController : ControllerBase
         return Ok(user.ToUserResponseModel());
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     [Authorize]
-    public async Task<IActionResult> Update(string id, [FromBody] UserUpdateModel userUpdate)
+    public async Task<IActionResult> Update([FromBody] UserUpdateModel userUpdate)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var user = await _repo.UpdateAsync(id, userUpdate);
+        _userId = GetCurrentUserId(HttpContext);
+        var user = await _repo.UpdateAsync(_userId!, userUpdate);
         if (user == null) return NotFound();
         return Ok(user.ToUserResponseModel());
     }
