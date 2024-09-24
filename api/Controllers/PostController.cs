@@ -25,8 +25,7 @@ public class PostController : ControllerBase
     public async Task<IActionResult> GetAll([FromQuery] PaginationQuery query) // debug endpoint
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var posts = await _repo.GetAllOffsetAsync(query);
-        var postResponseModels = posts.Select(s => s.ToPostResponseModel());
+        var postResponseModels = await _repo.GetAllOffsetAsync(query);
         return Ok(postResponseModels);
     }
 
