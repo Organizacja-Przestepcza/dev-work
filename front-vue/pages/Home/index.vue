@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Contact, Post } from '~/common/models';
+import { useToast } from "primevue/usetoast";
 
 definePageMeta({
     middleware: 'auth'
@@ -24,13 +25,29 @@ const contacts = ref<Contact[]>([
 ]);
 
 const token = useCookie('auth_token').value;
-const { status, data: posts } = useFetch('http://localhost:5151/api/post', {
+const runtimeConfig = useRuntimeConfig();
+const { status, data: posts } = useFetch( runtimeConfig.public.ROOT_API +'/post', {
     headers: {
         Authorization: `Bearer ${token}` // Dodaj token JWT do nagłówka
     },
     lazy: true
 });
 
+const toast = useToast();
+const handleToast = (status: string ,isBookmarked :boolean )=>{
+    if(status=='error'){
+        toast.add({ severity: 'error', summary: 'Error occured', detail: 'Unable to bookmark this post.', life: 3000 });
+        return;
+    }
+
+    if(isBookmarked){
+        toast.add({ severity: 'info', summary: 'Added to Bookmarks', detail: 'Post added to bookmarks.', life: 3000 });
+    }
+    else if(!isBookmarked){
+        toast.add({ severity: 'info', summary: 'Removed from Bookmarks', detail: 'Post removed from bookmarks', life: 3000 });
+    }
+
+}
 
 </script>
 
@@ -45,7 +62,7 @@ const { status, data: posts } = useFetch('http://localhost:5151/api/post', {
             </div>
 
             <div class="flex flex-col gap-5" v-else >
-                <Post v-for="post in posts" :post="post" />
+                <Post @bookmark-click="handleToast" v-for="post in posts" :post="post" />
             </div>
 
         </div>
