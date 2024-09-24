@@ -37,7 +37,9 @@ public class BookmarkController : ControllerBase
         _userId = GetCurrentUserId(HttpContext);
         var bookmark = await _repo.GetByIdAsync(id);
         if (bookmark == null) return NotFound();
-        return Ok(bookmark.ToBookmarkResponseModel());
+        var bookmarkResponse = bookmark.ToBookmarkResponseModel();
+        bookmarkResponse.Post = bookmark.Post.ToPostResponseModel();
+        return Ok(bookmarkResponse);
     }
 
     [HttpPost]
