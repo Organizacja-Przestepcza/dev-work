@@ -14,8 +14,3 @@ export interface Post {
   previousPostId?: string;
   commentCount :string;
 }
-
-export interface Comment {
-  user: User;
-  post: Post;
-}
