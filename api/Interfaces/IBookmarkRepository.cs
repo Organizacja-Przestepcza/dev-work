@@ -6,11 +6,11 @@ namespace api.Interfaces;
 
 public interface IBookmarkRepository
 {
-    Task<List<Bookmark>> GetAllAsync();
+    Task<List<Bookmark>> GetAllAsync(string userId);
 
     Task<Bookmark?> GetByIdAsync(string id);
 
-    Task<Bookmark> CreateAsync(BookmarkRequestModel chat);
+    Task<Bookmark> CreateAsync(string userId, BookmarkRequestModel chat);
 
     Task<Bookmark?> DeleteAsync(string id);
 }

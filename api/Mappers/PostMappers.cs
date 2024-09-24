@@ -13,7 +13,9 @@ public static class PostMappers
             Content = post.Content,
             CreatedAt = post.CreatedAt,
             PreviousPostId = post.PreviousPostId,
-            ImageUrls = post.Images
+            ImageUrls = post.Images,
+            CommentCount = post.Comments.Count,
+            User = post.User.ToUserResponseModel()
         };
         return postResponseModel;
     }

@@ -17,6 +17,7 @@ public class Post
     public List<string>? Images { get; set; }
 
     [MaxLength(38)] public string? PreviousPostId { get; set; }
+    public List<Post> Comments { get; set; } = [];
 
     public Post? PreviousPost { get; set; }
     public List<PostInteraction>? PostInteractions { get; set; }

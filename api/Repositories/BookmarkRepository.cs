@@ -16,9 +16,9 @@ public class BookmarkRepository : IBookmarkRepository
         _context = context;
     }
 
-    public async Task<List<Bookmark>> GetAllAsync()
+    public async Task<List<Bookmark>> GetAllAsync(string userId)
     {
-        return await _context.Bookmarks.ToListAsync();
+        return await _context.Bookmarks.Where(b => b.UserId == userId).ToListAsync();
     }
 
     public async Task<Bookmark?> GetByIdAsync(string id)
@@ -26,10 +26,11 @@ public class BookmarkRepository : IBookmarkRepository
         return await _context.Bookmarks.FindAsync(id);
     }
 
-    public async Task<Bookmark> CreateAsync(BookmarkRequestModel bookmarkRequest)
+    public async Task<Bookmark> CreateAsync(string userId, BookmarkRequestModel bookmarkRequest)
     {
         var bookmark = bookmarkRequest.ToBookmark();
         bookmark.Id = Guid.NewGuid().ToString();
+        bookmark.UserId = userId;
         await _context.Bookmarks.AddAsync(bookmark);
         await _context.SaveChangesAsync();
         return bookmark;
