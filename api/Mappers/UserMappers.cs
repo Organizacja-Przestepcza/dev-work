@@ -1,6 +1,5 @@
 using api.Dtos.AppUser;
 using api.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace api.Mappers;
 
@@ -11,15 +10,9 @@ public static class UserMappers
         return new UserResponseModel
         {
             Id = appUser.Id,
-            Email = appUser.Email!,
-            Username = appUser.UserName!
+            Username = appUser.UserName!,
+            DisplayName = appUser.DisplayName,
+            Avatar = appUser.Avatar
         };
-    }
-
-    public static async Task<IdentityResult> SetUserPasswordAsync(UserManager<AppUser> userManager, AppUser appUser,
-        string password)
-    {
-        var result = await userManager.AddPasswordAsync(appUser, password);
-        return result;
     }
 }
