@@ -7,7 +7,7 @@ using static api.Helpers.CurrentUserHelper;
 
 namespace api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api")]
 [ApiController]
 public class UserController : ControllerBase
 {
@@ -19,7 +19,7 @@ public class UserController : ControllerBase
         _repo = repo;
     }
 
-    [HttpGet("all")]
+    [HttpGet("users")]
     [Authorize /*(Policy = IdentityData.RequireAdminPolicyName)*/]
     public async Task<IActionResult> GetAll() // debug
     {
@@ -29,7 +29,7 @@ public class UserController : ControllerBase
         return Ok(userResponseModels);
     }
 
-    [HttpGet]
+    [HttpGet("user")]
     [Authorize]
     public async Task<IActionResult> GetCurrentUser()
     {
@@ -40,7 +40,7 @@ public class UserController : ControllerBase
         return Ok(user.ToUserResponseModel());
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("user/{id}")]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -49,7 +49,7 @@ public class UserController : ControllerBase
         return Ok(user.ToUserResponseModel());
     }
 
-    [HttpPut]
+    [HttpPut("user")]
     [Authorize]
     public async Task<IActionResult> Update([FromBody] UserUpdateModel userUpdate)
     {

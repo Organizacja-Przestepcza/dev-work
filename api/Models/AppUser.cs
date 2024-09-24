@@ -5,6 +5,7 @@ namespace api.Models;
 
 public class AppUser : IdentityUser
 {
+    [MaxLength(128)] public string? DisplayName { get; set; }
     [MaxLength(256)] public string? Bio { get; set; }
 
     [MaxLength(256)] public string? Avatar { get; set; }
