@@ -38,6 +38,9 @@ const handleToast = (status: string, isBookmarked: boolean) => {
 </script>
 
 <template>
-  <Post @bookmark-click="handleToast" v-if="data" :post="data" />
-  <Comment />
+    <div class="flex flex-col gap-5">
+        <Post @bookmark-click="handleToast" v-if="data" :post="data" />
+        <Comment />
+    </div>
+  
 </template>
