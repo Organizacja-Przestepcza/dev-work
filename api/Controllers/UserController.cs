@@ -7,7 +7,7 @@ using static api.Helpers.CurrentUserHelper;
 
 namespace api.Controllers;
 
-[Route("api/user")]
+[Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
 {
@@ -19,7 +19,7 @@ public class UserController : ControllerBase
         _repo = repo;
     }
 
-    [HttpGet]
+    [HttpGet("all")]
     [Authorize /*(Policy = IdentityData.RequireAdminPolicyName)*/]
     public async Task<IActionResult> GetAll() // debug
     {
@@ -27,6 +27,17 @@ public class UserController : ControllerBase
         var users = await _repo.GetAllAsync();
         var userResponseModels = users.Select(s => s.ToUserResponseModel());
         return Ok(userResponseModels);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetCurrentUser()
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        _userId = GetCurrentUserId(HttpContext);
+        var user = await _repo.GetByIdAsync(_userId!);
+        if (user == null) return Unauthorized();
+        return Ok(user.ToUserResponseModel());
     }
 
     [HttpGet("{id}")]
