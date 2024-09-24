@@ -12,6 +12,7 @@ export interface Post {
   editedAt?: string;
   imageUrls?: string[];
   previousPostId?: string;
+  commentCount :string;
 }
 
 export interface Comment {
