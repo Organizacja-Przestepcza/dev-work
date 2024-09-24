@@ -55,6 +55,7 @@ public class PostController : ControllerBase
     public async Task<IActionResult> Update(string id, [FromBody] PostUpdateModel postUpdate)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
+        _userId = GetCurrentUserId(HttpContext);
         var post = await _repo.GetByIdAsync(id);
         if (post?.UserId != _userId) return NotFound("You are not the author of this post or it does not exist");
         await _repo.UpdateAsync(id, postUpdate);
@@ -66,6 +67,7 @@ public class PostController : ControllerBase
     public async Task<IActionResult> Delete(string id)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
+        _userId = GetCurrentUserId(HttpContext);
         var post = await _repo.GetByIdAsync(id);
         if (post?.UserId != _userId) return NotFound("You are not the author of this post or it does not exist");
         await _repo.DeleteAsync(id);
