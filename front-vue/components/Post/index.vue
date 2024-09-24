@@ -73,10 +73,7 @@ const toggleBookmark = async () => {
     const { data, status, error, refresh } = await useFetch(runtimeConfig.public.ROOT_API + "/bookmark", {
         query: { param }
     })
-    console.log("data:", data.value,  );
-    console.log("status", status.value );
-    console.log("error", error.value);
-    console.log("refresh ", refresh);
+   
     if(status.value == 'error'){
         isBookmarked.value = false;
     }
@@ -91,7 +88,7 @@ const toggleBookmark = async () => {
 </script>
 
 <template>
-    <Card style="overflow: hidden" class="cursor-pointer" @click="navigateTo('/home/' + post.id)" >
+    <Card style="overflow: hidden"  >
         <template #content>
             <div class="flex justify-between">
                 <button class="flex justify-center items-center">
@@ -153,7 +150,7 @@ const toggleBookmark = async () => {
                         <Badge :value="dislikeCount" />
                     </Button>
 
-                    <Button severity="secondary">
+                    <Button severity="secondary"  @click="navigateTo('/posts/' + post.id)">
                         <span :class="'pi pi-comment'" style="font-size: 1rem"></span>
                         <Badge :value="commentsCount" />
                     </Button>

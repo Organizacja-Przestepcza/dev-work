@@ -1,13 +1,21 @@
 <script lang="ts" setup>
-import type { Contact } from '~/common/models';
+import type { User } from '~/common/models';
 
-const props = defineProps({
-  contacts: {
-    type: Object as PropType<Contact[]>,
-    required: true
-  }
-});
-
+const contacts = ref<User[]>([
+    {
+        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXx2xFk_wEb1hLQoDo4Ar3YbhosCPyOCfOgA&s',
+        username: 'Catto Catoni'
+        
+    },
+    {
+        avatar: 'https://cdn.prod.website-files.com/5ed475eca0977f7f3f4d7105/5edf22fa1ac939ecdd60632a_Untitled-7_0001_pizzacat-meme1.jpg',
+        username: 'Catissimo Catani'
+    },
+    {
+        avatar: 'https://tr.rbxcdn.com/31b116ca0b953b6f5565319800bab4be/420/420/Hat/Webp',
+        username: 'Kitto Katto'
+    }
+]);
 </script>
 
 <template>
