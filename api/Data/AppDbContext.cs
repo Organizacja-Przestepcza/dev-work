@@ -35,27 +35,15 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
             // Set up relationships
             entity.HasOne(c => c.Follower)
-                .WithMany() // No navigation property needed in AppUser, but could add if needed
+                .WithMany(u => u.FollowingConnections)
                 .HasForeignKey(c => c.FollowerId)
                 .OnDelete(DeleteBehavior.Cascade); // When the follower is deleted, cascade delete the connection
 
             entity.HasOne(c => c.Following)
-                .WithMany() // No navigation property needed in AppUser, but could add if needed
+                .WithMany(u => u.FollowersConnections)
                 .HasForeignKey(c => c.FollowingId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
-
-        modelBuilder.Entity<Connection>()
-            .HasOne(c => c.Follower)
-            .WithMany(u => u.FollowingConnections)
-            .HasForeignKey(c => c.FollowerId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Connection>()
-            .HasOne(c => c.Following)
-            .WithMany(u => u.FollowersConnections)
-            .HasForeignKey(c => c.FollowingId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 
     private void SeedInitial(ModelBuilder modelBuilder)
