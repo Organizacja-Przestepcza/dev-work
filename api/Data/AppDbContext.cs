@@ -44,9 +44,23 @@ public class AppDbContext : IdentityDbContext<AppUser>
                 .HasForeignKey(c => c.FollowingId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+        modelBuilder.Entity<Bookmark>(entity =>
+        {
+            entity.HasKey(b => new { b.UserId, b.PostId });
+
+            entity.HasOne(b => b.Post)
+                .WithMany(p => p.Bookmarks)
+                .HasForeignKey(b => b.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(b => b.AppUser)
+                .WithMany(u => u.Bookmarks)
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
 
-    private void SeedInitial(ModelBuilder modelBuilder)
+    private static void SeedInitial(ModelBuilder modelBuilder)
     {
         List<IdentityRole> roles =
         [

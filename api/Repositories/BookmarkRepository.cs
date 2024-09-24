@@ -21,26 +21,29 @@ public class BookmarkRepository : IBookmarkRepository
         return await _context.Bookmarks.Where(b => b.UserId == userId).ToListAsync();
     }
 
-    public async Task<Bookmark?> GetByIdAsync(string id)
+    public async Task<Bookmark?> GetByIdAsync(string userId, string postId)
     {
-        return await _context.Bookmarks.FindAsync(id);
+        return await _context.Bookmarks.FirstOrDefaultAsync(b => b.UserId == userId && b.PostId == postId);
     }
 
-    public async Task<Bookmark?> CreateAsync(string userId, BookmarkRequestModel bookmarkRequest)
+    public async Task<Bookmark?> CreateAsync(string userId, string postId)
     {
-        var bookmark = _context.Bookmarks.FirstOrDefault(b => b.UserId == userId && b.PostId == bookmarkRequest.PostId);
+        var bookmark = await GetByIdAsync(userId, postId);
         if (bookmark != null) return null;
-        bookmark = bookmarkRequest.ToBookmark();
-        bookmark.Id = Guid.NewGuid().ToString();
-        bookmark.UserId = userId;
+        bookmark = new Bookmark
+        {
+            UserId = userId,
+            PostId = postId,
+            CreatedAt = DateTime.Now
+        };
         await _context.Bookmarks.AddAsync(bookmark);
         await _context.SaveChangesAsync();
         return bookmark;
     }
 
-    public async Task<Bookmark?> DeleteAsync(string id)
+    public async Task<Bookmark?> DeleteAsync(string userId, string postId)
     {
-        var bookmark = await _context.Bookmarks.FindAsync(id);
+        var bookmark = await GetByIdAsync(userId, postId);
         if (bookmark == null) return null;
         _context.Bookmarks.Remove(bookmark);
         await _context.SaveChangesAsync();

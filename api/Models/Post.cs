@@ -15,7 +15,7 @@ public class Post
 
     public AppUser? User { get; set; }
     public List<string>? Images { get; set; }
-
+    public List<Bookmark>? Bookmarks { get; set; }
     [MaxLength(38)] public string? PreviousPostId { get; set; }
     public List<Post> Comments { get; set; } = [];
 

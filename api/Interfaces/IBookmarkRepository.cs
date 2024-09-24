@@ -7,9 +7,9 @@ public interface IBookmarkRepository
 {
     Task<List<Bookmark>> GetAllAsync(string userId);
 
-    Task<Bookmark?> GetByIdAsync(string id);
+    Task<Bookmark?> GetByIdAsync(string userId, string postId);
 
-    Task<Bookmark?> CreateAsync(string userId, BookmarkRequestModel chat);
+    Task<Bookmark?> CreateAsync(string userId, string postId);
 
-    Task<Bookmark?> DeleteAsync(string id);
+    Task<Bookmark?> DeleteAsync(string userId, string postId);
 }

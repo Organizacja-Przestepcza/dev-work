@@ -9,19 +9,8 @@ public static class BookmarkMappers
     {
         return new BookmarkResponseModel
         {
-            Id = bookmark.Id,
             CreatedAt = bookmark.CreatedAt,
             Post = null
-        };
-    }
-
-    public static Bookmark ToBookmark(this BookmarkRequestModel bookmarkRequestModel)
-    {
-        return new Bookmark
-        {
-            CreatedAt = DateTime.Now,
-            UserId = new Guid().ToString(),
-            PostId = bookmarkRequestModel.PostId
         };
     }
 }
