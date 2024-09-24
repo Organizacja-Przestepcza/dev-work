@@ -7,7 +7,7 @@ using static api.Helpers.CurrentUserHelper;
 
 namespace api.Controllers;
 
-[Route("api/message")]
+[Route("api/[controller]s")]
 [ApiController]
 public class MessageController : ControllerBase
 {

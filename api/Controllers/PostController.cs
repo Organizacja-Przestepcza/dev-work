@@ -9,7 +9,7 @@ using static api.Helpers.CurrentUserHelper;
 
 namespace api.Controllers;
 
-[Route("api/post")]
+[Route("api/[controller]s")]
 [ApiController]
 public class PostController : ControllerBase
 {

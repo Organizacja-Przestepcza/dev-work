@@ -9,7 +9,7 @@ using static api.Helpers.CurrentUserHelper;
 
 namespace api.Controllers;
 
-[Route("api/chat")]
+[Route("api/[controller]s")]
 [ApiController]
 public class ChatController : ControllerBase
 {
