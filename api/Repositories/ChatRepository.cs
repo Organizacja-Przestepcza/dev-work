@@ -16,9 +16,10 @@ public class ChatRepository : IChatRepository
         _context = context;
     }
 
-    public async Task<List<Chat>> GetAllAsync()
+
+    public async Task<List<Chat>> GetAllForUserAsync(string userId)
     {
-        return await _context.Chats.ToListAsync();
+        return await _context.Chats.Where(chat => chat.Members.Any(m => m.UserId == userId)).ToListAsync();
     }
 
     public async Task<Chat?> GetByIdAsync(string id)
@@ -47,7 +48,8 @@ public class ChatRepository : IChatRepository
 
     public async Task<Chat?> DeleteAsync(string id)
     {
-        var chat = await _context.Chats.FindAsync(id);
+        var chat = await _context.Chats.Include(c => c.Members).Include(c => c.Messages)
+            .FirstOrDefaultAsync(c => c.Id == id); // TODO: talk this through
         if (chat == null) return null;
         _context.Chats.Remove(chat);
         await _context.SaveChangesAsync();

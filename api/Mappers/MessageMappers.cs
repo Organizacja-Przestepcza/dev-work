@@ -23,8 +23,8 @@ public static class MessageMappers
         return new Message
         {
             Content = messageRequestModel.Content,
-            SenderId = messageRequestModel.SenderId,
-            ReceiverId = messageRequestModel.ReceiverId,
+            UserId = new Guid().ToString(),
+            ChatId = messageRequestModel.ChatId,
             SendDate = DateTime.Now,
             ReplyId = messageRequestModel.ReplyId
         };

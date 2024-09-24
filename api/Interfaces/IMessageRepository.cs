@@ -5,11 +5,11 @@ namespace api.Interfaces;
 
 public interface IMessageRepository
 {
-    Task<List<Message>> GetAllAsync();
+    Task<List<Message>> GetAllAsync(string chatId);
 
     Task<Message?> GetByIdAsync(string id);
 
-    Task<Message> CreateAsync(MessageRequestModel messageRequest);
+    Task<Message> CreateAsync(MessageRequestModel messageRequest, string userId);
 
     Task<Message?> UpdateAsync(string id, MessageUpdateModel messageUpdate);
     Task<Message?> DeleteAsync(string id);
