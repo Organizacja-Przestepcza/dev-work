@@ -10,7 +10,7 @@ export function useAuth() {
 
   // Register
   const register = async (email: string, username:string, password: string) => {
-    const response = await fetch(`${config.public.API_BASE_URL}/account/register`, {
+    const response = await fetch(`${config.public.API_BASE_URL}/user/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export function useAuth() {
   const login = async (username: string, password: string) => {
     try {
     console.log( JSON.stringify({ username, password }));
-      const data = await $fetch<LoginResponse>(`${config.public.API_BASE_URL}/account/login`, {
+      const data = await $fetch<LoginResponse>(`${config.public.API_BASE_URL}/user/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
