@@ -49,7 +49,7 @@ public class ConnectionController : ControllerBase
         if (user == null) return BadRequest("This user does not exist");
         var connection = await _repo.GetByIdAsync(_userId!, id);
         if (connection == null) return NotFound("You are not following this user");
-        return Ok($"You are following this user since {connection.CreatedAt.ToShortDateString()}");
+        return Ok($"You are following {user.UserName} since {connection.CreatedAt.ToShortDateString()}");
     }
 
     [HttpPost("follow")]
@@ -61,7 +61,7 @@ public class ConnectionController : ControllerBase
         if (user == null) return BadRequest("This user does not exist");
         var connection = await _repo.CreateAsync(_userId!, id);
         if (connection == null) return BadRequest("You are already following this user");
-        return Ok("You are now following this user");
+        return Ok($"You are now following {user.UserName}");
     }
 
     [HttpDelete("follow")]
@@ -73,6 +73,6 @@ public class ConnectionController : ControllerBase
         if (user == null) return BadRequest("This user does not exist");
         var connection = await _repo.DeleteAsync(_userId!, id);
         if (connection == null) return NotFound("You are not following this user");
-        return Ok("You are no longer following this user");
+        return Ok($"You are no longer following {user.UserName}");
     }
 }

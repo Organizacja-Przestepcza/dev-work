@@ -56,7 +56,7 @@ public class MessageController : ControllerBase
         var isMember = await _memberRepo.IsMemberAsync(messageRequest.ChatId, _userId!);
         if (!isMember) return NotFound("You are not a member of this chat or chat does not exist");
         var message = await _repo.CreateAsync(messageRequest, _userId!);
-        return Ok($"Message {message.Id} created successfully");
+        return Ok($"Message {message.Id} sent");
     }
 
     [HttpPut("{id}")]
