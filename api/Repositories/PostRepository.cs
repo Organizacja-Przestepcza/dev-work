@@ -20,10 +20,11 @@ public class PostRepository : IPostRepository
     public async Task<List<Post>> GetAllOffsetAsync(PaginationQuery query)
     {
         var skip = query.Page * query.Limit;
-        return await _context.Posts.OrderByDescending(p => p.CreatedAt).Skip(skip).Take(query.Limit).ToListAsync();
+        return await _context.Posts.Where(p => p.PreviousPostId == null).OrderByDescending(p => p.CreatedAt).Skip(skip)
+            .Take(query.Limit).ToListAsync();
     }
 
-    public async Task<List<Post>> GetComments(string id, PaginationQuery query)
+    public async Task<List<Post>> GetCommentsOffsetAsync(string id, PaginationQuery query)
     {
         var skip = query.Page * query.Limit;
         return await _context.Posts.Where(p => p.PreviousPostId == id).OrderBy(p => p.CreatedAt).Skip(skip)
