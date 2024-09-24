@@ -11,14 +11,8 @@ const { data, status, error, refresh } = await useFetch<Post>(runtimeConfig.publ
     headers: {
         Authorization: `Bearer ${token}`
     },
-    lazy: true
 });
-watchEffect(() => {
-    console.log("data: ", data.value);
-    console.log("status: ", status.value);
-    console.log("error: ", error.value);
-    console.log("refresh: ", refresh);
-})
+
 const toast = useToast();
 const handleToast = (status: string, isBookmarked: boolean) => {
     if (status == 'error') {

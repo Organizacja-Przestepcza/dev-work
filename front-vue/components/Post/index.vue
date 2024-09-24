@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Post } from '~/common/models';
+import { type Bookmark, type Post } from '~/common/models';
 
 import dayjs from 'dayjs';
 
@@ -31,7 +31,7 @@ const imageClick = (index: number) => {
 };
 const likeCount = ref(0);
 const dislikeCount = ref(0);
-const commentsCount = ref(Number(props.post.commentCount)??0);
+const commentsCount = ref(Number(props.post.commentCount) ?? 0);
 
 const isLiked = ref(false);
 const isDisliked = ref(false);
@@ -66,29 +66,45 @@ const toggleDislike = () => {
     }
 };
 const runtimeConfig = useRuntimeConfig();
+const token = useCookie('auth_token').value;
 const toggleBookmark = async () => {
 
-    const param = props.post.id;
-
-    const { data, status, error, refresh } = await useFetch(runtimeConfig.public.ROOT_API + "/bookmark", {
-        query: { param }
+    const postId = ref<Bookmark>({
+        postId: props.post.id
     })
+    let data = ref();
+    isBookmarked.value = !isBookmarked.value;
+    if (isBookmarked) {
+        data = await $fetch(runtimeConfig.public.API_BASE_URL + "/bookmarks", {
+        body: {'postId': props.post.id},
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        lazy: true
+    });
+    }
+    else {
+        data = await $fetch(runtimeConfig.public.API_BASE_URL + "/bookmarks", {
+        body: {'postId': props.post.id},
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        lazy: true
+    });
+    }
    
-    if(status.value == 'error'){
-        isBookmarked.value = false;
-    }
-    else{
-        isBookmarked.value = true;
-    }
-    emit('bookmarkClick', status.value, isBookmarked.value);
 
+
+    emit('bookmarkClick', data, isBookmarked.value);
 };
 
 
 </script>
 
 <template>
-    <Card style="overflow: hidden"  >
+    <Card style="overflow: hidden">
         <template #content>
             <div class="flex justify-between">
                 <button class="flex justify-center items-center">
@@ -150,7 +166,7 @@ const toggleBookmark = async () => {
                         <Badge :value="dislikeCount" />
                     </Button>
 
-                    <Button severity="secondary"  @click="navigateTo('/posts/' + post.id)">
+                    <Button severity="secondary" @click="navigateTo('/posts/' + post.id)">
                         <span :class="'pi pi-comment'" style="font-size: 1rem"></span>
                         <Badge :value="commentsCount" />
                     </Button>
