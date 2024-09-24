@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Post } from '~/common/models';
-import { useToast } from "primevue/usetoast";
+
 import dayjs from 'dayjs';
 
 const props = defineProps({
@@ -9,9 +9,9 @@ const props = defineProps({
         required: true
     }
 });
-watchEffect(() => {
-    console.log(props.post);
-})
+
+const emit = defineEmits(['bookmarkClick']);
+
 const activeIndex = ref(0);
 const responsiveOptions = ref([
     {
@@ -65,18 +65,33 @@ const toggleDislike = () => {
         dislikeCount.value--;
     }
 };
+const runtimeConfig = useRuntimeConfig();
+const toggleBookmark = async () => {
 
-const toast = useToast();
-const toggleBookmark = () => {
-    isBookmarked.value = !isBookmarked.value;
-    toast.add({ severity: 'info', summary: 'Info', detail: 'Message Content', life: 3000 });
+    const param = props.post.id;
+
+    const { data, status, error, refresh } = await useFetch(runtimeConfig.public.ROOT_API + "/bookmark", {
+        query: { param }
+    })
+    console.log("data:", data.value,  );
+    console.log("status", status.value );
+    console.log("error", error.value);
+    console.log("refresh ", refresh);
+    if(status.value == 'error'){
+        isBookmarked.value = false;
+    }
+    else{
+        isBookmarked.value = true;
+    }
+    emit('bookmarkClick', status.value, isBookmarked.value);
+
 };
 
 
 </script>
 
 <template>
-    <Card style="overflow: hidden">
+    <Card style="overflow: hidden" class="cursor-pointer" @click="navigateTo('/home/' + post.id)" >
         <template #content>
             <div class="flex justify-between">
                 <button class="flex justify-center items-center">
@@ -113,7 +128,7 @@ const toggleBookmark = () => {
                             'w-1/2': post.imageUrls.length === 2,
                             'w-1/3': post.imageUrls.length === 3,
                             'w-1/4': post.imageUrls.length === 4
-                        }" class="cursor-pointer" @click="imageClick(index)" >
+                        }" class="cursor-pointer" @click="imageClick(index)">
                             <img :src="image" :alt="image" class="w-full h-48 object-cover rounded-md" />
                         </div>
                     </div>
