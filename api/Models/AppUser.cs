@@ -9,8 +9,8 @@ public class AppUser : IdentityUser
 
     [MaxLength(256)] public string? Avatar { get; set; }
 
-    public List<Connection>? FollowingConnections { get; set; }
-    public List<Connection>? FollowedConnections { get; set; }
-    public List<Bookmark>? Bookmarks { get; set; }
-    public List<Post>? Posts { get; set; }
+    public List<Connection>? FollowingConnections { get; set; } = [];
+    public List<Connection>? FollowersConnections { get; set; } = [];
+    public List<Bookmark>? Bookmarks { get; set; } = [];
+    public List<Post>? Posts { get; set; } = [];
 }
