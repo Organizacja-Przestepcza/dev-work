@@ -4,7 +4,7 @@ import Aura from "@primevue/themes/aura";
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-     ROOT_API: 'http://localhost:5151/api'
+      API_BASE_URL: 'http://localhost:5151/api'
     }
     
   },
