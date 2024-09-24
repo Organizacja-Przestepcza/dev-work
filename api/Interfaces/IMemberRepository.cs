@@ -11,7 +11,7 @@ public interface IMemberRepository
     Task<List<ChatMember>> GetByUserAsync(string id);
 
     /// <summary>
-    /// Checks whether a user is a member of a given chat 
+    ///     Checks whether a user is a member of a given chat
     /// </summary>
     /// <param name="chatId">ID of the chat</param>
     /// <param name="userId">ID of the user</param>
@@ -19,7 +19,7 @@ public interface IMemberRepository
     Task<bool> IsMemberAsync(string chatId, string userId);
 
     /// <summary>
-    /// Checks whether a user has elevated privileges in a given chat 
+    ///     Checks whether a user has elevated privileges in a given chat
     /// </summary>
     /// <param name="chatId">ID of the chat</param>
     /// <param name="userId">ID of the user</param>
@@ -27,7 +27,7 @@ public interface IMemberRepository
     Task<bool> IsPrivilegedAsync(string chatId, string userId);
 
     /// <summary>
-    /// Checks whether a user is an owner of a given chat 
+    ///     Checks whether a user is an owner of a given chat
     /// </summary>
     /// <param name="chatId">ID of the chat</param>
     /// <param name="userId">ID of the user</param>

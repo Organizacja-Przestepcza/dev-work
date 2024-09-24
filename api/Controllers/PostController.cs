@@ -1,4 +1,3 @@
-using api.Data;
 using api.Dtos.Post;
 using api.Helpers;
 using api.Interfaces;

@@ -1,5 +1,4 @@
 using api.Dtos.AppUser;
-using api.Dtos.Chat;
 
 namespace api.Dtos.Message;
 

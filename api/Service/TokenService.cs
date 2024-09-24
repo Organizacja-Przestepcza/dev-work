@@ -1,12 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
 using api.Dtos;
 using api.Interfaces;
-using api.Models;
 using Microsoft.IdentityModel.Tokens;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace api.Service;
 
@@ -29,7 +26,7 @@ public class TokenService : ITokenService
             new(ClaimTypes.Email, data.AppUser.Email),
             new(ClaimTypes.Name, data.AppUser.UserName),
             new(ClaimTypes.NameIdentifier, data.AppUser.Id),
-            new(ClaimTypes.Role, data.Roles.First()),
+            new(ClaimTypes.Role, data.Roles.First())
         };
         var encryption = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 

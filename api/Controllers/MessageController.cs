@@ -11,8 +11,8 @@ namespace api.Controllers;
 [ApiController]
 public class MessageController : ControllerBase
 {
-    private readonly IMessageRepository _repo;
     private readonly IMemberRepository _memberRepo;
+    private readonly IMessageRepository _repo;
     private string? _userId;
 
     public MessageController(IMessageRepository repo, IChatRepository chatRepo, IUserRepository userRepo,

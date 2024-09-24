@@ -14,8 +14,8 @@ public interface IChatRepository
     Task<Chat?> UpdateAsync(string id, ChatUpdateModel chatUpdateModel);
 
     /// <summary>
-    /// Deletes asynchronously a chat with all related <c>Members</c> and <c>Messages</c>.
-    /// Use with caution!
+    ///     Deletes asynchronously a chat with all related <c>Members</c> and <c>Messages</c>.
+    ///     Use with caution!
     /// </summary>
     /// <param name="id">ID of a chat to be deleted</param>
     /// <returns></returns>

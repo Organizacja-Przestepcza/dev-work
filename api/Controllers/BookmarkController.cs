@@ -1,7 +1,6 @@
 using api.Dtos.Bookmark;
 using api.Interfaces;
 using api.Mappers;
-using api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static api.Helpers.CurrentUserHelper;

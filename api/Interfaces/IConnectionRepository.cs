@@ -1,4 +1,3 @@
-using api.Dtos.Connection;
 using api.Models;
 
 namespace api.Interfaces;

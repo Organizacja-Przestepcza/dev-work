@@ -13,8 +13,8 @@ namespace api.Controllers;
 [ApiController]
 public class ChatController : ControllerBase
 {
-    private readonly IChatRepository _repo;
     private readonly IMemberRepository _memberRepo;
+    private readonly IChatRepository _repo;
     private string? _userId;
 
     public ChatController(IChatRepository repo, IMemberRepository memberRepo)

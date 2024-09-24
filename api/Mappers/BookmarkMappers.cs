@@ -21,7 +21,7 @@ public static class BookmarkMappers
         {
             CreatedAt = DateTime.Now,
             UserId = new Guid().ToString(),
-            PostId = bookmarkRequestModel.PostId,
+            PostId = bookmarkRequestModel.PostId
         };
     }
 }
