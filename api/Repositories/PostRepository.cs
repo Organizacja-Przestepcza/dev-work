@@ -1,5 +1,6 @@
 using api.Data;
 using api.Dtos.Post;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -16,9 +17,10 @@ public class PostRepository : IPostRepository
         _context = context;
     }
 
-    public async Task<List<Post>> GetAllAsync()
+    public async Task<List<Post>> GetAllOffsetAsync(PaginationQuery query)
     {
-        return await _context.Posts.ToListAsync();
+        var skip = query.Page * query.Limit;
+        return await _context.Posts.Skip(skip).Take(query.Limit).ToListAsync();
     }
 
     public async Task<Post?> GetByIdAsync(string id)

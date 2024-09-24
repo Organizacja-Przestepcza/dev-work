@@ -1,5 +1,6 @@
 using api.Data;
 using api.Dtos.Post;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using Microsoft.AspNetCore.Authorization;
@@ -13,21 +14,19 @@ namespace api.Controllers;
 public class PostController : ControllerBase
 {
     private readonly IPostRepository _repo;
-    private readonly IUserRepository _userRepo;
     private string? _userId;
 
     public PostController(IPostRepository repo, IUserRepository userRepository)
     {
         _repo = repo;
-        _userRepo = userRepository;
     }
 
     [HttpGet]
-    [Authorize /*(Policy = IdentityData.RequireAdminPolicyName)*/]
-    public async Task<IActionResult> GetAll() // debug endpoint
+    [Authorize]
+    public async Task<IActionResult> GetAll([FromQuery] PaginationQuery query) // debug endpoint
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var posts = await _repo.GetAllAsync();
+        var posts = await _repo.GetAllOffsetAsync(query);
         var postResponseModels = posts.Select(s => s.ToPostResponseModel());
         return Ok(postResponseModels);
     }
@@ -48,7 +47,7 @@ public class PostController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
         var post = await _repo.CreateAsync(postRequest, _userId!);
-        return Ok($"Post {post.Id} created successfully");
+        return CreatedAtAction(nameof(GetById), new { id = post.Id }, post.ToPostResponseModel());
     }
 
     [HttpPut("{id}")]
@@ -68,7 +67,7 @@ public class PostController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         var post = await _repo.GetByIdAsync(id);
-        if (post?.UserId != _userId) return Unauthorized("You are not the author of this post or it does not exist");
+        if (post?.UserId != _userId) return NotFound("You are not the author of this post or it does not exist");
         await _repo.DeleteAsync(id);
         return Ok($"Post {id} deleted successfully");
     }
