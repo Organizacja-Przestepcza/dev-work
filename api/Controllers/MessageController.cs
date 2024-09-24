@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using api.Dtos.Message;
 using api.Interfaces;
 using api.Mappers;
@@ -24,12 +23,12 @@ public class MessageController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize /*(Policy = IdentityData.RequireAdminPolicyName)*/]
-    public async Task<IActionResult> GetAll() // debug endpoint
+    [Authorize]
+    public async Task<IActionResult> GetAll([FromQuery] string chatId) // debug endpoint
     {
         _userId = GetCurrentUserId(HttpContext);
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var messages = await _repo.GetAllAsync();
+        var messages = await _repo.GetAllAsync(chatId);
         var messageResponseModels = messages.Select(s => s.ToMessageResponseModel());
 
         return Ok(messageResponseModels);

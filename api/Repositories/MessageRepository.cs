@@ -16,9 +16,9 @@ public class MessageRepository : IMessageRepository
         _context = context;
     }
 
-    public async Task<List<Message>> GetAllAsync()
+    public async Task<List<Message>> GetAllAsync(string chatId)
     {
-        return await _context.Messages.Include(m => m.Sender).ToListAsync();
+        return await _context.Messages.Where(m => m.ChatId == chatId).Include(m => m.Sender).ToListAsync();
     }
 
     public async Task<Message?> GetByIdAsync(string id)
