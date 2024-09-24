@@ -31,7 +31,7 @@ const imageClick = (index: number) => {
 };
 const likeCount = ref(0);
 const dislikeCount = ref(0);
-const commentsCount = ref(0);
+const commentsCount = ref(Number(props.post.commentCount)??0);
 
 const isLiked = ref(false);
 const isDisliked = ref(false);
