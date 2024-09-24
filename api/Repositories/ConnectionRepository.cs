@@ -16,29 +16,36 @@ public class ConnectionRepository : IConnectionRepository
         _context = context;
     }
 
-    public async Task<List<Connection>> GetAllAsync()
+    public async Task<List<Connection?>> GetAllAsync()
     {
         return await _context.Connections.ToListAsync();
     }
 
 
-    public async Task<Connection?> GetByIdAsync(string id)
+    public async Task<Connection?> GetByIdAsync(string followerId, string followingId)
     {
-        return await _context.Connections.FindAsync(id);
+        return await _context.Connections.FirstOrDefaultAsync(c =>
+            c!.FollowerId == followerId && c.FollowingId == followingId);
     }
 
-    public async Task<Connection> CreateAsync(ConnectionRequestModel connectionRequestModel)
+    public async Task<Connection?> CreateAsync(string followerId, string followingId)
     {
-        var connection = connectionRequestModel.ToConnection();
-        connection.Id = Guid.NewGuid().ToString();
+        var connection = await GetByIdAsync(followerId, followingId);
+        if (connection != null) return null;
+        connection = new Connection
+        {
+            FollowingId = followingId,
+            FollowerId = followerId,
+            CreatedAt = DateTime.Now
+        };
         await _context.Connections.AddAsync(connection);
         await _context.SaveChangesAsync();
         return connection;
     }
 
-    public async Task<Connection?> DeleteAsync(string id)
+    public async Task<Connection?> DeleteAsync(string followerId, string followingId)
     {
-        var connection = await _context.Connections.FindAsync(id);
+        var connection = await GetByIdAsync(followerId, followingId);
         if (connection == null) return null;
         _context.Connections.Remove(connection);
         await _context.SaveChangesAsync();
