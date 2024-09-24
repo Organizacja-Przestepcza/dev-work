@@ -1,48 +1,24 @@
 <script setup lang="ts">
 import dayjs from 'dayjs';
-import type { Comment } from '~/common/models';
+import type { Comment, Post } from '~/common/models';
+const props = defineProps({
+    previousPostId: {
+        type: String,
+        required: true
+    }
+});
 
-const comments = ref<Comment[]>([{
-    user: {
-        avatar: 'https://tr.rbxcdn.com/42eb7f0fcc6028fc0c5a23bc45419d37/420/420/Hat/Webp',
-        username: 'Catissimo Cato',
-        displayname: 'CatBoss69'
-    },
-    post: {
-        id: '1',
-        content: 'Comment here',
-        createdAt: new Date(),
-        commentCount: '1'
-    }
-},
-{
-    user: {
-        avatar: 'https://tr.rbxcdn.com/42eb7f0fcc6028fc0c5a23bc45419d37/420/420/Hat/Webp',
-        username: 'Catissimo Cato',
-        displayname: 'CatBoss69'
-    },
-    post: {
-        id: '3',
-        content: 'Second comment here',
-        createdAt: new Date(),
-        commentCount: '1'
-    }
-},
-{
-    user: {
-        avatar: 'https://tr.rbxcdn.com/42eb7f0fcc6028fc0c5a23bc45419d37/420/420/Hat/Webp',
-        username: 'Catissimo Cato',
-        displayname: 'CatBoss69'
+const runtimeConfig = useRuntimeConfig();
+const param = props.previousPostId;
+const token = useCookie('auth_token').value;
+const { data, status, error, refresh } = await useFetch<Post[]>(runtimeConfig.public.API_BASE_URL + "/posts/" + param +"/comments", {
 
-    },
-    post: {
-        id: '2',
-        content: 'Third comment here',
-        createdAt: new Date(),
-        commentCount: '1'
-    }
-}
-]);
+headers: {
+    Authorization: `Bearer ${token}`
+},
+lazy: true
+});
+const comments = data.value;
 </script>
 <template>
     <div>
@@ -50,13 +26,13 @@ const comments = ref<Comment[]>([{
 
             <div v-for="comment in comments">
                 <span class="w-full text-gray-500 pb-5 pi pi-ellipsis-v"></span>
-                <Post :post="comment.post" class="w-full" />
+                <Post :post="comment" class="w-full" />
             </div>
 
 
         </div>
         <div v-else>
-            <span>No contacts found.</span>
+            <span>No comments found.</span>
         </div>
 
     </div>
