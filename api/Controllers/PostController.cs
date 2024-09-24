@@ -41,9 +41,9 @@ public class PostController : ControllerBase
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var post = await _repo.GetByIdAsync(id);
-        if (post == null) return NotFound();
-        return Ok(post.ToPostResponseModel());
+        var postResponseModel = await _repo.GetResponseModelByIdAsync(id);
+        if (postResponseModel == null) return NotFound();
+        return Ok(postResponseModel);
     }
 
     [HttpPost]

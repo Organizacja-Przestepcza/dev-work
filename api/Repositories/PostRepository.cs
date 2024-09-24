@@ -46,6 +46,23 @@ public class PostRepository : IPostRepository
             .Take(query.Limit).ToListAsync();
     }
 
+    public async Task<PostResponseModel?> GetResponseModelByIdAsync(string id)
+    {
+        return await _context.Posts
+            .Where(p => p.Id == id)
+            .Select(p => new PostResponseModel
+            {
+                Id = p.Id,
+                Content = p.Content,
+                CreatedAt = p.CreatedAt,
+                EditedAt = p.EditedAt,
+                CommentCount = _context.Posts.Count(c => c.PreviousPostId == p.Id), // Count of comments (child posts)
+                ImageUrls = p.Images, // Assuming Images holds image URLs
+                PreviousPostId = p.PreviousPostId
+            })
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<Post?> GetByIdAsync(string id)
     {
         return await _context.Posts.FindAsync(id);

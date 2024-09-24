@@ -28,7 +28,9 @@ public class BookmarkRepository : IBookmarkRepository
 
     public async Task<Bookmark> CreateAsync(string userId, BookmarkRequestModel bookmarkRequest)
     {
-        var bookmark = bookmarkRequest.ToBookmark();
+        var bookmark = _context.Bookmarks.FirstOrDefault(b => b.UserId == userId && b.PostId == bookmarkRequest.PostId);
+        if (bookmark != null) return bookmark;
+        bookmark = bookmarkRequest.ToBookmark();
         bookmark.Id = Guid.NewGuid().ToString();
         bookmark.UserId = userId;
         await _context.Bookmarks.AddAsync(bookmark);
