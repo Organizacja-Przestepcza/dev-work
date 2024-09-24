@@ -11,7 +11,7 @@ const viewport = useViewport();
 
 const token = useCookie('auth_token').value;
 const runtimeConfig = useRuntimeConfig();
-const { status, data: posts } = useFetch(runtimeConfig.public.API_BASE_URL + '/post', {
+const { status, data: posts } = useFetch(runtimeConfig.public.API_BASE_URL + '/posts', {
     headers: {
         Authorization: `Bearer ${token}`
     },

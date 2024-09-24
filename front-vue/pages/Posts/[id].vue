@@ -6,7 +6,7 @@ const runtimeConfig = useRuntimeConfig();
 
 const param = route.params.id;
 const token = useCookie('auth_token').value;
-const { data, status, error, refresh } = await useFetch<Post>(runtimeConfig.public.API_BASE_URL + "/post/" + param, {
+const { data, status, error, refresh } = await useFetch<Post>(runtimeConfig.public.API_BASE_URL + "/posts/" + param, {
 
     headers: {
         Authorization: `Bearer ${token}`
