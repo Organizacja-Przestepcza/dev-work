@@ -20,8 +20,8 @@ public static class BookmarkMappers
         return new Bookmark
         {
             CreatedAt = DateTime.Now,
-            UserId = bookmarkRequestModel.UserId,
-            PostId = bookmarkRequestModel.PostId,
+            UserId = new Guid().ToString(),
+            PostId = bookmarkRequestModel.PostId
         };
     }
 }

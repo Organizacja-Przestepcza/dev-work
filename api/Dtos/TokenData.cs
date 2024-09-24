@@ -7,6 +7,7 @@ public class TokenData
         AppUser = user;
         Roles = roles ?? [];
     }
+
     public Models.AppUser AppUser { get; set; }
     public List<string> Roles { get; set; }
 }

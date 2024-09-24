@@ -1,6 +1,7 @@
 using api.Data;
 using api.Dtos;
 using api.Dtos.Account;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -10,13 +11,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
 
-[Route("api/account")]
+[Route("api/user")]
 [ApiController]
 public class AccountController : ControllerBase
 {
     private readonly SignInManager<AppUser> _signInManager;
     private readonly ITokenService _tokenService;
     private readonly UserManager<AppUser> _userManager;
+    private string? _userId;
 
     public AccountController(UserManager<AppUser> userManager, ITokenService tokenService,
         SignInManager<AppUser> signInManager)
@@ -39,7 +41,7 @@ public class AccountController : ControllerBase
             new LoginResponseModel
             {
                 Username = loginRequestModel.Username,
-                Token = _tokenService.CreateToken(new TokenData(user,roles))
+                Token = _tokenService.CreateToken(new TokenData(user, roles))
             });
     }
 
@@ -71,6 +73,18 @@ public class AccountController : ControllerBase
         );
     }
 
+    [HttpDelete]
+    [Authorize]
+    public async Task<IActionResult> DeleteSelf()
+    {
+        _userId = CurrentUserHelper.GetCurrentUserId(HttpContext);
+        var user = await _userManager.FindByIdAsync(_userId!);
+        if (user == null) return NotFound("You should not see this");
+        var result = await _userManager.DeleteAsync(user);
+        if (!result.Succeeded) return BadRequest("Failed to delete your account");
+        return Ok("Your account has been deleted");
+    }
+
     [HttpDelete("{userId}")]
     [Authorize(Policy = IdentityData.RequireAdminPolicyName)]
     public async Task<IActionResult> Delete(string userId)
@@ -80,7 +94,6 @@ public class AccountController : ControllerBase
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null) return NotFound();
-
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded) return BadRequest("Failed to delete user");
 

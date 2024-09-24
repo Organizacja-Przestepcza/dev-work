@@ -1,7 +1,5 @@
 using api.Data;
-using api.Dtos.Connection;
 using api.Interfaces;
-using api.Mappers;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,24 +19,41 @@ public class ConnectionRepository : IConnectionRepository
         return await _context.Connections.ToListAsync();
     }
 
-
-    public async Task<Connection?> GetByIdAsync(string id)
+    public async Task<List<Connection>> GetFollowers(string userId)
     {
-        return await _context.Connections.FindAsync(id);
+        return await _context.Connections.Where(c => c.FollowingId == userId).ToListAsync();
     }
 
-    public async Task<Connection> CreateAsync(ConnectionRequestModel connectionRequestModel)
+    public async Task<List<Connection>> GetFollowings(string userId)
     {
-        var connection = connectionRequestModel.ToConnection();
-        connection.Id = Guid.NewGuid().ToString();
+        return await _context.Connections.Where(c => c.FollowerId == userId).ToListAsync();
+    }
+
+
+    public async Task<Connection?> GetByIdAsync(string followerId, string followingId)
+    {
+        return await _context.Connections.FirstOrDefaultAsync(c =>
+            c!.FollowerId == followerId && c.FollowingId == followingId);
+    }
+
+    public async Task<Connection?> CreateAsync(string followerId, string followingId)
+    {
+        var connection = await GetByIdAsync(followerId, followingId);
+        if (connection != null) return null;
+        connection = new Connection
+        {
+            FollowingId = followingId,
+            FollowerId = followerId,
+            CreatedAt = DateTime.Now
+        };
         await _context.Connections.AddAsync(connection);
         await _context.SaveChangesAsync();
         return connection;
     }
 
-    public async Task<Connection?> DeleteAsync(string id)
+    public async Task<Connection?> DeleteAsync(string followerId, string followingId)
     {
-        var connection = await _context.Connections.FindAsync(id);
+        var connection = await GetByIdAsync(followerId, followingId);
         if (connection == null) return null;
         _context.Connections.Remove(connection);
         await _context.SaveChangesAsync();

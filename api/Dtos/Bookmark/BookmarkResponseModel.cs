@@ -1,4 +1,3 @@
-using api.Dtos.AppUser;
 using api.Dtos.Post;
 
 namespace api.Dtos.Bookmark;

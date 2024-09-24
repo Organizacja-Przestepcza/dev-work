@@ -1,24 +1,25 @@
-using api.Data;
 using api.Dtos.AppUser;
 using api.Interfaces;
 using api.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static api.Helpers.CurrentUserHelper;
 
 namespace api.Controllers;
 
-[Route("api/user")]
+[Route("api")]
 [ApiController]
 public class UserController : ControllerBase
 {
     private readonly IUserRepository _repo;
+    private string? _userId;
 
     public UserController(IUserRepository repo)
     {
         _repo = repo;
     }
 
-    [HttpGet]
+    [HttpGet("users")]
     [Authorize /*(Policy = IdentityData.RequireAdminPolicyName)*/]
     public async Task<IActionResult> GetAll() // debug
     {
@@ -28,7 +29,18 @@ public class UserController : ControllerBase
         return Ok(userResponseModels);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("user")]
+    [Authorize]
+    public async Task<IActionResult> GetCurrentUser()
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        _userId = GetCurrentUserId(HttpContext);
+        var user = await _repo.GetByIdAsync(_userId!);
+        if (user == null) return Unauthorized();
+        return Ok(user.ToUserResponseModel());
+    }
+
+    [HttpGet("user/{id}")]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -37,12 +49,13 @@ public class UserController : ControllerBase
         return Ok(user.ToUserResponseModel());
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("user")]
     [Authorize]
-    public async Task<IActionResult> Update(string id, [FromBody] UserUpdateModel userUpdate)
+    public async Task<IActionResult> Update([FromBody] UserUpdateModel userUpdate)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var user = await _repo.UpdateAsync(id, userUpdate);
+        _userId = GetCurrentUserId(HttpContext);
+        var user = await _repo.UpdateAsync(_userId!, userUpdate);
         if (user == null) return NotFound();
         return Ok(user.ToUserResponseModel());
     }
