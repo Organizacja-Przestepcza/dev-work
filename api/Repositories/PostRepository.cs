@@ -20,12 +20,12 @@ public class PostRepository : IPostRepository
     public async Task<List<Post>> GetAllOffsetAsync(PaginationQuery query)
     {
         var skip = query.Page * query.Limit;
-        return await _context.Posts.Skip(skip).Take(query.Limit).ToListAsync();
+        return await _context.Posts.Include(p => p.User).Skip(skip).Take(query.Limit).ToListAsync();
     }
 
     public async Task<Post?> GetByIdAsync(string id)
     {
-        return await _context.Posts.FindAsync(id);
+        return await _context.Posts.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<Post> CreateAsync(PostRequestModel postRequest, string userId)
