@@ -18,12 +18,13 @@ public class BookmarkRepository : IBookmarkRepository
 
     public async Task<List<Bookmark>> GetAllAsync(string userId)
     {
-        return await _context.Bookmarks.Where(b => b.UserId == userId).ToListAsync();
+        return await _context.Bookmarks.Include(b => b.Post).Where(b => b.UserId == userId).ToListAsync();
     }
 
     public async Task<Bookmark?> GetByIdAsync(string userId, string postId)
     {
-        return await _context.Bookmarks.FirstOrDefaultAsync(b => b.UserId == userId && b.PostId == postId);
+        return await _context.Bookmarks.Include(b => b.Post)
+            .FirstOrDefaultAsync(b => b.UserId == userId && b.PostId == postId);
     }
 
     public async Task<Bookmark?> CreateAsync(string userId, string postId)
