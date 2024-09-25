@@ -72,10 +72,10 @@ const toggleBookmark = async () => {
     const postId = ref<Bookmark>({
         postId: props.post.id
     })
-    let data = ref();
+   
     isBookmarked.value = !isBookmarked.value;
-    if (isBookmarked) {
-        data = await $fetch(runtimeConfig.public.API_BASE_URL + "/bookmarks", {
+
+       const { data, status, error, refresh }= await useFetch(runtimeConfig.public.API_BASE_URL + "/bookmarks", {
         body: {'postId': props.post.id},
         method: 'POST',
         headers: {
@@ -83,10 +83,8 @@ const toggleBookmark = async () => {
         },
         lazy: true
     });
-    }
-    else {
-        data = await $fetch(runtimeConfig.public.API_BASE_URL + "/bookmarks", {
-        body: {'postId': props.post.id},
+    if( status.value == 'error'){
+        const response  = await $fetch(runtimeConfig.public.API_BASE_URL + "/bookmarks/"+ data.value, {
         method: 'DELETE',
         headers: {
             Authorization: `Bearer ${token}`
@@ -94,10 +92,14 @@ const toggleBookmark = async () => {
         lazy: true
     });
     }
+
+
+    
+  
    
+    console.log(status.value);
 
-
-    emit('bookmarkClick', data, isBookmarked.value);
+    emit('bookmarkClick', status.value, isBookmarked.value);
 };
 
 
