@@ -6,6 +6,6 @@ namespace api.Dtos.Bookmark;
 public class BookmarkResponseModel
 {
     public string? UserId { get; set; }
-    public required PostResponseModel Post { get; set; }
+    public PostResponseModel? Post { get; set; }
     public required DateTime CreatedAt { get; set; }
 }

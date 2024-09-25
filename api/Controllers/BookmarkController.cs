@@ -44,7 +44,6 @@ public class BookmarkController : ControllerBase
         if (bookmark == null) return NotFound();
         var bookmarkResponse = new BookmarkResponseModel
         {
-            Post = bookmark.Post.ToPostResponseModel(),
             CreatedAt = bookmark.CreatedAt,
             UserId = bookmark.UserId
         };
