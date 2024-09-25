@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import {useFetch, useRuntimeConfig, useCookie } from '#imports';
 import { type Bookmark, type Post } from '~/common/models';
-
 import dayjs from 'dayjs';
 
+const emit = defineEmits(['bookmarkClick']);
 const props = defineProps({
     post: {
         type: Object as PropType<Post>,
@@ -10,9 +12,14 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['bookmarkClick']);
+const imageClick = (index: number) => {
+    activeIndex.value = index;
+    displayCustom.value = true;
+};
+
 
 const activeIndex = ref(0);
+const displayCustom = ref(false);
 const responsiveOptions = ref([
     {
         breakpoint: '768px', // MD (średnie ekrany i większe)
@@ -23,12 +30,7 @@ const responsiveOptions = ref([
         numVisible: 1
     }
 ]);
-const displayCustom = ref(false);
 
-const imageClick = (index: number) => {
-    activeIndex.value = index;
-    displayCustom.value = true;
-};
 const likeCount = ref(0);
 const dislikeCount = ref(0);
 const commentsCount = ref(Number(props.post.commentCount) ?? 0);
@@ -36,6 +38,33 @@ const commentsCount = ref(Number(props.post.commentCount) ?? 0);
 const isLiked = ref(false);
 const isDisliked = ref(false);
 const isBookmarked = ref(false);
+
+const runtimeConfig = useRuntimeConfig();
+const token = useCookie('auth_token').value;
+
+const fetchBookmarks = async () => {
+    const { status, error } = await useFetch(`${runtimeConfig.public.API_BASE_URL}/bookmarks/${props.post.id}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        lazy: true,
+    });
+
+
+    if (status.value === 'success') {
+        isBookmarked.value = true;
+    } else if (status.value === 'error') {
+        isBookmarked.value = false;
+        console.log('Bookmark not found or error:', error.value);
+    }
+};
+
+
+onMounted(() => {
+    fetchBookmarks();
+});
+
 
 const toggleLike = () => {
     isLiked.value = !isLiked.value;
@@ -45,9 +74,7 @@ const toggleLike = () => {
             isDisliked.value = false;
             dislikeCount.value--;
         }
-
-    }
-    else {
+    } else {
         likeCount.value--;
     }
 };
@@ -60,49 +87,37 @@ const toggleDislike = () => {
             isLiked.value = false;
             likeCount.value--;
         }
-    }
-    else {
+    } else {
         dislikeCount.value--;
     }
 };
-const runtimeConfig = useRuntimeConfig();
-const token = useCookie('auth_token').value;
+
+
 const toggleBookmark = async () => {
+    const method = isBookmarked.value ? 'DELETE' : 'POST';
+    const url =  isBookmarked.value ?  `${runtimeConfig.public.API_BASE_URL}/bookmarks/${props.post.id}`: `${runtimeConfig.public.API_BASE_URL}/bookmarks`;
 
-    const postId = ref<Bookmark>({
-        postId: props.post.id
-    })
-   
-    isBookmarked.value = !isBookmarked.value;
+    try {
+        const { status, error } = await useFetch(url, {
+            method,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: isBookmarked.value ? null : JSON.stringify({ postId: props.post.id }),
+        });
 
-       const { data, status, error, refresh }= await useFetch(runtimeConfig.public.API_BASE_URL + "/bookmarks", {
-        body: {'postId': props.post.id},
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${token}`
-        },
-        lazy: true
-    });
-    if( status.value == 'error'){
-        const response  = await $fetch(runtimeConfig.public.API_BASE_URL + "/bookmarks/"+ data.value, {
-        method: 'DELETE',
-        headers: {
-            Authorization: `Bearer ${token}`
-        },
-        lazy: true
-    });
+       
+        if (status.value === 'success') {
+            isBookmarked.value = !isBookmarked.value; 
+            emit('bookmarkClick', status.value, isBookmarked.value);
+        } else {
+            console.error('Error toggling bookmark:', error.value);
+        }
+    } catch (err) {
+        console.error('Fetch error:', err);
     }
-
-
-    
-  
-   
-    console.log(status.value);
-
-    emit('bookmarkClick', status.value, isBookmarked.value);
 };
-
-
 </script>
 
 <template>
@@ -118,15 +133,15 @@ const toggleBookmark = async () => {
                         <span class="text-gray-500">@admin</span>
                     </span>
                 </button>
-                <span class="text-gray-500">{{ dayjs(post.createdAt).format('HH:mm DD-MM-YYYY') }}</span>
+                <span class="text-gray-500">{{ dayjs(props.post.createdAt).format('HH:mm DD-MM-YYYY') }}</span>
             </div>
 
             <p class="my-5 mx-2 text-justify">
-                {{ post.content }}
+                {{ props.post.content }}
             </p>
             <div class="flex items-center ">
-                <div class="flex  mx-1">
-                    <Galleria v-model:activeIndex="activeIndex" v-model:visible="displayCustom" :value="post.imageUrls"
+                <div class="flex mx-1">
+                    <Galleria v-model:activeIndex="activeIndex" v-model:visible="displayCustom" :value="props.post.imageUrls"
                         :responsiveOptions="responsiveOptions" :numVisible="7" :circular="true" :fullScreen="true"
                         :showItemNavigators="true" :showThumbnails="false">
                         <template #item="slotProps">
@@ -137,53 +152,43 @@ const toggleBookmark = async () => {
                         </template>
                     </Galleria>
 
-                    <div v-if="post.imageUrls" class="flex gap-5 flex-wrap md:flex-nowrap ">
-                        <div v-for="(image, index) of post.imageUrls" :key="index" :class="{
-                            'w-full': post.imageUrls.length === 1,
-                            'w-1/2': post.imageUrls.length === 2,
-                            'w-1/3': post.imageUrls.length === 3,
-                            'w-1/4': post.imageUrls.length === 4
+                    <div v-if="props.post.imageUrls" class="flex gap-5 flex-wrap md:flex-nowrap ">
+                        <div v-for="(image, index) of props.post.imageUrls" :key="index" :class="{
+                            'w-full': props.post.imageUrls.length === 1,
+                            'w-1/2': props.post.imageUrls.length === 2,
+                            'w-1/3': props.post.imageUrls.length === 3,
+                            'w-1/4': props.post.imageUrls.length === 4
                         }" class="cursor-pointer" @click="imageClick(index)">
                             <img :src="image" :alt="image" class="w-full h-48 object-cover rounded-md" />
                         </div>
                     </div>
                 </div>
             </div>
-
         </template>
         <template #footer>
             <div class="flex justify-between">
                 <div class="flex gap-3 mx-1 mt-3">
-
                     <Button severity="secondary" @click="toggleLike">
-                        <span :class="isLiked ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'"
-                            style="font-size: 1rem"></span>
+                        <span :class="isLiked ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'" style="font-size: 1rem"></span>
                         <Badge :value="likeCount" />
                     </Button>
 
-
                     <Button severity="secondary" @click="toggleDislike">
-                        <span :class="isDisliked ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-down'"
-                            style="font-size: 1rem"></span>
+                        <span :class="isDisliked ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-down'" style="font-size: 1rem"></span>
                         <Badge :value="dislikeCount" />
                     </Button>
 
-                    <Button severity="secondary" @click="navigateTo('/posts/' + post.id)">
+                    <Button severity="secondary" @click="navigateTo('/posts/' + props.post.id)">
                         <span :class="'pi pi-comment'" style="font-size: 1rem"></span>
                         <Badge :value="commentsCount" />
                     </Button>
-
-
                 </div>
                 <div class="flex gap-3 mx-1 mt-3">
                     <Button severity="secondary" @click="toggleBookmark">
-                        <span :class="isBookmarked ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'"
-                            style="font-size: 1rem"></span>
+                        <span :class="isBookmarked ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'" style="font-size: 1rem"></span>
                     </Button>
                 </div>
             </div>
-
-
         </template>
     </Card>
     <Toast />
