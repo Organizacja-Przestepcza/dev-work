@@ -1,5 +1,6 @@
 using api.Data;
 using api.Dtos.Bookmark;
+using api.Dtos.Post;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -25,6 +26,18 @@ public class BookmarkRepository : IBookmarkRepository
     {
         return await _context.Bookmarks.Include(b => b.Post)
             .FirstOrDefaultAsync(b => b.UserId == userId && b.PostId == postId);
+    }
+
+    public async Task<List<Bookmark>> GetForListAsync(List<string> postIds, string userId)
+    {
+        if (postIds.Count == 0)
+        {
+            return [];
+        }
+
+        return await _context.Bookmarks
+            .Where(b => postIds.Contains(b.PostId) && b.UserId == userId)
+            .ToListAsync();
     }
 
     public async Task<Bookmark?> CreateAsync(string userId, string postId)

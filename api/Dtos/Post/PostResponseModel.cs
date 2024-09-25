@@ -1,4 +1,5 @@
 using api.Dtos.AppUser;
+using api.Dtos.Bookmark;
 
 namespace api.Dtos.Post;
 
@@ -12,5 +13,6 @@ public class PostResponseModel
     public int CommentCount { get; set; }
     public UserResponseModel User { get; set; }
     public List<string>? ImageUrls { get; set; }
+    public BookmarkResponseModel? Bookmark { get; set; }
     public string? PreviousPostId { get; set; }
 }
