@@ -17,9 +17,9 @@ const handleLogin = async()=>{
     console.log(username.value, " ", password.value);
     await login(username.value, password.value);
 
-    navigateTo("/posts");
-  } catch (error) {
     navigateTo("/");
+  } catch (error) {
+    navigateTo("/welcome");
   }
  
 }

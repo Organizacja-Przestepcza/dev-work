@@ -1,21 +1,47 @@
 <script setup lang="ts">
+
+
 definePageMeta({
-  layout: "basic",
+    middleware: 'auth'
 });
+
+const viewport = useViewport();
+
+
+
+const token = useCookie('auth_token').value;
+const runtimeConfig = useRuntimeConfig();
+const { status, data: posts } = useFetch(runtimeConfig.public.API_BASE_URL + '/posts', {
+    headers: {
+        Authorization: `Bearer ${token}`
+    },
+    lazy: true
+});
+
+const toast = useToast();
+const handleToast = (status: string, isBookmarked: boolean) => {
+    if (status == 'error') {
+        toast.add({ severity: 'error', summary: 'Error occured', detail: 'Unable to bookmark this post.', life: 3000 });
+        return;
+    }
+
+    if (isBookmarked) {
+        toast.add({ severity: 'info', summary: 'Added to Bookmarks', detail: 'Post added to bookmarks.', life: 3000 });
+    }
+    else if (!isBookmarked) {
+        toast.add({ severity: 'info', summary: 'Removed from Bookmarks', detail: 'Post removed from bookmarks', life: 3000 });
+    }
+
+}
+
 </script>
 
 <template>
-  <div class="w-full md:w-1/2 px-5">
-    <div class="text-center py-5 md:pt-10">
-      <p class="text-xl md:text-2xl">Connect with like-minded people at</p>
-      <h1 class="text-3xl md:text-5xl">dev-work</h1>
+    <div v-if="status === 'pending'">
+        Loading ...
     </div>
-    <div class="flex justify-center pb-5 md:pb-10 gap-3 md:gap-5 w-full mx-auto">
-      <Button as="router-link" to="register" label="Sign up" severity="secondary"/>
-      <Button as="router-link" to="login" label="Sign in" severity="success" />
+
+    <div class="flex flex-col gap-5" v-else>
+        <Post @bookmark-click="handleToast" v-for="post in posts" :post="post" />
     </div>
-  </div>
-  <div class="w-full md:w-1/2 p-5">
-    <img class="w-28 md:w-48 mx-auto" src="../assets/img/logov4.svg" alt="Logo"/>
-  </div>
 </template>

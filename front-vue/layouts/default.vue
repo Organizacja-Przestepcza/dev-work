@@ -54,7 +54,7 @@ const handleToast = (status: string, isBookmarked: boolean) => {
   <!-- Sticky navbar with background -->
   <div class="sticky top-0 bg-zinc-900 p-3">
     <div class="flex justify-between items-center">
-      <NuxtLink to="/posts">
+      <NuxtLink to="/">
         <img src="../assets/img/logov3.svg" alt="Logo" width="40" />
       </NuxtLink>
 

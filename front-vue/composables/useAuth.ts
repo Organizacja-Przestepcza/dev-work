@@ -54,7 +54,7 @@ export function useAuth() {
 
   const logout = () => {
     token.value = "";
-    navigateTo('/');
+    navigateTo('/welcome');
   };
 
   const isAuthenticated = () => {

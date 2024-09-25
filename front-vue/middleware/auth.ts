@@ -4,7 +4,7 @@ import { jwtDecode } from "jwt-decode";
 export default defineNuxtRouteMiddleware((to, from) => {
   let authCookie = useCookie("auth_token");
   if (authCookie == null || authCookie.value == "") {
-    return navigateTo("/");
+    return navigateTo("/welcome");
   }
   authCookie.value = authCookie.value?.toString() ?? "";
   try {
@@ -16,7 +16,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
   } catch {
     authCookie.value = "";
-    return navigateTo("/");
+    return navigateTo("/welcome");
   }
 
   // Tutaj możesz także zweryfikować token na poziomie klienta, np. sprawdzając jego ważność
