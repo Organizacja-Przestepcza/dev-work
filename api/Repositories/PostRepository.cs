@@ -23,6 +23,7 @@ public class PostRepository : IPostRepository
         var skip = query.Page * query.Limit;
         return await _context.Posts
             .Where(p => p.PreviousPostId == null)
+            .Include(p => p.User)
             .OrderByDescending(p => p.CreatedAt)
             .Skip(skip)
             .Take(query.Limit)
@@ -33,31 +34,50 @@ public class PostRepository : IPostRepository
                 CreatedAt = p.CreatedAt,
                 EditedAt = p.EditedAt,
                 CommentCount = _context.Posts.Count(c => c.PreviousPostId == p.Id),
-                ImageUrls = p.Images,
-                PreviousPostId = p.PreviousPostId
+                User = p.User.ToUserResponseModel(),
+                ImageUrls = p.Images
             })
             .ToListAsync();
     }
 
-    public async Task<List<Post>> GetCommentsOffsetAsync(string id, PaginationQuery query)
+    public async Task<List<PostCommentResponseModel>> GetCommentsOffsetAsync(string id, PaginationQuery query)
     {
         var skip = query.Page * query.Limit;
-        return await _context.Posts.Where(p => p.PreviousPostId == id).OrderBy(p => p.CreatedAt).Skip(skip)
-            .Take(query.Limit).ToListAsync();
+        return await _context.Posts
+            .Where(p => p.PreviousPostId == id)
+            .Include(p => p.User)
+            .Include(p => p.PreviousPost)
+            .ThenInclude(p => p.User)
+            .OrderBy(p => p.CreatedAt)
+            .Skip(skip).Take(query.Limit)
+            .Select(p => new PostCommentResponseModel
+            {
+                Id = p.Id,
+                Content = p.Content,
+                CreatedAt = p.CreatedAt,
+                EditedAt = p.EditedAt,
+                CommentCount = _context.Posts.Count(c => c.PreviousPostId == p.Id),
+                ImageUrls = p.Images,
+                PreviousPost = p.PreviousPost.ToPostResponseModel(),
+                User = p.User.ToUserResponseModel()
+            })
+            .ToListAsync();
     }
 
     public async Task<PostResponseModel?> GetResponseModelByIdAsync(string id)
     {
         return await _context.Posts
             .Where(p => p.Id == id)
+            .Include(p => p.User)
             .Select(p => new PostResponseModel
             {
                 Id = p.Id,
                 Content = p.Content,
                 CreatedAt = p.CreatedAt,
                 EditedAt = p.EditedAt,
-                CommentCount = _context.Posts.Count(c => c.PreviousPostId == p.Id), // Count of comments (child posts)
-                ImageUrls = p.Images, // Assuming Images holds image URLs
+                CommentCount = _context.Posts.Count(c => c.PreviousPostId == p.Id),
+                User = p.User!.ToUserResponseModel(),
+                ImageUrls = p.Images,
                 PreviousPostId = p.PreviousPostId
             })
             .FirstOrDefaultAsync();
@@ -65,7 +85,7 @@ public class PostRepository : IPostRepository
 
     public async Task<Post?> GetByIdAsync(string id)
     {
-        return await _context.Posts.FindAsync(id);
+        return await _context.Posts.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<Post> CreateAsync(PostRequestModel postRequest, string userId)

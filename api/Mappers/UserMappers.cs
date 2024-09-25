@@ -11,8 +11,8 @@ public static class UserMappers
         {
             Id = appUser.Id,
             Username = appUser.UserName!,
-            DisplayName = appUser.DisplayName,
-            Avatar = appUser.Avatar
+            DisplayName = appUser.DisplayName ?? appUser.UserName,
+            Avatar = appUser.Avatar ?? string.Empty
         };
     }
 }

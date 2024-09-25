@@ -33,8 +33,8 @@ public class PostController : ControllerBase
     public async Task<IActionResult> GetComments([FromRoute] string id, [FromQuery] PaginationQuery query)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var posts = await _repo.GetCommentsOffsetAsync(id, query);
-        return Ok(posts);
+        var postResponseModels = await _repo.GetCommentsOffsetAsync(id, query);
+        return Ok(postResponseModels);
     }
 
     [HttpGet("{id}")]

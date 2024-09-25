@@ -7,7 +7,7 @@ namespace api.Interfaces;
 public interface IPostRepository
 {
     Task<List<PostResponseModel>> GetAllOffsetAsync(PaginationQuery query);
-    Task<List<Post>> GetCommentsOffsetAsync(string id, PaginationQuery query);
+    Task<List<PostCommentResponseModel>> GetCommentsOffsetAsync(string id, PaginationQuery query);
     Task<PostResponseModel?> GetResponseModelByIdAsync(string id);
     Task<Post?> GetByIdAsync(string id);
     Task<Post> CreateAsync(PostRequestModel postRequest, string userId);

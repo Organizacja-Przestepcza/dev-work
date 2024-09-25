@@ -29,7 +29,6 @@ public class BookmarkController : ControllerBase
         var bookmarkResponseModels = bookmarks.Select(b => new BookmarkResponseModel
         {
             CreatedAt = DateTime.Now,
-            Post = b.Post.ToPostResponseModel(),
             UserId = b.UserId
         }).ToList();
         return Ok(bookmarkResponseModels);

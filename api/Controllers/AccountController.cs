@@ -53,7 +53,8 @@ public class AccountController : ControllerBase
         var appUser = new AppUser
         {
             UserName = registerRequest.Username,
-            Email = registerRequest.Email
+            Email = registerRequest.Email,
+            DisplayName = registerRequest.Username
         };
 
         var createdUser = await _userManager.CreateAsync(appUser, registerRequest.Password);

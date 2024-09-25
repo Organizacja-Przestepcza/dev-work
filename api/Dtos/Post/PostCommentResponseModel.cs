@@ -2,7 +2,7 @@ using api.Dtos.AppUser;
 
 namespace api.Dtos.Post;
 
-public class PostResponseModel
+public class PostCommentResponseModel
 {
     public required string Id { get; set; }
     public required string Content { get; set; }
@@ -12,5 +12,5 @@ public class PostResponseModel
     public int CommentCount { get; set; }
     public UserResponseModel User { get; set; }
     public List<string>? ImageUrls { get; set; }
-    public string? PreviousPostId { get; set; }
+    public PostResponseModel PreviousPost { get; set; }
 }
