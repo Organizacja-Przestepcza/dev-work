@@ -92,6 +92,7 @@ const handleToast = (status: string, isBookmarked: boolean) => {
             <PostFilterPanel />
         </div>
         <div class="w-3/5">
+
           <slot @bookmark-click="handleToast" />
 
         </div>

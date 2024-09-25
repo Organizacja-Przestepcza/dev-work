@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import {useFetch, useRuntimeConfig, useCookie } from '#imports';
-import { type Bookmark, type Post } from '~/common/models';
+import type{ User, Bookmark, Post } from '~/common/models';
 import dayjs from 'dayjs';
+
 
 const emit = defineEmits(['bookmarkClick']);
 const props = defineProps({
@@ -43,15 +44,13 @@ const runtimeConfig = useRuntimeConfig();
 const token = useCookie('auth_token').value;
 
 const fetchBookmarks = async () => {
-    const { status, error } = await useFetch(`${runtimeConfig.public.API_BASE_URL}/bookmarks/${props.post.id}`, {
+    const {data, status, error} = await useFetch(`${runtimeConfig.public.API_BASE_URL}/bookmarks/${props.post.id}`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${token}`
         },
-        lazy: true,
     });
-
-
+    console.log('data: ', data);
     if (status.value === 'success') {
         isBookmarked.value = true;
     } else if (status.value === 'error') {
@@ -61,7 +60,7 @@ const fetchBookmarks = async () => {
 };
 
 
-onMounted(() => {
+onNuxtReady(() => {
     fetchBookmarks();
 });
 
@@ -94,17 +93,16 @@ const toggleDislike = () => {
 
 
 const toggleBookmark = async () => {
-    const method = isBookmarked.value ? 'DELETE' : 'POST';
-    const url =  isBookmarked.value ?  `${runtimeConfig.public.API_BASE_URL}/bookmarks/${props.post.id}`: `${runtimeConfig.public.API_BASE_URL}/bookmarks`;
+    const methodAction = isBookmarked.value ? 'DELETE' : 'POST';
+    const url = `${runtimeConfig.public.API_BASE_URL}/bookmarks/${props.post.id}`;
 
     try {
         const { status, error } = await useFetch(url, {
-            method,
+            method: methodAction,
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: isBookmarked.value ? null : JSON.stringify({ postId: props.post.id }),
         });
 
        
@@ -118,21 +116,18 @@ const toggleBookmark = async () => {
         console.error('Fetch error:', err);
     }
 };
+const user = ref<User>({
+    avatar: 'https://cdn.prod.website-files.com/5ed475eca0977f7f3f4d7105/5edf22fa1ac939ecdd60632a_Untitled-7_0001_pizzacat-meme1.jpg',
+    username: 'admin',
+    displayname: 'God of this Website'
+})
 </script>
 
 <template>
     <Card style="overflow: hidden">
         <template #content>
             <div class="flex justify-between">
-                <button class="flex justify-center items-center">
-                    <Avatar size="xlarge"
-                        image="https://cdn.prod.website-files.com/5ed475eca0977f7f3f4d7105/5edf22fa1ac939ecdd60632a_Untitled-7_0001_pizzacat-meme1.jpg"
-                        class="mr-2" shape="circle" />
-                    <span class="inline-flex flex-col items-start">
-                        <span class="font-bold">God of this website</span>
-                        <span class="text-gray-500">@admin</span>
-                    </span>
-                </button>
+               <UserTile :user="user"/>
                 <span class="text-gray-500">{{ dayjs(props.post.createdAt).format('HH:mm DD-MM-YYYY') }}</span>
             </div>
 
