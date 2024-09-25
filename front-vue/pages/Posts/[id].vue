@@ -34,7 +34,7 @@ const handleToast = (status: string, isBookmarked: boolean) => {
 <template>
     <div class="flex flex-col gap-5">
         <Post @bookmark-click="handleToast" v-if="data" :post="data" />
-        <Comment v-if="data" :previous-post-id="data?.id" />
+        <Comments v-if="data" :previous-post-id="data?.id" />
     </div>
   
 </template>

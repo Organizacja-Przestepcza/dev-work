@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useToast } from "primevue/usetoast";
+import type { User } from "~/common/models";
 const notificationCount = ref(3);
 
 const menu = ref();
@@ -46,8 +47,10 @@ const handleToast = (status: string, isBookmarked: boolean) => {
     }
 
 }
-
-
+const currentUser = useState<User>("currentUser");
+watchEffect(()=>{
+  console.log(currentUser.value);
+})
 </script>
 
 <template>
@@ -71,7 +74,7 @@ const handleToast = (status: string, isBookmarked: boolean) => {
             <span class="pi pi-bell" style="font-size: 1rem"></span>
             <Badge v-if="notificationCount > 0" :value="notificationCount" />
           </Button>
-          <Avatar icon="pi pi-user" class=" cursor-pointer" shape="circle" @click="toggle" />
+          <Avatar :icon="currentUser?.avatar == ''? 'pi pi-user':''" :image="currentUser?.avatar != ''? currentUser?.avatar : undefined "  class=" cursor-pointer" shape="circle" @click="toggle" />
           <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
             <template #item="{ item, props }">
               <NuxtLink :to="item.link" class="flex justify-start gap-2 p-1 pl-3 items-center">

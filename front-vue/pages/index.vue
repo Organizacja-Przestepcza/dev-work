@@ -6,8 +6,10 @@ definePageMeta({
 });
 
 const viewport = useViewport();
-
-
+const {getCurrentUser} = useAuth();
+onMounted(()=>{
+     getCurrentUser();
+})
 
 const token = useCookie('auth_token').value;
 const runtimeConfig = useRuntimeConfig();

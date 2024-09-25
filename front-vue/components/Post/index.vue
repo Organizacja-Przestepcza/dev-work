@@ -116,18 +116,15 @@ const toggleBookmark = async () => {
         console.error('Fetch error:', err);
     }
 };
-const user = ref<User>({
-    avatar: 'https://cdn.prod.website-files.com/5ed475eca0977f7f3f4d7105/5edf22fa1ac939ecdd60632a_Untitled-7_0001_pizzacat-meme1.jpg',
-    username: 'admin',
-    displayname: 'God of this Website'
-})
+const user = useState<User>('currentUser');
+
 </script>
 
 <template>
     <Card style="overflow: hidden">
         <template #content>
             <div class="flex justify-between">
-               <UserTile :user="user"/>
+               <UserTile :user="props.post.user"/>
                 <span class="text-gray-500">{{ dayjs(props.post.createdAt).format('HH:mm DD-MM-YYYY') }}</span>
             </div>
 

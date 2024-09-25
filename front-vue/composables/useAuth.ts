@@ -1,60 +1,77 @@
-import { useCookie, useRuntimeConfig } from '#app';
-
-interface LoginResponse {
-  token: string;
-}
+import { useCookie, useRuntimeConfig } from "#app";
+import type { LoginResponse, User } from "~/common/models";
 
 export function useAuth() {
   const config = useRuntimeConfig();
-  const token = useCookie<string>('auth_token');
+  const token = useCookie<string>("auth_token");
 
   // Register
-  const register = async (email: string, username:string, password: string) => {
-    const response = await fetch(`${config.public.API_BASE_URL}/user/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, username, password }),
-    });
+  const register = async (
+    email: string,
+    username: string,
+    password: string
+  ) => {
+    const response = await fetch(
+      `${config.public.API_BASE_URL}/user/register`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, username, password }),
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || 'Register failed');
+      throw new Error(errorData.message || "Register failed");
     }
 
     const data: LoginResponse = await response.json();
-    
+
     token.value = data.token;
     return data;
   };
 
-  // Logowanie
+  // Login
 
   const login = async (username: string, password: string) => {
     try {
-    console.log( JSON.stringify({ username, password }));
-      const data = await $fetch<LoginResponse>(`${config.public.API_BASE_URL}/user/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      console.log(JSON.stringify({ username, password }));
+      const data = await $fetch<LoginResponse>(
+        `${config.public.API_BASE_URL}/user/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-        body: JSON.stringify({ username, password }),
-      });
-     
+          body: JSON.stringify({ username, password }),
+        }
+      );
       token.value = data.token;
       return data;
     } catch (error) {
-      // W przypadku błędu, logujemy i rzucamy nowy wyjątek
-      console.error('Login error:', error);
-      throw new Error('Login failed');
+      throw new Error("Login failed");
     }
+  };
+
+  const getCurrentUser = async () => {
+    const currentUser = useState("currentUser");
+    currentUser.value = await $fetch<User>(
+      `${config.public.API_BASE_URL}/user`,
+      {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      }
+    );
+    // console.log(currentUser.value);
   };
 
   const logout = () => {
     token.value = "";
-    navigateTo('/welcome');
+    navigateTo("/welcome");
   };
 
   const isAuthenticated = () => {
@@ -63,11 +80,9 @@ export function useAuth() {
 
   return {
     register,
+    getCurrentUser,
     login,
     logout,
     isAuthenticated,
   };
-
-
-
 }

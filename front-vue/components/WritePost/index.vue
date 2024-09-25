@@ -1,15 +1,27 @@
 <script setup lang="ts">
-import type { User } from '~/common/models';
+import type { Post, PostRequest, User } from '~/common/models';
 
-const user = ref<User>({
-    avatar: 'https://cdn.prod.website-files.com/5ed475eca0977f7f3f4d7105/5edf22fa1ac939ecdd60632a_Untitled-7_0001_pizzacat-meme1.jpg',
-    username: 'admin',
-    displayname: 'God of this Website'
-});
-
+const user = useState<User>('currentUser');
+const runtimeConfig = useRuntimeConfig();
+const token = useCookie('auth_token').value;
 const message = ref('');
-const handlePuslishPost = () =>{
-    
+const handlePublishPost = async() =>{
+    const post = ref<PostRequest>({
+        content: message.value
+    });
+
+    const {data, error,status} = await useFetch(`${runtimeConfig.public.API_BASE_URL}/posts`,{
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        body: post
+    });
+    console.log(status.value);
+    if(status.value == 'success'){
+        await refreshNuxtData();
+    }
+ 
 }
 </script>
 
@@ -25,7 +37,7 @@ const handlePuslishPost = () =>{
             <div class="flex flex-col gap-5 justify-start ">
                 <UserTile :user="user" />
                 <Textarea v-model="message" rows="5" cols="30" />
-                <Button @click="handlePuslishPost" label="Publish" />
+                <Button @click="handlePublishPost" label="Publish" />
             </div>
 
         </template>
