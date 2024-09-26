@@ -29,13 +29,12 @@ public class PostInteractionRepository : IPostInteractionRepository
     public async Task<PostInteraction> CreateAsync(PostInteractionRequestModel postInteractionRequest)
     {
         var postInteraction = postInteractionRequest.ToPostInteraction();
-        postInteraction.Id = Guid.NewGuid().ToString();
         await _context.PostInteractions.AddAsync(postInteraction);
         await _context.SaveChangesAsync();
         return postInteraction;
     }
 
-    public async Task<PostInteraction?> UpdateAsync(string id, PostInteractionUpdateModel postInteractionUpdate)
+    public async Task<PostInteraction?> UpdateAsync(string id, PostInteractionRequestModel postInteractionUpdate)
     {
         var postInteraction = await _context.PostInteractions.FindAsync(id);
         if (postInteraction == null) return null;

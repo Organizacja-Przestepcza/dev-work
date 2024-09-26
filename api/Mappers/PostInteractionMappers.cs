@@ -9,7 +9,6 @@ public static class PostInteractionMappers
     {
         return new PostInteractionResponseModel
         {
-            Id = postInteraction.Id,
             Date = postInteraction.Date,
             PostId = postInteraction.PostId,
             Type = postInteraction.Type,
@@ -22,9 +21,7 @@ public static class PostInteractionMappers
         return new PostInteraction
         {
             Date = DateTime.Now,
-            Type = postInteractionRequest.Type,
-            UserId = postInteractionRequest.UserId,
-            PostId = postInteractionRequest.PostId
+            Type = postInteractionRequest.Type
         };
     }
 }

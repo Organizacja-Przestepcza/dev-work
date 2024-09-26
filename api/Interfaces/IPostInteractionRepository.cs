@@ -10,6 +10,6 @@ public interface IPostInteractionRepository
     Task<PostInteraction?> GetByIdAsync(string id);
 
     Task<PostInteraction> CreateAsync(PostInteractionRequestModel postInteractionRequest);
-    Task<PostInteraction?> UpdateAsync(string id, PostInteractionUpdateModel postInteractionUpdate);
+    Task<PostInteraction?> UpdateAsync(string id, PostInteractionRequestModel postInteractionUpdate);
     Task<PostInteraction?> DeleteAsync(string id);
 }
