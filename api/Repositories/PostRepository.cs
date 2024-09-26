@@ -21,6 +21,7 @@ public class PostRepository : IPostRepository
     public async Task<List<PostResponseModel>> GetAllOffsetAsync(PaginationQuery query)
     {
         var skip = query.Page * query.Limit;
+
         return await _context.Posts
             .Where(p => p.PreviousPostId == null)
             .Include(p => p.User)
