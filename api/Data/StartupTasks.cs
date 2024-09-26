@@ -19,6 +19,7 @@ public static class StartupTasks
             {
                 UserName = "Admin",
                 Email = "admin@admin.com",
+                DisplayName = "Admin",
                 LockoutEnabled = false,
                 NormalizedEmail = "ADMIN@ADMIN.COM",
                 NormalizedUserName = "ADMIN"

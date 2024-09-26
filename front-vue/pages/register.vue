@@ -14,9 +14,9 @@ const handleRegister = async()=>{
   try {
     console.log(email.value, " ", password.value);
     await register(email.value,username.value, password.value);
-    navigateTo("/home");
-  } catch (error) {
     navigateTo("/");
+  } catch (error) {
+    navigateTo("/welcome");
   }
  
 }

@@ -26,38 +26,48 @@ public class BookmarkController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
         var bookmarks = await _repo.GetAllAsync(_userId!);
-        var bookmarkResponseModels = bookmarks.Select(b => b.ToBookmarkResponseModel()).ToList();
+        var bookmarkResponseModels = bookmarks.Select(b => new BookmarkResponseModel
+        {
+            CreatedAt = DateTime.Now,
+            UserId = b.UserId
+        }).ToList();
         return Ok(bookmarkResponseModels);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(string id)
+    [HttpGet("{postId}")]
+    public async Task<IActionResult> GetById(string postId)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
-        var bookmark = await _repo.GetByIdAsync(id);
+        var bookmark = await _repo.GetByIdAsync(_userId!, postId);
         if (bookmark == null) return NotFound();
-        return Ok(bookmark.ToBookmarkResponseModel());
+        var bookmarkResponse = new BookmarkResponseModel
+        {
+            CreatedAt = bookmark.CreatedAt,
+            UserId = bookmark.UserId
+        };
+        return Ok(bookmarkResponse);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] BookmarkRequestModel bookmarkRequestModel)
+    [HttpPost("{postId}")]
+    public async Task<IActionResult> Create(string postId)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
-        var bookmark = await _repo.CreateAsync(_userId!, bookmarkRequestModel);
-        return CreatedAtAction(nameof(GetById), new { id = bookmark.Id }, bookmark.ToBookmarkResponseModel());
+        var bookmark = await _repo.CreateAsync(_userId!, postId);
+        if (bookmark == null) return BadRequest("You have already bookmarked this post");
+        return Ok();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
+    [HttpDelete("{postId}")]
+    public async Task<IActionResult> Delete(string postId)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         _userId = GetCurrentUserId(HttpContext);
-        var bookmark = await _repo.GetByIdAsync(id);
-        if (bookmark?.UserId != _userId)
-            return NotFound("This bookmark does not exist or you do not have permission to delete this bookmark.");
-        await _repo.DeleteAsync(id);
+        var bookmark = await _repo.GetByIdAsync(_userId!, postId);
+        if (bookmark == null)
+            return NotFound("This bookmark does not exist or you do not have permission to delete it.");
+        await _repo.DeleteAsync(_userId!, postId);
         return Ok("Bookmark deleted");
     }
 }

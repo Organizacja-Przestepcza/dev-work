@@ -13,20 +13,46 @@ namespace api.Controllers;
 public class PostController : ControllerBase
 {
     private readonly IPostRepository _repo;
+    private readonly IBookmarkRepository _bookmarkRepo;
     private string? _userId;
 
-    public PostController(IPostRepository repo, IUserRepository userRepository)
+    public PostController(IPostRepository repo, IBookmarkRepository bookmarkRepo)
     {
         _repo = repo;
+        _bookmarkRepo = bookmarkRepo;
     }
 
     [HttpGet]
-    [Authorize]
-    public async Task<IActionResult> GetAll([FromQuery] PaginationQuery query) // debug endpoint
+    public async Task<IActionResult> GetAll([FromQuery] PaginationQuery query)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var posts = await _repo.GetAllOffsetAsync(query);
-        var postResponseModels = posts.Select(s => s.ToPostResponseModel());
+        _userId = GetCurrentUserId(HttpContext);
+        var postResponseModels = await _repo.GetAllOffsetAsync(query);
+        var postIds = postResponseModels.Select(p => p.Id).ToList();
+        var bookmarks = await _bookmarkRepo.GetForListAsync(postIds, _userId);
+        foreach (var post in postResponseModels)
+        {
+            var matchingBookmark = bookmarks.FirstOrDefault(b => b.PostId == post.Id);
+            if (matchingBookmark != null) post.Bookmark = matchingBookmark.ToBookmarkResponseModel();
+        }
+
+        return Ok(postResponseModels);
+    }
+
+    [HttpGet("{id}/comments")]
+    public async Task<IActionResult> GetComments([FromRoute] string id, [FromQuery] PaginationQuery query)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        _userId = GetCurrentUserId(HttpContext);
+        var postResponseModels = await _repo.GetCommentsOffsetAsync(id, query);
+        var postIds = postResponseModels.Select(p => p.Id).ToList();
+        var bookmarks = await _bookmarkRepo.GetForListAsync(postIds, _userId);
+        foreach (var post in postResponseModels)
+        {
+            var matchingBookmark = bookmarks.FirstOrDefault(b => b.PostId == post.Id);
+            if (matchingBookmark != null) post.Bookmark = matchingBookmark.ToBookmarkResponseModel();
+        }
+
         return Ok(postResponseModels);
     }
 
@@ -34,9 +60,12 @@ public class PostController : ControllerBase
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var post = await _repo.GetByIdAsync(id);
-        if (post == null) return NotFound();
-        return Ok(post.ToPostResponseModel());
+        _userId = GetCurrentUserId(HttpContext);
+        var postResponseModel = await _repo.GetResponseModelByIdAsync(id);
+        if (postResponseModel == null) return NotFound();
+        var bookmark = await _bookmarkRepo.GetByIdAsync(_userId, postResponseModel.Id);
+        if (bookmark != null) postResponseModel.Bookmark = bookmark.ToBookmarkResponseModel();
+        return Ok(postResponseModel);
     }
 
     [HttpPost]

@@ -1,23 +1,16 @@
 <script setup lang="ts">
+import type { Post } from '~/common/models';
 
-
-definePageMeta({
-    middleware: 'auth'
-});
-
-const viewport = useViewport();
-const {getCurrentUser} = useAuth();
-onMounted(()=>{
-     getCurrentUser();
-})
-
-const token = useCookie('auth_token').value;
+const route = useRoute();
 const runtimeConfig = useRuntimeConfig();
-const { status, data: posts } = useFetch(runtimeConfig.public.API_BASE_URL + '/posts', {
+
+const param = route.params.id;
+const token = useCookie('auth_token').value;
+const { data, status, error, refresh } = await useFetch<Post>(runtimeConfig.public.API_BASE_URL + "/posts/" + param, {
+
     headers: {
         Authorization: `Bearer ${token}`
     },
-    lazy: true
 });
 
 const toast = useToast();
@@ -39,12 +32,9 @@ const handleToast = (status: string, isBookmarked: boolean) => {
 </script>
 
 <template>
-    <div v-if="status === 'pending'">
-        Loading ...
+    <div class="flex flex-col gap-5">
+        <Post @bookmark-click="handleToast" v-if="data" :post="data" />
+        <Comments v-if="data" :previous-post-id="data?.id" />
     </div>
-
-    <div class="flex flex-col gap-5" v-else>
-        <WritePost />
-        <Post @bookmark-click="handleToast" v-for="post in posts" :post="post" />
-    </div>
+  
 </template>

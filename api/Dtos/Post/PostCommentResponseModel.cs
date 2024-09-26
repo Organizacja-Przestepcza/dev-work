@@ -3,7 +3,7 @@ using api.Dtos.Bookmark;
 
 namespace api.Dtos.Post;
 
-public class PostResponseModel
+public class PostCommentResponseModel
 {
     public required string Id { get; set; }
     public required string Content { get; set; }
@@ -14,5 +14,5 @@ public class PostResponseModel
     public UserResponseModel User { get; set; }
     public List<string>? ImageUrls { get; set; }
     public BookmarkResponseModel? Bookmark { get; set; }
-    public string? PreviousPostId { get; set; }
+    public PostResponseModel PreviousPost { get; set; }
 }

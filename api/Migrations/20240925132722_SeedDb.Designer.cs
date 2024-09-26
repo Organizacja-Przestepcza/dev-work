@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -10,9 +11,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240925132722_SeedDb")]
+    partial class SeedDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -45,25 +48,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-
                             Id = "8faf90a9-d569-456a-92b8-9b3cc0f9e359",
-
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-
                             Id = "66329958-6839-46e9-95ba-16a8d9b2e0aa",
-
                             Name = "Moderator",
                             NormalizedName = "MODERATOR"
                         },
                         new
                         {
-
                             Id = "b5966fb6-cd42-4935-86f6-7febb2566528",
-
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -249,7 +246,6 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.Bookmark", b =>
                 {
-
                     b.Property<string>("UserId")
                         .HasMaxLength(38)
                         .HasColumnType("TEXT");
@@ -259,7 +255,6 @@ namespace api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
-
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "PostId");
@@ -633,9 +628,7 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.Post", b =>
                 {
-
                     b.Navigation("Bookmarks");
-
 
                     b.Navigation("Comments");
 
