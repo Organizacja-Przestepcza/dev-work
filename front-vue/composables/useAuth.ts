@@ -4,7 +4,7 @@ import type { LoginResponse, User } from "~/common/models";
 export function useAuth() {
   const config = useRuntimeConfig();
   const token = useCookie<string>("auth_token");
-
+  const currentUser = useState("currentUser");
   // Register
   const register = async (
     email: string,
@@ -56,7 +56,9 @@ export function useAuth() {
   };
 
   const getCurrentUser = async () => {
-    const currentUser = useState("currentUser");
+    if (currentUser.value != null) {
+      return;
+    }
     currentUser.value = await $fetch<User>(
       `${config.public.API_BASE_URL}/user`,
       {
@@ -65,11 +67,11 @@ export function useAuth() {
         },
       }
     );
-  
   };
 
   const logout = () => {
     token.value = "";
+    currentUser.value = null;
     navigateTo("/welcome");
   };
 

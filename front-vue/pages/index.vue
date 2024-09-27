@@ -5,7 +5,7 @@ definePageMeta({
     middleware: 'auth'
 });
 
-const viewport = useViewport();
+
 const {getCurrentUser} = useAuth();
 onMounted(()=>{
      getCurrentUser();
@@ -19,7 +19,6 @@ const { status, data: posts } = useFetch(runtimeConfig.public.API_BASE_URL + '/p
     },
     lazy: true
 });
-
 const toast = useToast();
 const handleToast = (status: string, isBookmarked: boolean) => {
     if (status == 'error') {
@@ -35,7 +34,6 @@ const handleToast = (status: string, isBookmarked: boolean) => {
     }
 
 }
-
 </script>
 
 <template>
@@ -47,4 +45,5 @@ const handleToast = (status: string, isBookmarked: boolean) => {
         <WritePost />
         <Post @bookmark-click="handleToast" v-for="post in posts" :post="post" />
     </div>
+    <Toast/>
 </template>

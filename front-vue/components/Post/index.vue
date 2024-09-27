@@ -183,5 +183,5 @@ const user = useState<User>('currentUser');
             </div>
         </template>
     </Card>
-    <Toast />
+
 </template>

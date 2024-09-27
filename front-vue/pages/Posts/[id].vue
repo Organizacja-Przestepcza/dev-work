@@ -28,7 +28,6 @@ const handleToast = (status: string, isBookmarked: boolean) => {
     }
 
 }
-
 </script>
 
 <template>
@@ -36,5 +35,5 @@ const handleToast = (status: string, isBookmarked: boolean) => {
         <Post @bookmark-click="handleToast" v-if="data" :post="data" />
         <Comments v-if="data" :previous-post-id="data?.id" />
     </div>
-  
+  <Toast />
 </template>
