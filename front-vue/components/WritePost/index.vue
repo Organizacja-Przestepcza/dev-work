@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Post, PostRequest, User } from '~/common/models';
-
+const emit = defineEmits(['uploadPost']);
 const user = useState<User>('currentUser');
 const runtimeConfig = useRuntimeConfig();
 const token = useCookie('auth_token').value;
@@ -19,7 +19,7 @@ const handlePublishPost = async() =>{
     });
     console.log(status.value);
     if(status.value == 'success'){
-        await refreshNuxtData();
+       emit('uploadPost');
     }
  
 }
