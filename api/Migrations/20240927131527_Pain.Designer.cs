@@ -11,8 +11,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240925132722_SeedDb")]
-    partial class SeedDb
+    [Migration("20240927131527_Pain")]
+    partial class Pain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,19 +48,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8faf90a9-d569-456a-92b8-9b3cc0f9e359",
+                            Id = "39cf41ae-5184-4314-83b9-0dd4c4f5f3b9",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "66329958-6839-46e9-95ba-16a8d9b2e0aa",
+                            Id = "c342f6db-1682-4708-a7f9-4ed484a08a12",
                             Name = "Moderator",
                             NormalizedName = "MODERATOR"
                         },
                         new
                         {
-                            Id = "b5966fb6-cd42-4935-86f6-7febb2566528",
+                            Id = "49a33a98-d358-49e0-99f0-67da89438798",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -420,31 +420,23 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.PostInteraction", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("UserId")
+                        .HasMaxLength(38)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PostId")
                         .HasMaxLength(38)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PostId")
-                        .IsRequired()
-                        .HasMaxLength(38)
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(38)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "PostId");
 
                     b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("PostInteractions");
                 });
@@ -598,7 +590,7 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.HasOne("api.Models.AppUser", "User")
-                        .WithMany()
+                        .WithMany("PostInteractions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -615,6 +607,8 @@ namespace api.Migrations
                     b.Navigation("FollowersConnections");
 
                     b.Navigation("FollowingConnections");
+
+                    b.Navigation("PostInteractions");
 
                     b.Navigation("Posts");
                 });

@@ -11,17 +11,18 @@ public static class PostInteractionMappers
         {
             Date = postInteraction.Date,
             PostId = postInteraction.PostId,
-            Type = postInteraction.Type,
-            UserId = postInteraction.UserId
+            Type = postInteraction.Type
         };
     }
 
-    public static PostInteraction ToPostInteraction(this PostInteractionRequestModel postInteractionRequest)
+    public static PostInteraction ToPostInteraction(this PostInteractionUpdateModel postInteractionUpdate)
     {
         return new PostInteraction
         {
             Date = DateTime.Now,
-            Type = postInteractionRequest.Type
+            Type = postInteractionUpdate.Type,
+            PostId = postInteractionUpdate.PostId,
+            UserId = postInteractionUpdate.UserId
         };
     }
 }
