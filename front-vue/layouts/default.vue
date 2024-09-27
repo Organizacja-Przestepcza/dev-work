@@ -33,7 +33,7 @@ const toggle = (event: any) => {
 
 const toast = useToast();
 const handleToast = (status: string, isBookmarked: boolean) => {
-  console.log(status);
+
     if (status == 'error') {
         toast.add({ severity: 'error', summary: 'Error occured', detail: 'Unable to bookmark this post.', life: 3000 });
         return;
@@ -48,9 +48,7 @@ const handleToast = (status: string, isBookmarked: boolean) => {
 
 }
 const currentUser = useState<User>("currentUser");
-watchEffect(()=>{
-  console.log(currentUser.value);
-})
+
 </script>
 
 <template>

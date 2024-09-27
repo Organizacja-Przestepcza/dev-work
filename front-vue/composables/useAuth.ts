@@ -37,7 +37,6 @@ export function useAuth() {
 
   const login = async (username: string, password: string) => {
     try {
-      console.log(JSON.stringify({ username, password }));
       const data = await $fetch<LoginResponse>(
         `${config.public.API_BASE_URL}/user/login`,
         {
@@ -66,7 +65,7 @@ export function useAuth() {
         },
       }
     );
-    // console.log(currentUser.value);
+  
   };
 
   const logout = () => {

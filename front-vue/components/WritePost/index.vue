@@ -17,7 +17,7 @@ const handlePublishPost = async() =>{
         },
         body: post
     });
-    console.log(status.value);
+
     if(status.value == 'success'){
         await refreshNuxtData();
     }

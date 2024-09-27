@@ -50,12 +50,12 @@ const fetchBookmarks = async () => {
             Authorization: `Bearer ${token}`
         },
     });
-    console.log('data: ', data);
+
     if (status.value === 'success') {
         isBookmarked.value = true;
     } else if (status.value === 'error') {
         isBookmarked.value = false;
-        console.log('Bookmark not found or error:', error.value);
+
     }
 };
 

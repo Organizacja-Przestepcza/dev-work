@@ -12,7 +12,6 @@ const { register } = useAuth();
 
 const handleRegister = async()=>{
   try {
-    console.log(email.value, " ", password.value);
     await register(email.value,username.value, password.value);
     navigateTo("/");
   } catch (error) {
