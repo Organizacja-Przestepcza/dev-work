@@ -13,7 +13,8 @@ export default [
   {
     rules: {
       "no-undef": "off",
-      "vue/multi-word-component-names": "off"
+      "vue/multi-word-component-names": "off",
+      "no-unused-vars": ["error", {varsIgnorePattern: "^_"}]
     }
   }
 ];

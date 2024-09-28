@@ -50,7 +50,7 @@ export function useAuth() {
       );
       token.value = data.token;
       return data;
-    } catch (error) {
+    } catch {
       throw new Error("Login failed");
     }
   };

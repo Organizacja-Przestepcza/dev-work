@@ -7,14 +7,14 @@ definePageMeta({
 const email = ref('');
 const username = ref('');
 const password = ref('');
-const errorMessage = ref('');
+
 const { register } = useAuth();
 
 const handleRegister = async()=>{
   try {
     await register(email.value,username.value, password.value);
     navigateTo("/");
-  } catch (error) {
+  } catch {
     navigateTo("/welcome");
   }
  

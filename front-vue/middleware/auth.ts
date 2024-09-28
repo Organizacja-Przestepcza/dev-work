@@ -1,8 +1,8 @@
 import { useCookie } from "#app";
 import { jwtDecode } from "jwt-decode";
 
-export default defineNuxtRouteMiddleware((to, from) => {
-  let authCookie = useCookie("auth_token");
+export default defineNuxtRouteMiddleware(() => {
+  const authCookie = useCookie("auth_token");
   if (authCookie == null || authCookie.value == "") {
     return navigateTo("/welcome");
   }

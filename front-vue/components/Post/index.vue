@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import {useFetch, useRuntimeConfig, useCookie } from '#imports';
-import type{ User, Bookmark, Post } from '~/common/models';
 import dayjs from 'dayjs';
+import type { PostResponse } from '~/common/models';
 
 
 const emit = defineEmits(['bookmarkClick']);
 const props = defineProps({
     post: {
-        type: Object as PropType<Post>,
+        type: Object as PropType<PostResponse>,
         required: true
     }
 });
@@ -23,18 +21,18 @@ const activeIndex = ref(0);
 const displayCustom = ref(false);
 const responsiveOptions = ref([
     {
-        breakpoint: '768px', // MD (średnie ekrany i większe)
+        breakpoint: '768px', 
         numVisible: 4
     },
     {
-        breakpoint: '575px', // SM (małe ekrany)
+        breakpoint: '575px', 
         numVisible: 1
     }
 ]);
 
 const likeCount = ref(0);
 const dislikeCount = ref(0);
-const commentsCount = ref(Number(props.post.commentCount) ?? 0);
+const commentsCount = ref(Number(props.post.commentCount ?? 0));
 
 const isLiked = ref(false);
 const isDisliked = ref(false);
@@ -44,7 +42,7 @@ const runtimeConfig = useRuntimeConfig();
 const token = useCookie('auth_token').value;
 
 const fetchBookmarks = async () => {
-    const {data, status, error} = await useFetch(`${runtimeConfig.public.API_BASE_URL}/bookmarks/${props.post.id}`, {
+    const {status} = await useFetch(`${runtimeConfig.public.API_BASE_URL}/bookmarks/${props.post.id}`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${token}`
@@ -116,7 +114,6 @@ const toggleBookmark = async () => {
         console.error('Fetch error:', err);
     }
 };
-const user = useState<User>('currentUser');
 
 </script>
 

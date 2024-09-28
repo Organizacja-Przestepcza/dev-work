@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import type { Post } from '~/common/models';
+import type { PostResponse } from '~/common/models';
+
 
 const route = useRoute();
 const runtimeConfig = useRuntimeConfig();
 
 const param = route.params.id;
 const token = useCookie('auth_token').value;
-const { data, status, error, refresh } = await useFetch<Post>(runtimeConfig.public.API_BASE_URL + "/posts/" + param, {
+const { data } = await useFetch<PostResponse>(runtimeConfig.public.API_BASE_URL + "/posts/" + param, {
 
     headers: {
         Authorization: `Bearer ${token}`
