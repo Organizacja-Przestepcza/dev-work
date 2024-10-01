@@ -13,7 +13,7 @@ onMounted(()=>{
 const token = useCookie('auth_token').value;
 const runtimeConfig = useRuntimeConfig();
 
-const { status, data: posts } = useFetch<PostResponse[]>(runtimeConfig.public.API_BASE_URL + '/posts', {
+const { status, data: posts, refresh } = useFetch<PostResponse[]>(runtimeConfig.public.API_BASE_URL + '/posts', {
     headers: {
         Authorization: `Bearer ${token}`
     },
@@ -44,7 +44,7 @@ const handleToast = (status: string, isBookmarked: boolean) => {
     </div>
 
     <div class="flex flex-col gap-5" v-else>
-        <WritePost />
+        <WritePost @upload-post="refresh" />
         <Post @bookmark-click="handleToast" v-for="post in posts" :key="post.id" :post="post" />
     </div>
     <Toast/>

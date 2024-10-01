@@ -5,6 +5,7 @@ const user = useState<User>('currentUser');
 const runtimeConfig = useRuntimeConfig();
 const token = useCookie('auth_token').value;
 const message = ref('');
+const emit = defineEmits(['uploadPost']);
 const handlePublishPost = async() =>{
     const post = ref<PostRequest>({
         content: message.value
