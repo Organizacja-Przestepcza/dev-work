@@ -4,7 +4,7 @@ import type { LoginResponse, User } from "~/common/models";
 export function useAuth() {
   const config = useRuntimeConfig();
   const token = useCookie<string>("auth_token");
-
+  const currentUser = useState("currentUser");
   // Register
   const register = async (
     email: string,
@@ -37,7 +37,6 @@ export function useAuth() {
 
   const login = async (username: string, password: string) => {
     try {
-      console.log(JSON.stringify({ username, password }));
       const data = await $fetch<LoginResponse>(
         `${config.public.API_BASE_URL}/user/login`,
         {
@@ -51,13 +50,15 @@ export function useAuth() {
       );
       token.value = data.token;
       return data;
-    } catch (error) {
+    } catch {
       throw new Error("Login failed");
     }
   };
 
   const getCurrentUser = async () => {
-    const currentUser = useState("currentUser");
+    if (currentUser.value != null) {
+      return;
+    }
     currentUser.value = await $fetch<User>(
       `${config.public.API_BASE_URL}/user`,
       {
@@ -66,11 +67,11 @@ export function useAuth() {
         },
       }
     );
-    // console.log(currentUser.value);
   };
 
   const logout = () => {
     token.value = "";
+    currentUser.value = null;
     navigateTo("/welcome");
   };
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { User } from '~/common/models';
 
-const props = defineProps({
+defineProps({
     user: {
         type: Object as PropType<User>,
         required: true

@@ -1,24 +1,23 @@
 <script setup lang="ts">
-import type { User } from '~/common/models';
-
+import type { UserRequest } from '~/common/models';
 
 definePageMeta({
   layout: 'basic'
 })
 
+const user = ref<UserRequest>({
+  username: '',
+  password: ''
+})
 
-const username = ref('');
-
-const password = ref('');
-const errorMessage = ref('');
 const { login } = useAuth();
-const runtimeConfig = useRuntimeConfig();
+
 const handleLogin = async () => {
   try {
-    await login(username.value, password.value);
-   
+    await login(user.value.username, user.value.password);
+
     navigateTo("/");
-  } catch (error) {
+  } catch {
     navigateTo("/welcome");
   }
 
@@ -31,12 +30,12 @@ const handleLogin = async () => {
     <div class="flex flex-col gap-2">
 
       <label for="username">Username</label>
-      <InputText v-model="username" id="username" type="text" />
+      <InputText v-model="user.username" id="username" type="text" />
 
     </div>
     <div class="flex flex-col gap-2">
       <label for="password">Password</label>
-      <InputText v-model="password" id="password" type="password" />
+      <InputText v-model="user.password" id="password" type="password" />
     </div>
     <div class="flex flex-col gap-5 py-2">
       <Button label="Login" @click="handleLogin" class="w-full mx-auto" />

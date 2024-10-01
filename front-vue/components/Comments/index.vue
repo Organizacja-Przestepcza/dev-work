@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import dayjs from 'dayjs';
-import type { Post } from '~/common/models';
+import type { CommentResponse } from '~/common/models';
+
+
 const props = defineProps({
     previousPostId: {
         type: String,
@@ -11,7 +12,7 @@ const props = defineProps({
 const runtimeConfig = useRuntimeConfig();
 const param = props.previousPostId;
 const token = useCookie('auth_token').value;
-const { data, status, error, refresh } = await useFetch<Post[]>(runtimeConfig.public.API_BASE_URL + "/posts/" + param +"/comments", {
+const { data } = await useFetch<CommentResponse[]>(runtimeConfig.public.API_BASE_URL + "/posts/" + param +"/comments", {
 
 headers: {
     Authorization: `Bearer ${token}`
@@ -24,7 +25,7 @@ const comments = data.value;
     <div>
         <div v-if="comments && comments.length > 0" class="flex flex-col gap-5 text-center ">
 
-            <div v-for="comment in comments">
+            <div v-for="comment in comments" :key="comment.id">
                 <span class="w-full text-gray-500 pb-5 pi pi-ellipsis-v"></span>
                 <Post :post="comment" class="w-full" />
             </div>

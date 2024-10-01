@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useToast } from "primevue/usetoast";
 import type { User } from "~/common/models";
+
 const notificationCount = ref(3);
 
 const menu = ref();
@@ -27,13 +28,13 @@ const items = ref([
   }
 ]);
 
-const toggle = (event: any) => {
+const avatarContextMenuToggle = (event: MouseEvent) => {
   menu.value.toggle(event);
 };
 
 const toast = useToast();
 const handleToast = (status: string, isBookmarked: boolean) => {
-  console.log(status);
+
     if (status == 'error') {
         toast.add({ severity: 'error', summary: 'Error occured', detail: 'Unable to bookmark this post.', life: 3000 });
         return;
@@ -48,9 +49,7 @@ const handleToast = (status: string, isBookmarked: boolean) => {
 
 }
 const currentUser = useState<User>("currentUser");
-watchEffect(()=>{
-  console.log(currentUser.value);
-})
+
 </script>
 
 <template>
@@ -74,9 +73,9 @@ watchEffect(()=>{
             <span class="pi pi-bell" style="font-size: 1rem"></span>
             <Badge v-if="notificationCount > 0" :value="notificationCount" />
           </Button>
-          <Avatar :icon="currentUser?.avatar == ''? 'pi pi-user':''" :image="currentUser?.avatar != ''? currentUser?.avatar : undefined "  class=" cursor-pointer" shape="circle" @click="toggle" />
+          <Avatar :icon="currentUser?.avatar == ''? 'pi pi-user':''" :image="currentUser?.avatar != ''? currentUser?.avatar : undefined "  class=" cursor-pointer" shape="circle" @click="avatarContextMenuToggle" />
           <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
-            <template #item="{ item, props }">
+            <template #item="{ item }">
               <NuxtLink :to="item.link" class="flex justify-start gap-2 p-1 pl-3 items-center">
                 <span :class="item.icon"></span>
                 <span>{{ item.label }}</span>

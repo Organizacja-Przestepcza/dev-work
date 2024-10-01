@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import type { Post } from '~/common/models';
+import type { PostResponse } from '~/common/models';
+
 
 const route = useRoute();
 const runtimeConfig = useRuntimeConfig();
 
 const param = route.params.id;
 const token = useCookie('auth_token').value;
-const { data, status, error, refresh } = await useFetch<Post>(runtimeConfig.public.API_BASE_URL + "/posts/" + param, {
+const { data } = await useFetch<PostResponse>(runtimeConfig.public.API_BASE_URL + "/posts/" + param, {
 
     headers: {
         Authorization: `Bearer ${token}`
@@ -28,7 +29,6 @@ const handleToast = (status: string, isBookmarked: boolean) => {
     }
 
 }
-
 </script>
 
 <template>
@@ -36,5 +36,5 @@ const handleToast = (status: string, isBookmarked: boolean) => {
         <Post @bookmark-click="handleToast" v-if="data" :post="data" />
         <Comments v-if="data" :previous-post-id="data?.id" />
     </div>
-  
+  <Toast />
 </template>

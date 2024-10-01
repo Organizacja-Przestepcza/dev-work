@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Post, PostRequest, User } from '~/common/models';
-const emit = defineEmits(['uploadPost']);
+import { type PostRequest, type User } from '~/common/models';
+
 const user = useState<User>('currentUser');
 const runtimeConfig = useRuntimeConfig();
 const token = useCookie('auth_token').value;
@@ -10,14 +10,14 @@ const handlePublishPost = async() =>{
         content: message.value
     });
 
-    const {data, error,status} = await useFetch(`${runtimeConfig.public.API_BASE_URL}/posts`,{
+    const {status} = await useFetch(`${runtimeConfig.public.API_BASE_URL}/posts`,{
         method: 'POST',
         headers: {
             Authorization: `Bearer ${token}`,
         },
         body: post
     });
-    console.log(status.value);
+
     if(status.value == 'success'){
        emit('uploadPost');
     }
