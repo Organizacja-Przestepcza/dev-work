@@ -54,6 +54,12 @@ const currentUser = useState<User>("currentUser");
     { id: '2', name: 'Chat 2', avatar: '', createdAt: new Date() },
     { id: '3', name: 'Chat 3', avatar: '', createdAt: new Date() }
 ]);
+const openDialog = ref(false);
+const selectedChat = ref<Chat>();
+const handleChat = (chat: Chat) => {
+  selectedChat.value = chat;
+  openDialog.value = true;
+};
 </script>
 
 <template>
@@ -107,13 +113,13 @@ const currentUser = useState<User>("currentUser");
                 <template #title>Chats</template>
                 <template #content>
                     <div v-for="chat in chats" :key="chat.id" class="flex flex-col py-2">
-                        <ChatTile :chat="chat" /> 
+                        <ChatTile :chat="chat" @click="handleChat(chat)" /> 
                     </div>
                 </template>
             </Card>
 
-            <Dialog :visible="true" position="bottomright" :modal="true" :closable="true" :style="{width: '20rem'}">
-              <Chat />
+            <Dialog v-model:visible="openDialog" position="bottomright" :modal="false" :style="{width: '20rem'}">
+              <Chat :chat="selectedChat" />
             </Dialog>
         </div>
     </div>
