@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { type PostRequest, type User } from '~/common/models';
+import { type PostRequest,} from '~/common/models';
 
-const user = useState<User>('currentUser');
+const user = await useAuth().getCurrentUser();
 const runtimeConfig = useRuntimeConfig();
 const token = useCookie('auth_token').value;
 const message = ref('');
@@ -36,7 +36,7 @@ const handlePublishPost = async() =>{
         </template>
         <template #content>
             <div class="flex flex-col gap-5 justify-start ">
-                <UserTile :user="user" />
+                <UserTile v-if="user" :user="user" />
                 <Textarea v-model="message" rows="5" cols="30" />
                 <Button @click="handlePublishPost" label="Publish" />
             </div>

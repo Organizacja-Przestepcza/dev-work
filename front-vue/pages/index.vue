@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import type { Post } from '~/common/models';
 
 definePageMeta({
     middleware: 'auth'
 });
 
-const {getCurrentUser} = useAuth();
+const {posts, status, refresh} = usePosts();
 
 onMounted(()=>{
-     getCurrentUser();
-})
-const token = useCookie('auth_token').value;
-const runtimeConfig = useRuntimeConfig();
-
-const { status, data: posts, refresh } = useFetch<Post[]>(runtimeConfig.public.API_BASE_URL + '/posts', {
-    headers: {
-        Authorization: `Bearer ${token}`
-    },
-    lazy: true
+console.log(posts.value);
 });
+
+// const token = useCookie('auth_token').value;
+// const runtimeConfig = useRuntimeConfig();
+
+// const { status, data: posts, refresh } = useFetch<Post[]>(runtimeConfig.public.API_BASE_URL + '/posts', {
+//     headers: {
+//         Authorization: `Bearer ${token}`
+//     },
+//     lazy: true
+// });
 
 const toast = useToast();
 
@@ -37,8 +37,6 @@ const handleToast = (status: string, isBookmarked: boolean) => {
 
 }
 
-
-
 </script>
 
 <template>
@@ -48,7 +46,7 @@ const handleToast = (status: string, isBookmarked: boolean) => {
 
     <div class="flex flex-col gap-5" v-else>
         <WritePost @upload-post="refresh" />
-        <Post @bookmark-click="handleToast" v-for="post in posts" :key="post.id" :post="post" />
+        <Post @bookmark-click="handleToast" v-for="post in posts" :key="post" :post="post" />
     </div>
     <Toast/>
 </template>

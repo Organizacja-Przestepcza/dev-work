@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useToast } from "primevue/usetoast";
-import type { Chat, User } from "~/common/models";
+import type { Chat } from "~/common/models";
 
 const notificationCount = ref(3);
 
@@ -48,7 +48,8 @@ const handleToast = (status: string, isBookmarked: boolean) => {
     }
 
 }
-const currentUser = useState<User>("currentUser");
+
+const currentUser = await useAuth().getCurrentUser();
   const chats = ref<Chat[]>([
     { id: '1', name: 'Chat 1', avatar: '', createdAt: new Date() },
     { id: '2', name: 'Chat 2', avatar: '', createdAt: new Date() },
@@ -119,7 +120,7 @@ const handleChat = (chat: Chat) => {
             </Card>
 
             <Dialog v-model:visible="openDialog" position="bottomright" :modal="false" :style="{width: '20rem'}">
-              <Chat :chat="selectedChat" />
+              <Chat v-if="selectedChat" :chat="selectedChat" />
             </Dialog>
         </div>
     </div>

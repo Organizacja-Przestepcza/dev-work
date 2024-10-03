@@ -15,7 +15,7 @@ const { login } = useAuth();
 const handleLogin = async () => {
   try {
     await login(user.value.username, user.value.password);
-
+    
     navigateTo("/");
   } catch {
     navigateTo("/welcome");

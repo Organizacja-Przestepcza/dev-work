@@ -4,7 +4,7 @@ import type { Login, User } from "~/common/models";
 export function useAuth() {
   const config = useRuntimeConfig();
   const token = useCookie<string>("auth_token");
-  const currentUser = useState("currentUser");
+  const currentUser = ref<User | null>();
   // Register
   const register = async (
     email: string,
@@ -57,9 +57,9 @@ export function useAuth() {
 
   const getCurrentUser = async () => {
     if (currentUser.value != null) {
-      return;
+      return currentUser.value;
     }
-    currentUser.value = await $fetch<User>(
+    const {data, error} = await useFetch<User>(
       `${config.public.API_BASE_URL}/user`,
       {
         headers: {
@@ -67,6 +67,15 @@ export function useAuth() {
         },
       }
     );
+
+    if (error.value?.statusCode === 401) {
+      //TODO: Add unauthorized page
+      navigateTo("/welcome");
+      return null;
+    }
+
+    currentUser.value = data.value;
+    return currentUser.value;
   };
 
   const logout = () => {
