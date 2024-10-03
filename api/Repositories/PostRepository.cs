@@ -41,7 +41,7 @@ public class PostRepository : IPostRepository
             .ToListAsync();
     }
 
-    public async Task<List<PostCommentResponseModel>> GetCommentsOffsetAsync(string id, PaginationQuery query)
+    public async Task<List<PostResponseModel>> GetCommentsOffsetAsync(string id, PaginationQuery query)
     {
         var skip = query.Page * query.Limit;
         return await _context.Posts
@@ -51,7 +51,7 @@ public class PostRepository : IPostRepository
             .ThenInclude(p => p.User)
             .OrderBy(p => p.CreatedAt)
             .Skip(skip).Take(query.Limit)
-            .Select(p => new PostCommentResponseModel
+            .Select(p => new PostResponseModel
             {
                 Id = p.Id,
                 Content = p.Content,
@@ -59,7 +59,6 @@ public class PostRepository : IPostRepository
                 EditedAt = p.EditedAt,
                 CommentCount = _context.Posts.Count(c => c.PreviousPostId == p.Id),
                 ImageUrls = p.Images,
-                PreviousPost = p.PreviousPost.ToPostResponseModel(),
                 User = p.User.ToUserResponseModel()
             })
             .ToListAsync();
