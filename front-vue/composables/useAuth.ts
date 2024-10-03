@@ -1,5 +1,5 @@
 import { useCookie, useRuntimeConfig } from "#app";
-import type { LoginResponse, User } from "~/common/models";
+import type { Login, User } from "~/common/models";
 
 export function useAuth() {
   const config = useRuntimeConfig();
@@ -27,7 +27,7 @@ export function useAuth() {
       throw new Error(errorData.message || "Register failed");
     }
 
-    const data: LoginResponse = await response.json();
+    const data: Login = await response.json();
 
     token.value = data.token;
     return data;
@@ -37,7 +37,7 @@ export function useAuth() {
 
   const login = async (username: string, password: string) => {
     try {
-      const data = await $fetch<LoginResponse>(
+      const data = await $fetch<Login>(
         `${config.public.API_BASE_URL}/user/login`,
         {
           method: "POST",

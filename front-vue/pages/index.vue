@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PostResponse } from '~/common/models';
+import type { Post } from '~/common/models';
 
 definePageMeta({
     middleware: 'auth'
@@ -13,7 +13,7 @@ onMounted(()=>{
 const token = useCookie('auth_token').value;
 const runtimeConfig = useRuntimeConfig();
 
-const { status, data: posts, refresh } = useFetch<PostResponse[]>(runtimeConfig.public.API_BASE_URL + '/posts', {
+const { status, data: posts, refresh } = useFetch<Post[]>(runtimeConfig.public.API_BASE_URL + '/posts', {
     headers: {
         Authorization: `Bearer ${token}`
     },

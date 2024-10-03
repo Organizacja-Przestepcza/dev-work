@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import dayjs from 'dayjs';
-import type { PostResponse } from '~/common/models';
+import type { Post } from '~/common/models';
 
 
 const emit = defineEmits(['bookmarkClick']);
 const props = defineProps({
     post: {
-        type: Object as PropType<PostResponse>,
+        type: Object as PropType<Post>,
         required: true
     }
 });

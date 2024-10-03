@@ -7,7 +7,7 @@ export interface LoginRequest{
   password: string
 }
 
-export interface LoginResponse{
+export interface Login{
   username: string,
   token: string
 }
@@ -16,7 +16,7 @@ export interface RegisterRequest{
   username: string,
   password: string
 }
-export interface RegisterResponse{
+export interface Register{
   username: string,
   email: string,
   token: string
@@ -42,15 +42,15 @@ export interface UserUpdate{
   bio?: string,
   avatar?: string
 }
-export interface BookmarkResponse{
+export interface Bookmark{
   userId: string,
-  post: PostResponse,
+  post: Post,
   createdAt: Date,
 }
 export interface ChatRequest{
   name: string,
 }
-export interface ChatResponse{
+export interface Chat{
   id: string,
   name: string,
   avatar: string,
@@ -65,7 +65,7 @@ export interface ChatMemberRequest{
   chatId: string,
   userId: string,
 }
-export interface ChatMemberResponse{
+export interface ChatMember{
   id: string,
   role: Role,
   addedAt: Date,
@@ -75,7 +75,7 @@ export interface ChatMemberUpdate{
   userid: string,
   role: Role,
 }
-export interface ConnectionResponse{
+export interface Connection{
   follower: User,
   following: User,
   createdAt: Date,
@@ -85,7 +85,7 @@ export interface MessageRequest{
   content: string,
   replyId?: string,
 }
-export interface MessageResponse{
+export interface Message{
   id: string,
   sender: User,
   content: string,
@@ -97,7 +97,7 @@ export interface MessageResponse{
 export interface MessageUpdate{
   content: string,
 }
-export interface PostResponse{
+export interface Post{
   id: string,
   content: string,
   createdAt: Date,
@@ -106,7 +106,7 @@ export interface PostResponse{
   previousPostId?: string,
   commentCount: string,
   user: User,
-  bookmark?: BookmarkResponse,
+  bookmark?: Bookmark,
 }
 export interface PostUpdate{
   content: string,
@@ -125,8 +125,8 @@ export interface CommentResponse{
  commentCount: string,
  user: User,
  imageUrls?: string[],
- bookmark?: BookmarkResponse,
- previousCommentId?: PostResponse
+ bookmark?: Bookmark,
+ previousCommentId?: Post
 }
 export interface PostInteractionRequest{
   type: InteractionType,
@@ -137,7 +137,7 @@ export interface PostInteractionResponse{
   id: string,
   type: InteractionType,
   user: User,
-  post: PostResponse,
+  post: Post,
   date: Date,
 }
 export interface PostInteractionUpdate{

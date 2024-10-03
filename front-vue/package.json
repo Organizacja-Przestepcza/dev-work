@@ -18,6 +18,7 @@
     "jwt-decode": "^4.0.0",
     "nuxt": "^3.13.0",
     "nuxt-viewport": "^2.1.6",
+    "pinia": "^2.2.4",
     "primeicons": "^7.0.0",
     "primevue": "^4.0.6",
     "vue": "latest",
