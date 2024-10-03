@@ -38,7 +38,8 @@ public class PostInteractionController : ControllerBase
         _userId = GetCurrentUserId(HttpContext);
         var reactions = await _repo.GetAllForUserAsync(type, userId);
         if (reactions.Count == 0) return NoContent();
-        return Ok(reactions);
+        var reactionsResponses = reactions.Select(x => x.ToPostInteractionResponseModel()).ToList();
+        return Ok(reactionsResponses);
     }
 
     [HttpGet("posts/{postId}/reaction")]
