@@ -36,6 +36,9 @@ const handleToast = (status: string, isBookmarked: boolean) => {
     }
 
 }
+
+
+
 </script>
 
 <template>

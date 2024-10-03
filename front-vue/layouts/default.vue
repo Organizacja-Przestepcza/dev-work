@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useToast } from "primevue/usetoast";
-import type { User } from "~/common/models";
+import type { Chat, User } from "~/common/models";
 
 const notificationCount = ref(3);
 
@@ -49,7 +49,11 @@ const handleToast = (status: string, isBookmarked: boolean) => {
 
 }
 const currentUser = useState<User>("currentUser");
-
+  const chats = ref<Chat[]>([
+    { id: '1', name: 'Chat 1', avatar: '', createdAt: new Date() },
+    { id: '2', name: 'Chat 2', avatar: '', createdAt: new Date() },
+    { id: '3', name: 'Chat 3', avatar: '', createdAt: new Date() }
+]);
 </script>
 
 <template>
@@ -99,25 +103,18 @@ const currentUser = useState<User>("currentUser");
 
         </div>
         <div class="w-1/5 flex flex-wrap gap-5">
-            <Card>
+            <Card class="w-full">
                 <template #title>Chats</template>
                 <template #content>
-                    <p class="m-0">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error
-                        repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione
-                        quam perferendis esse, cupiditate neque quas!
-                    </p>
+                    <div v-for="chat in chats" :key="chat.id" class="flex flex-col py-2">
+                        <ChatTile :chat="chat" /> 
+                    </div>
                 </template>
             </Card>
 
-            <Card class="w-full">
-                <template #title>Contacts</template>
-                <template #content>
-                    <ContactTile />
-                </template>
-            </Card>
-
-
+            <Dialog :visible="true" position="bottomright" :modal="true" :closable="true" :style="{width: '20rem'}">
+              <Chat />
+            </Dialog>
         </div>
     </div>
   </div>
