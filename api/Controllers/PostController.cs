@@ -52,7 +52,6 @@ public class PostController : ControllerBase
             var matchingBookmark = bookmarks.FirstOrDefault(b => b.PostId == post.Id);
             if (matchingBookmark != null) post.Bookmark = matchingBookmark.ToBookmarkResponseModel();
         }
-
         return Ok(postResponseModels);
     }
 

@@ -58,6 +58,20 @@ public class AppDbContext : IdentityDbContext<AppUser>
                 .HasForeignKey(b => b.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+        modelBuilder.Entity<PostInteraction>(entity =>
+        {
+            entity.HasKey(x => new { x.UserId, x.PostId });
+
+            entity.HasOne(x => x.Post)
+                .WithMany(p => p.PostInteractions)
+                .HasForeignKey(x => x.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(x => x.User)
+                .WithMany(u => u.PostInteractions)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
 
     private static void SeedInitial(ModelBuilder modelBuilder)
